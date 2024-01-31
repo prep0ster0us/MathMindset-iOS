@@ -14,6 +14,7 @@
 		FA566EBA2B69AFCE00F0FF20 /* MathMindset_Murphy_BabuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EB92B69AFCE00F0FF20 /* MathMindset_Murphy_BabuTests.swift */; };
 		FA566EC42B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EC32B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift */; };
 		FA566EC62B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EC52B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift */; };
+		FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566ED22B69B11500F0FF20 /* MathQuestion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		FA566EBF2B69AFCE00F0FF20 /* MathMindset-Murphy-BabuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MathMindset-Murphy-BabuUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA566EC32B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuUITests.swift; sourceTree = "<group>"; };
 		FA566EC52B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FA566ED22B69B11500F0FF20 /* MathQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathQuestion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */,
 				FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */,
+				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
 				FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */,
 				FA566EAE2B69AFCE00F0FF20 /* Preview Content */,
 			);
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
 			);
