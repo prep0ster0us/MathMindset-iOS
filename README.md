@@ -1,6 +1,6 @@
 MathMindset
 ===========
-By Alex Murphy and Ritwick Babu
+By Alex Murphy and Ritwik Babu
 -------------------------------
 
 Featuring:
