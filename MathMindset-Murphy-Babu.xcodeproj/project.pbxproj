@@ -15,6 +15,7 @@
 		FA566EC42B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EC32B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift */; };
 		FA566EC62B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EC52B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift */; };
 		FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566ED22B69B11500F0FF20 /* MathQuestion.swift */; };
+		FA78F7052B71B455006BF7C3 /* Factoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F7042B71B455006BF7C3 /* Factoring.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		FA566EC32B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuUITests.swift; sourceTree = "<group>"; };
 		FA566EC52B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FA566ED22B69B11500F0FF20 /* MathQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathQuestion.swift; sourceTree = "<group>"; };
+		FA78F7042B71B455006BF7C3 /* Factoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factoring.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,9 +98,10 @@
 		FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */ = {
 			isa = PBXGroup;
 			children = (
+				FA78F7032B71B436006BF7C3 /* Views */,
+				FA78F7022B71B419006BF7C3 /* Model */,
 				FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */,
 				FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */,
-				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
 				FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */,
 				FA566EAE2B69AFCE00F0FF20 /* Preview Content */,
 			);
@@ -128,6 +131,22 @@
 				FA566EC52B69AFCE00F0FF20 /* MathMindset_Murphy_BabuUITestsLaunchTests.swift */,
 			);
 			path = "MathMindset-Murphy-BabuUITests";
+			sourceTree = "<group>";
+		};
+		FA78F7022B71B419006BF7C3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FA78F7032B71B436006BF7C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA78F7042B71B455006BF7C3 /* Factoring.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +282,7 @@
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
+				FA78F7052B71B455006BF7C3 /* Factoring.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
