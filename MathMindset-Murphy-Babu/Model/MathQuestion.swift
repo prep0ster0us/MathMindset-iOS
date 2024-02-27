@@ -92,7 +92,6 @@ func printPoly(numbers: [Int]) -> String {
     return theString
 }
 
-
 class poly {
     // These are the coefficients of two
     // first order polynomials that are multiplied
@@ -197,15 +196,40 @@ class poly {
     }
 }
 
+class Derivative {
+    var coeffNumerator: [Int] = []
+    var coeffSol: [Int] = []
+//    var coeffDenominator: [Int] = []
+    init() {
+        for _ in (0..<5) {
+            coeffNumerator.append(Int.random(in: -13..<13))
+//            coeffDenominator.append(Int.random(in: -13..<13))
+        }
+        
+        for var i in (0..<coeffNumerator.count - 1) {
+            coeffSol.append(
+                coeffNumerator[i + 1] * (i + 1))
+        }
+    }
+    
+    func print() -> String {
+        return printPoly(numbers: coeffNumerator)
+    }
+
+    func printSol() -> String {
+        return printPoly(numbers: coeffSol)
+    }
+}
 
 
 
 struct MathQuestion: View {
-    var newPoly = poly()
+//    var newQuestion = poly()
+    var newQuestion = Derivative()
     var body: some View {
-        Text(newPoly.print())
+        Text(newQuestion.print())
             .monospaced()
-        Text(newPoly.printSol())
+        Text(newQuestion.printSol())
             .monospaced()
     }
 }
