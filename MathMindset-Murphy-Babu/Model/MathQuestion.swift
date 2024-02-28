@@ -206,7 +206,7 @@ class Derivative {
 //            coeffDenominator.append(Int.random(in: -13..<13))
         }
         
-        for var i in (0..<coeffNumerator.count - 1) {
+        for i in (0..<coeffNumerator.count - 1) {
             coeffSol.append(
                 coeffNumerator[i + 1] * (i + 1))
         }
@@ -221,11 +221,126 @@ class Derivative {
     }
 }
 
+class Trig {
+    var Question: String = ""
+    let questionSelect: [String] =
+    ["Sin",
+     "Cos",
+     "Tan"]
+    // TODO: Add support for more functions
+    //         "Csc",
+    //         "Sec",
+    //         "Cot"]
+    
+    
+    let questionValueDegrees: [Int] =
+    [0,
+     30,
+     45,
+     60,
+     90,
+     120,
+     135,
+     150,
+     180]
+    
+    let questionValueRadians: [String] =
+    ["0",
+     "π/6",
+     "π/4",
+     "π/3",
+     "π/2",
+     "2π/3",
+     "3π/4",
+     "5π/6",
+     "π"]
+    
+    let usingRadians: Bool = Bool.random()
+    
+    let sines: [String] =
+    ["0",
+     "1/2",
+     "sqrt(2)/2",
+     "sqrt(3)/2",
+     "1",
+     "sqrt(3)/2",
+     "sqrt(2)/2",
+     "1/2",
+     "0"]
+    
+    let cosines: [String] =
+    ["1",
+     "sqrt(3)/2",
+     "sqrt(2)/2",
+     "1/2",
+     "0",
+     "-1/2",
+     "-sqrt(2)/2",
+     "sqrt(3)/2",
+     "-1"]
+    
+    let tan: [String] =
+    ["0",
+     "sqrt(3)/3",
+     "1",
+     "sqrt(3)",
+     "undefined",
+     "-sqrt(3)",
+     "-1",
+     "-sqrt(3)/3",
+     "0"]
+    
+    // This index will be used to access
+    // all corresponding hardcoded values
+    var valueIndex: Int
+    var displayValue: String
+    var answer: String
+    var trigType: String
+    init() {
+        valueIndex = Int.random(in:0..<sines.count)
+        
+        if (usingRadians) {
+            displayValue = questionValueRadians[valueIndex]
+        } else {
+            displayValue = String(questionValueDegrees[valueIndex]) + "°"
+        }
+        trigType = questionSelect.randomElement()!
+        
+        switch(trigType) {
+        case "Sin":
+            answer = sines[valueIndex]
+        case "Cos":
+            answer = cosines[valueIndex]
+        default:
+            answer = tan[valueIndex]
+        }
+    }
+        
+    func printQuestion() -> String {
+        var returnString = "What is the \(trigType) of "
+        if (usingRadians) {
+            returnString += displayValue + "?"
+        } else {
+            returnString += "\(displayValue)?"
+        }
+        return returnString
+    }
+    
+    func print() -> String {
+        return "\(trigType)(\(displayValue))"
+    }
+    
+    func printSol() -> String {
+        return self.answer
+    }
+}
+
 
 
 struct MathQuestion: View {
 //    var newQuestion = poly()
-    var newQuestion = Derivative()
+//    var newQuestion = Derivative()
+    var newQuestion = Trig()
     var body: some View {
         Text(newQuestion.print())
             .monospaced()
