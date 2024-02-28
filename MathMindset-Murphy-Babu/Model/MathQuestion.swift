@@ -222,6 +222,13 @@ class Derivative {
 }
 
 class Trig {
+    // This ENTIRE class is handled by
+    // PARALLEL arrays, with the exception
+    // of the "questionSelect" array,
+    // which is shorter.
+    // Corresponding array indices are for
+    // solutions matching that degree/radian
+    // value.
     var Question: String = ""
     let questionSelect: [String] =
     ["Sin",
