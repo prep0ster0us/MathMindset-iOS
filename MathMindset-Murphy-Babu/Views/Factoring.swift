@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-
-
+import ConfettiSwiftUI
 
 struct Factoring: View {
     @State private var a: String = ""
     @State private var b: String = ""
     @State private var c: String = ""
 
-    @State private var selection: Int = 1
+    @State private var selection: Int? = nil
+    @State private var confettiCounter: Int = 0
     
     var thisPoly = poly() // TODO: use @ somehow?
     
@@ -34,16 +34,18 @@ struct Factoring: View {
                     Text(thisPoly.printFakeSol(choice: 4)).tag(4)
                 }
 //                .pickerStyle(.radioGroup)
-                Button("Submit", action: doNothing)
+                Button("Submit", action: handleResponse)
                     .buttonStyle(.bordered)
+                    .confettiCannon(counter: $confettiCounter)
             }.padding(20)
         }
     }
+    
+    func handleResponse() {
+        confettiCounter += 1
+    }
 }
 
-func doNothing() {
-    
-}
 #Preview {
     Factoring()
 }

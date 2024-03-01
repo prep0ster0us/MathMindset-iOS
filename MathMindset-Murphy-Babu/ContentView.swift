@@ -7,7 +7,24 @@
 
 import SwiftUI
 
+//class AppVariables: ObservableObject {
+//    var screenWidth: CGFloat {
+//        return UIScreen.main.bounds.width
+//    }
+//
+//    var screenHeight: CGFloat {
+//        return UIScreen.main.bounds.height
+//    }
+//}
+
+//class AppVariables: ObservableObject {
+//    var screenWidth: Int = Int(UIScreen.main.bounds.width)
+//
+//    var screenHeight: Int = Int(UIScreen.main.bounds.height)
+//}
+
 struct ContentView: View {
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
