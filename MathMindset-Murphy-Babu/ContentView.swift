@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+
 
 //class AppVariables: ObservableObject {
 //    var screenWidth: CGFloat {

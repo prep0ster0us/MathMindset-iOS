@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */; };
+		CEAC08252B93E36A00C3AA10 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08242B93E36A00C3AA10 /* FirebaseAnalytics */; };
+		CEAC08272B93E36A00C3AA10 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08262B93E36A00C3AA10 /* FirebaseAuth */; };
+		CEAC08292B93E36A00C3AA10 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08282B93E36A00C3AA10 /* FirebaseDatabase */; };
+		CEAC082B2B93E36A00C3AA10 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC082A2B93E36A00C3AA10 /* FirebaseFirestore */; };
+		CEAC082D2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC082C2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community */; };
+		CEAC082F2B93E36A00C3AA10 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC082E2B93E36A00C3AA10 /* FirebaseFirestoreSwift */; };
+		CEAC08312B93E36A00C3AA10 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08302B93E36A00C3AA10 /* FirebaseStorage */; };
+		CEAC08332B93E36A00C3AA10 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08322B93E36A00C3AA10 /* FirebaseStorageCombine-Community */; };
 		FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */; };
 		FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */; };
 		FA566EAD2B69AFCE00F0FF20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */; };
@@ -34,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA566EA52B69AFCD00F0FF20 /* MathMindset-Murphy-Babu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MathMindset-Murphy-Babu.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuApp.swift; sourceTree = "<group>"; };
 		FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -50,6 +60,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEAC08252B93E36A00C3AA10 /* FirebaseAnalytics in Frameworks */,
+				CEAC08272B93E36A00C3AA10 /* FirebaseAuth in Frameworks */,
+				CEAC08292B93E36A00C3AA10 /* FirebaseDatabase in Frameworks */,
+				CEAC082F2B93E36A00C3AA10 /* FirebaseFirestoreSwift in Frameworks */,
+				CEAC082D2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				CEAC08312B93E36A00C3AA10 /* FirebaseStorage in Frameworks */,
+				CEAC082B2B93E36A00C3AA10 /* FirebaseFirestore in Frameworks */,
+				CEAC08332B93E36A00C3AA10 /* FirebaseStorageCombine-Community in Frameworks */,
 				FA7FAEA42B9268510056EF19 /* ConfettiSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */,
+				CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */,
 				FA566EA62B69AFCD00F0FF20 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,6 +171,14 @@
 			name = "MathMindset-Murphy-Babu";
 			packageProductDependencies = (
 				FA7FAEA32B9268510056EF19 /* ConfettiSwiftUI */,
+				CEAC08242B93E36A00C3AA10 /* FirebaseAnalytics */,
+				CEAC08262B93E36A00C3AA10 /* FirebaseAuth */,
+				CEAC08282B93E36A00C3AA10 /* FirebaseDatabase */,
+				CEAC082A2B93E36A00C3AA10 /* FirebaseFirestore */,
+				CEAC082C2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community */,
+				CEAC082E2B93E36A00C3AA10 /* FirebaseFirestoreSwift */,
+				CEAC08302B93E36A00C3AA10 /* FirebaseStorage */,
+				CEAC08322B93E36A00C3AA10 /* FirebaseStorageCombine-Community */,
 			);
 			productName = "MathMindset-Murphy-Babu";
 			productReference = FA566EA52B69AFCD00F0FF20 /* MathMindset-Murphy-Babu.app */;
@@ -227,6 +254,7 @@
 			mainGroup = FA566E9C2B69AFCD00F0FF20;
 			packageReferences = (
 				FA7FAEA22B9268510056EF19 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = FA566EA62B69AFCD00F0FF20 /* Products */;
 			projectDirPath = "";
@@ -246,6 +274,7 @@
 			files = (
 				FA566EB02B69AFCE00F0FF20 /* Preview Assets.xcassets in Resources */,
 				FA566EAD2B69AFCE00F0FF20 /* Assets.xcassets in Resources */,
+				CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +631,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.21.0;
+			};
+		};
 		FA7FAEA22B9268510056EF19 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
@@ -613,6 +650,46 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CEAC08242B93E36A00C3AA10 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		CEAC08262B93E36A00C3AA10 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CEAC08282B93E36A00C3AA10 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		CEAC082A2B93E36A00C3AA10 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		CEAC082C2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		CEAC082E2B93E36A00C3AA10 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		CEAC08302B93E36A00C3AA10 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		CEAC08322B93E36A00C3AA10 /* FirebaseStorageCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseStorageCombine-Community";
+		};
 		FA7FAEA32B9268510056EF19 /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA7FAEA22B9268510056EF19 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
