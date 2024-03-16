@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE1000632BA64EE600B9D7B1 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000622BA64EE600B9D7B1 /* GoogleSignIn */; };
+		CE1000652BA64EE600B9D7B1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */; };
+		CE7312B02B97A026002F11DD /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7312AF2B97A026002F11DD /* SignInView.swift */; };
+		CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95242E2B9FC3E200146CD3 /* SignUpView.swift */; };
 		CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */; };
 		CEAC08252B93E36A00C3AA10 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08242B93E36A00C3AA10 /* FirebaseAnalytics */; };
 		CEAC08272B93E36A00C3AA10 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEAC08262B93E36A00C3AA10 /* FirebaseAuth */; };
@@ -43,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE7312AF2B97A026002F11DD /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		CE95242E2B9FC3E200146CD3 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA566EA52B69AFCD00F0FF20 /* MathMindset-Murphy-Babu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MathMindset-Murphy-Babu.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuApp.swift; sourceTree = "<group>"; };
@@ -65,10 +71,12 @@
 				CEAC08292B93E36A00C3AA10 /* FirebaseDatabase in Frameworks */,
 				CEAC082F2B93E36A00C3AA10 /* FirebaseFirestoreSwift in Frameworks */,
 				CEAC082D2B93E36A00C3AA10 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				CE1000632BA64EE600B9D7B1 /* GoogleSignIn in Frameworks */,
 				CEAC08312B93E36A00C3AA10 /* FirebaseStorage in Frameworks */,
 				CEAC082B2B93E36A00C3AA10 /* FirebaseFirestore in Frameworks */,
 				CEAC08332B93E36A00C3AA10 /* FirebaseStorageCombine-Community in Frameworks */,
 				FA7FAEA42B9268510056EF19 /* ConfettiSwiftUI in Frameworks */,
+				CE1000652BA64EE600B9D7B1 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +97,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE7312AB2B979FE1002F11DD /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				CE7312AE2B97A00A002F11DD /* Model */,
+				CE7312AC2B979FEC002F11DD /* View */,
+				CE7312AD2B979FF3002F11DD /* Controller */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		CE7312AC2B979FEC002F11DD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE7312AF2B97A026002F11DD /* SignInView.swift */,
+				CE95242E2B9FC3E200146CD3 /* SignUpView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE7312AD2B979FF3002F11DD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE7312AE2B97A00A002F11DD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		FA566E9C2B69AFCD00F0FF20 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +152,7 @@
 		FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */ = {
 			isa = PBXGroup;
 			children = (
+				CE7312AB2B979FE1002F11DD /* SignIn */,
 				FA7FAE9D2B902E220056EF19 /* Controller */,
 				FA78F7032B71B436006BF7C3 /* Views */,
 				FA78F7022B71B419006BF7C3 /* Model */,
@@ -179,6 +221,8 @@
 				CEAC082E2B93E36A00C3AA10 /* FirebaseFirestoreSwift */,
 				CEAC08302B93E36A00C3AA10 /* FirebaseStorage */,
 				CEAC08322B93E36A00C3AA10 /* FirebaseStorageCombine-Community */,
+				CE1000622BA64EE600B9D7B1 /* GoogleSignIn */,
+				CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */,
 			);
 			productName = "MathMindset-Murphy-Babu";
 			productReference = FA566EA52B69AFCD00F0FF20 /* MathMindset-Murphy-Babu.app */;
@@ -255,6 +299,7 @@
 			packageReferences = (
 				FA7FAEA22B9268510056EF19 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CE1000612BA64EE600B9D7B1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = FA566EA62B69AFCD00F0FF20 /* Products */;
 			projectDirPath = "";
@@ -303,6 +348,8 @@
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
 				FA78F7052B71B455006BF7C3 /* Factoring.swift in Sources */,
+				CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */,
+				CE7312B02B97A026002F11DD /* SignInView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +678,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CE1000612BA64EE600B9D7B1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -650,6 +705,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CE1000622BA64EE600B9D7B1 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE1000612BA64EE600B9D7B1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE1000612BA64EE600B9D7B1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		CEAC08242B93E36A00C3AA10 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CEAC08232B93E36900C3AA10 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
