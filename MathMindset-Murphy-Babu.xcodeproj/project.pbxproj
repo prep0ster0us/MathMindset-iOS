@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CE1000632BA64EE600B9D7B1 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000622BA64EE600B9D7B1 /* GoogleSignIn */; };
 		CE1000652BA64EE600B9D7B1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */; };
+		CE10006B2BA7507C00B9D7B1 /* ProblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */; };
 		CE7312B02B97A026002F11DD /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7312AF2B97A026002F11DD /* SignInView.swift */; };
 		CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95242E2B9FC3E200146CD3 /* SignUpView.swift */; };
 		CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
 		CE7312AF2B97A026002F11DD /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		CE95242E2B9FC3E200146CD3 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -97,6 +99,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE1000662BA7505200B9D7B1 /* ProblemPage */ = {
+			isa = PBXGroup;
+			children = (
+				CE1000692BA7506900B9D7B1 /* Model */,
+				CE1000682BA7506300B9D7B1 /* View */,
+				CE1000672BA7505D00B9D7B1 /* Controller */,
+			);
+			path = ProblemPage;
+			sourceTree = "<group>";
+		};
+		CE1000672BA7505D00B9D7B1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE1000682BA7506300B9D7B1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE1000692BA7506900B9D7B1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CE7312AB2B979FE1002F11DD /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +186,7 @@
 		FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */ = {
 			isa = PBXGroup;
 			children = (
+				CE1000662BA7505200B9D7B1 /* ProblemPage */,
 				CE7312AB2B979FE1002F11DD /* SignIn */,
 				FA7FAE9D2B902E220056EF19 /* Controller */,
 				FA78F7032B71B436006BF7C3 /* Views */,
@@ -344,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE10006B2BA7507C00B9D7B1 /* ProblemView.swift in Sources */,
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
