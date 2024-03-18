@@ -4,6 +4,7 @@ struct ProblemView: View {
     
     let problemNum: CGFloat
     let question: String
+    let choices: [String]
     
     var body: some View {
         VStack {
@@ -25,33 +26,50 @@ struct ProblemView: View {
                 .fontWeight(.bold)
                 .shadow(radius: 20)
                 .padding(24)
+                .animation(.easeIn, value: 0.8)
                 
             
             // Problem Choices
             VStack(spacing: 30) {
                 HStack {
-                    ProblemOption(choice: "Triangle")
+                    ProblemOption(choice: choices[0])
                     Spacer()
-                    ProblemOption(choice: "Circle")
+                    ProblemOption(choice: choices[1])
                 }.padding(.horizontal, 40)
                 HStack {
-                    ProblemOption(choice: "Square")
+                    ProblemOption(choice: choices[2])
                     Spacer()
-                    ProblemOption(choice: "Rectangle")
+                    ProblemOption(choice: choices[3])
                 }.padding(.horizontal, 40)
             }
+            
+            // Horizontal Layout for choices
+//            VStack(spacing: 28) {
+//                    ProblemOption(choice: choices[0])
+//                    ProblemOption(choice: choices[1])
+//                    ProblemOption(choice: choices[2])
+//                    ProblemOption(choice: choices[3])
+//            }.padding(.horizontal, 40)
+            
             Spacer()
             
             // Submit answer
             SubmitButton()
                 .padding()
-            
-        }
+        }.background(
+            LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .foregroundStyle(.ultraThinMaterial)
+                .ignoresSafeArea()                  // to cover the entire screen
+        )
     }
 }
 
 struct ProblemOption: View {
     let choice: String
+    
+    // Horizontal buttons - For options which don't fit in the vertical view)
+//    var width: CGFloat = UIScreen.main.bounds.width-100
+//    var height: CGFloat = UIScreen.main.bounds.height/14
     
     var width: CGFloat = UIScreen.main.bounds.width/3
     var height: CGFloat = UIScreen.main.bounds.height/6
@@ -281,6 +299,10 @@ struct ProblemProgressBar1: View {
 }
 
 #Preview {
-    ProblemView(problemNum: 4, question: "Which of these shapes have 4 sides?")
+    ProblemView(
+        problemNum: 4, 
+        question: "Which of these shapes have 4 sides?",
+        choices: ["Triangle", "Circle", "Square", "Rectangle"]
+    )
 }
 
