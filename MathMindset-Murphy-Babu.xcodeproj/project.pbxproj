@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */; };
+		CE0BDE322BAB972100D82078 /* ForgotPwdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BDE312BAB972100D82078 /* ForgotPwdView.swift */; };
+		CE0BDE342BABC71600D82078 /* HelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BDE332BABC71600D82078 /* HelperView.swift */; };
 		CE1000632BA64EE600B9D7B1 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000622BA64EE600B9D7B1 /* GoogleSignIn */; };
 		CE1000652BA64EE600B9D7B1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */; };
 		CE10006B2BA7507C00B9D7B1 /* ProblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */; };
+		CE5A964F2BADFCDA009411D4 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A964E2BADFCDA009411D4 /* FirebaseManager.swift */; };
 		CE7312B02B97A026002F11DD /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7312AF2B97A026002F11DD /* SignInView.swift */; };
 		CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95242E2B9FC3E200146CD3 /* SignUpView.swift */; };
 		CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */; };
@@ -48,7 +52,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateProblems.swift; sourceTree = "<group>"; };
+		CE0BDE312BAB972100D82078 /* ForgotPwdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdView.swift; sourceTree = "<group>"; };
+		CE0BDE332BABC71600D82078 /* HelperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperView.swift; sourceTree = "<group>"; };
 		CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
+		CE5A964E2BADFCDA009411D4 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		CE7312AF2B97A026002F11DD /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		CE95242E2B9FC3E200146CD3 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -120,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */,
+				CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -146,6 +155,8 @@
 			children = (
 				CE7312AF2B97A026002F11DD /* SignInView.swift */,
 				CE95242E2B9FC3E200146CD3 /* SignUpView.swift */,
+				CE0BDE312BAB972100D82078 /* ForgotPwdView.swift */,
+				CE0BDE332BABC71600D82078 /* HelperView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,6 +164,7 @@
 		CE7312AD2B979FF3002F11DD /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CE5A964E2BADFCDA009411D4 /* FirebaseManager.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -379,12 +391,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0BDE322BAB972100D82078 /* ForgotPwdView.swift in Sources */,
 				CE10006B2BA7507C00B9D7B1 /* ProblemView.swift in Sources */,
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
+				CE5A964F2BADFCDA009411D4 /* FirebaseManager.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
 				FA78F7052B71B455006BF7C3 /* Factoring.swift in Sources */,
+				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */,
+				CE0BDE342BABC71600D82078 /* HelperView.swift in Sources */,
 				CE7312B02B97A026002F11DD /* SignInView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
