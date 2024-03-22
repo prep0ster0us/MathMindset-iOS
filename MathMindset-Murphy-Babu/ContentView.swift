@@ -6,35 +6,23 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
 
-
-//class AppVariables: ObservableObject {
-//    var screenWidth: CGFloat {
-//        return UIScreen.main.bounds.width
-//    }
-//
-//    var screenHeight: CGFloat {
-//        return UIScreen.main.bounds.height
-//    }
-//}
-
-//class AppVariables: ObservableObject {
-//    var screenWidth: Int = Int(UIScreen.main.bounds.width)
-//
-//    var screenHeight: Int = Int(UIScreen.main.bounds.height)
-//}
+class AppVariables: ObservableObject {
+    @Published var selectedTab: Int = 0
+    @Published var streak: Int = 0
+    @Published var primes: Int = 45
+    @Published var probOfDaySolved: Bool = true
+    @Published var timeLeft: Int = 0
+}
 
 struct ContentView: View {
-    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        BottomBar(
+            AnyView(Home()),
+            AnyView(Leaderboards()),
+            AnyView(Profile())
+        )
+        .environmentObject(AppVariables())
     }
 }
 

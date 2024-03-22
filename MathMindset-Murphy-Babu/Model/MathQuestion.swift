@@ -8,6 +8,30 @@
 import SwiftUI
 import Foundation
 
+class Problem: Identifiable {
+    let type: String
+//    let thisProblem: Problem
+    
+    init(problemType: String) {
+        self.type = problemType
+    }
+    
+    func print() -> String {
+//        return self.thisProblem.print()
+        return ""
+    }
+    
+    func printFakeSol(choice: Int) -> String {
+//        return self.thisProblem.printFakeSol(choice: choice)
+        return ""
+    }
+    
+    func printQuestion() -> String {
+        return ""
+    }
+}
+
+
 var primes: [Int] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29] //, 31, 37, 41]
 let supers: [String] = [
     "⁰",
@@ -92,7 +116,7 @@ func printPoly(numbers: [Int]) -> String {
     return theString
 }
 
-class poly {
+class Poly: Problem {
     // These are the coefficients of two
     // first order polynomials that are multiplied
     // to obtain the non-factored solution
@@ -146,6 +170,8 @@ class poly {
         self.b = self.b1 * self.c2 +
         self.b2 * self.c1
         self.c = self.c1 * self.c2
+        
+        super.init(problemType: "Factoring")
     }
     
     func printSol() -> String {
@@ -156,25 +182,26 @@ class poly {
         return theString
     }
     
-    func printFakeSol(choice: Int) -> String {
+    override func printQuestion() -> String {
+        return "Factor this polynomial."
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
         var theString = ""
         
         switch choice {
-        case 1:
-            theString += "(\(printPoly(numbers: [self.c1, self.b2])))"
-            theString += "(\(printPoly(numbers: [self.c2, self.b1])))"
+        case 1: // correct answer
+            theString += "(\(printPoly(numbers: [self.c1, self.b1])))"
+            theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
         case 2:
             theString += "(\(printPoly(numbers: [-self.c1, self.b1])))"
             theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
         case 3:
-            theString += "(\(printPoly(numbers: [-self.c1, self.b1])))"
-            theString += "(\(printPoly(numbers: [-self.c2, self.b2])))"
+            theString += "(\(printPoly(numbers: [self.c1 + [-1, 1].randomElement()! * Int.random(in: 1..<3), self.b1])))"
+            theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
         case 4:
             theString += "(\(printPoly(numbers: [self.c1, self.b1])))"
             theString += "(\(printPoly(numbers: [-self.c2, self.b2])))"
-        case 5:
-            theString += "(\(printPoly(numbers: [self.c1, -self.b1])))"
-            theString += "(\(printPoly(numbers: [self.c2, -self.b2])))"
         default:
             theString = self.printSol()
         }
@@ -190,18 +217,18 @@ class poly {
         return [self.c, self.b, self.a]
     }
     
-    func print() -> String {
+    override func print() -> String {
         return printPoly(numbers: self.getCoefficients())
 //        return printPoly(numbers: [5, 5, -5, 5, 5, 0, 5, 5, 5, 55, 0, 0, 1, 5, 6 , 7, 8, 9,0 , 225, 6 , 2, 1, 5,6,7 , 8])
     }
 }
 
-class Derivative {
+class Derivative: Problem {
     var coeffNumerator: [Int] = []
     var coeffSol: [Int] = []
 //    var coeffDenominator: [Int] = []
     init() {
-        for _ in (0..<5) {
+        for _ in (0..<3) {
             coeffNumerator.append(Int.random(in: -13..<13))
 //            coeffDenominator.append(Int.random(in: -13..<13))
         }
@@ -210,18 +237,50 @@ class Derivative {
             coeffSol.append(
                 coeffNumerator[i + 1] * (i + 1))
         }
+        
+        super.init(problemType: "Derivative")
     }
     
-    func print() -> String {
+    override func print() -> String {
         return printPoly(numbers: coeffNumerator)
     }
 
     func printSol() -> String {
         return printPoly(numbers: coeffSol)
     }
+    
+    override func printQuestion() -> String {
+        return "Find the derivative of this polynomial with respect to x."
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var theString = ""
+        
+        switch choice {
+        case 1: // correct answer
+            return printPoly(numbers: coeffSol)
+        case 2:
+            // this is a deep copy
+            var fakeCoeffSol: [Int] = coeffSol
+            fakeCoeffSol.insert(Int.random(in: -2..<3), at: 0)
+            theString = printPoly(numbers: fakeCoeffSol)
+        case 3:
+            var fakeCoeffSol: [Int] = coeffSol
+            fakeCoeffSol.append(Int.random(in: -2..<3))
+            theString = printPoly(numbers: fakeCoeffSol)
+        case 4:
+            var fakeCoeffSol: [Int] = coeffSol
+            fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += Int.random(in: -3..<4)
+            theString = printPoly(numbers: fakeCoeffSol)
+        default:
+            theString = printPoly(numbers: coeffSol)
+        }
+        
+        return theString
+    }
 }
 
-class Trig {
+class Trig: Problem {
     // This ENTIRE class is handled by
     // PARALLEL arrays, with the exception
     // of the "questionSelect" array,
@@ -321,9 +380,11 @@ class Trig {
         default:
             answer = tan[valueIndex]
         }
+        
+        super.init(problemType: "Trig")
     }
         
-    func printQuestion() -> String {
+    override func printQuestion() -> String {
         var returnString = "What is the \(trigType) of "
         if (usingRadians) {
             returnString += displayValue + "?"
@@ -333,21 +394,55 @@ class Trig {
         return returnString
     }
     
-    func print() -> String {
+    override func print() -> String {
         return "\(trigType)(\(displayValue))"
     }
     
     func printSol() -> String {
         return self.answer
     }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var returnString: String = ""
+        switch choice {
+        case 1:
+            return self.printSol()
+        case 2:
+            // picks a random value that is not equal to the solution
+            if (trigType == "Tan") {
+                returnString = tan[valueIndex - 1]
+            } else {
+                // Sin or Cos
+                returnString = (trigType == "Sin") ? sines[valueIndex - 1] : cosines[valueIndex - 1]
+            }
+        case 3:
+            // picks a random value not picked in case 2
+            if (trigType == "Tan") {
+                returnString = tan[valueIndex + 1]
+            } else {
+                // Sin or Cos
+                returnString = (trigType == "Sin") ? sines[valueIndex + 1] : cosines[valueIndex + 1]
+            }
+        case 4:
+            // Invert sign
+            if (self.answer.starts(with: "-")) {
+                return String(self.answer.suffix(1))
+            } else {
+                return "-" + self.answer
+            }
+        default:
+            return self.printSol()
+        }
+        // Catch-all
+        return returnString
+    }
 }
-
 
 
 struct MathQuestion: View {
 //    var newQuestion = poly()
 //    var newQuestion = Derivative()
-    var newQuestion = Trig()
+    var newQuestion = Derivative() // can be poly(), derivative(), or trig()
     var body: some View {
         Text(newQuestion.print())
             .monospaced()
