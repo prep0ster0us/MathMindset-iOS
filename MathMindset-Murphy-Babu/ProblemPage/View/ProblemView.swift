@@ -30,26 +30,26 @@ struct ProblemView: View {
                 
             
             // Problem Choices
-            VStack(spacing: 30) {
-                HStack {
-                    ProblemOption(choice: choices[0])
-                    Spacer()
-                    ProblemOption(choice: choices[1])
-                }.padding(.horizontal, 40)
-                HStack {
-                    ProblemOption(choice: choices[2])
-                    Spacer()
-                    ProblemOption(choice: choices[3])
-                }.padding(.horizontal, 40)
-            }
+//            VStack(spacing: 30) {
+//                HStack {
+//                    ProblemOption(choice: choices[0])
+//                    Spacer()
+//                    ProblemOption(choice: choices[1])
+//                }.padding(.horizontal, 40)
+//                HStack {
+//                    ProblemOption(choice: choices[2])
+//                    Spacer()
+//                    ProblemOption(choice: choices[3])
+//                }.padding(.horizontal, 40)
+//            }
             
             // Horizontal Layout for choices
-//            VStack(spacing: 28) {
-//                    ProblemOption(choice: choices[0])
-//                    ProblemOption(choice: choices[1])
-//                    ProblemOption(choice: choices[2])
-//                    ProblemOption(choice: choices[3])
-//            }.padding(.horizontal, 40)
+            VStack(spacing: 28) {
+                    ProblemOption(choice: choices[0])
+                    ProblemOption(choice: choices[1])
+                    ProblemOption(choice: choices[2])
+                    ProblemOption(choice: choices[3])
+            }.padding(.horizontal, 40)
             
             Spacer()
             
@@ -68,11 +68,11 @@ struct ProblemOption: View {
     let choice: String
     
     // Horizontal buttons - For options which don't fit in the vertical view)
-//    var width: CGFloat = UIScreen.main.bounds.width-100
-//    var height: CGFloat = UIScreen.main.bounds.height/14
+    var width: CGFloat = UIScreen.main.bounds.width-100
+    var height: CGFloat = UIScreen.main.bounds.height/14
     
-    var width: CGFloat = UIScreen.main.bounds.width/3
-    var height: CGFloat = UIScreen.main.bounds.height/6
+//    var width: CGFloat = UIScreen.main.bounds.width/3
+//    var height: CGFloat = UIScreen.main.bounds.height/6
     var offset: CGFloat = 6
     
     var color1: Color = Color(.systemTeal)
@@ -89,7 +89,7 @@ struct ProblemOption: View {
                     .frame(width: width, height: height)
                     .background(
                         ZStack {
-                            Color(color1).opacity(0.2)
+                            Color(color1).opacity(0.4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                             //                            .stroke(Color(.black), lineWidth: 3)
                                 .fill(color2)
@@ -103,7 +103,7 @@ struct ProblemOption: View {
                         }
                     ).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
-                    .shadow(color: color2.opacity(0.1), radius: 12, x: -offset, y: -offset)
+                    .shadow(color: color2.opacity(0.3), radius: 12, x: -offset, y: -offset)
             }).buttonStyle(OptionButtonStyle())
         }
         
