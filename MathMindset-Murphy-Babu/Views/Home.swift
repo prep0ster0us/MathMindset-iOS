@@ -10,6 +10,10 @@ import SwiftUI
 struct Home: View {
     @EnvironmentObject private var app: AppVariables
 
+    var titles: [String] = ["Factoring",
+                            "Derivative",
+                            "Trig"]
+    
     var body: some View {
         VStack {
             HStack {
@@ -55,6 +59,15 @@ struct Home: View {
                     .fill(Color(red: 0.85, green: 0.95, blue: 1))
                     .shadow(radius: 5)
             .frame(width: 285, height: 285))
+            
+            ScrollView{
+                VStack(alignment: .leading) {
+                        ForEach(titles, id: \.self) { title in
+                            TopicCard(name: title, image: title, completed: 1)
+                                .frame(width: $app.screenWidth.wrappedValue)
+                        }.padding(.top, 10)
+                    }
+            }.padding(.top, 30)
             
             Spacer()
             

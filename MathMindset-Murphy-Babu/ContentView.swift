@@ -13,6 +13,8 @@ class AppVariables: ObservableObject {
     @Published var primes: Int = 45
     @Published var probOfDaySolved: Bool = true
     @Published var timeLeft: Int = 0
+    @Published var screenWidth: CGFloat = UIScreen.main.bounds.width
+    @Published var screenHeight: CGFloat = UIScreen.main.bounds.height
 }
 
 struct ContentView: View {

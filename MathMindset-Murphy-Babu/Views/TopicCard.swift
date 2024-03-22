@@ -56,6 +56,7 @@ struct TopicCard: View {
                 .fill(Color(red: 0.85, green: 0.95, blue: 1))
                 .shadow(radius: 5)
         .frame(width: 285, height: 80))
+        .padding(20)
     }
     
     
