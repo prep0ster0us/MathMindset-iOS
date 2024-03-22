@@ -200,9 +200,9 @@
 			children = (
 				CE1000662BA7505200B9D7B1 /* ProblemPage */,
 				CE7312AB2B979FE1002F11DD /* SignIn */,
-				FA7FAE9D2B902E220056EF19 /* Controller */,
-				FA78F7032B71B436006BF7C3 /* Views */,
 				FA78F7022B71B419006BF7C3 /* Model */,
+				FA78F7032B71B436006BF7C3 /* Views */,
+				FA7FAE9D2B902E220056EF19 /* Controller */,
 				FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */,
 				FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */,
 				FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */,
