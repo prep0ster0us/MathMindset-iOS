@@ -30,12 +30,13 @@ struct SignInView: View {
     
     var body: some View {
         // to enable view, based on 'stay signed in'
-        //        if isLoggedIn {
-        //            // go somewhere
-        //        } else {
-        //            // show login page
-        //            content
-        //        }
+//        if isLoggedIn {
+//            // go somewhere
+//            NavigationLink(destination: HomeView().environmentObject(AppVariables())) { EmptyView() }
+//        } else {
+//            // show login page
+//            content
+//        }
         content
     }
     
@@ -167,7 +168,12 @@ struct SignInView: View {
             // Login Button
             
             NavigationLink(
-                destination: HomeView().environmentObject(AppVariables()),
+                destination: BottomBar(
+                    AnyView(HomeView()),
+                    AnyView(Leaderboards()),
+                    AnyView(Profile())
+                )
+                .environmentObject(AppVariables()),
                 isActive: $loginStatus
             ) {
                 Button(action: {

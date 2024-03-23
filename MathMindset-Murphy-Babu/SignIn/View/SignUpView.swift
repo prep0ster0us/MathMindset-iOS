@@ -41,6 +41,7 @@ struct SignUpView: View {
     @State private var loginText = "LOGIN"
     @State private var animLogin = false
     @State private var animLoading = false
+    @State private var showAlert = false
     
     private var width = 0.5;
     
@@ -62,14 +63,17 @@ struct SignUpView: View {
     }
     
     var content: some View {
-        ZStack {
-            LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
-                           , startPoint: .top, endPoint: .bottom)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
-            showRegister
+        NavigationStack {
+            ZStack {
+                LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                               , startPoint: .top, endPoint: .bottom)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                
+                showRegister
+            }
         }
+            
     }
     
     var showRegister: some View {
@@ -300,15 +304,15 @@ struct SignUpView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 12)
                 
-                // Login Button
-                
+                // Register Button
                 Button(action: {
                     dbManager.registerUser(
                         email: email,
                         pass: pass,
                         username: username,
                         dateOfBirth: dateOfBirth,
-                        pfpImage: pfpImage
+                        pfpImage: pfpImage,
+                        showAlert: $showAlert
                     )
                 }, label: {
                     Text("REGISTER")
@@ -322,6 +326,13 @@ struct SignUpView: View {
                     .offset(y: -40)
                     .padding(.bottom, -40)
                     .shadow(radius: 25)
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Registered!"),
+                              message: Text("Sign up complete. Please log in using your credentials."),
+                              dismissButton: .default(Text("Ok")) {
+                            dismiss()
+                        })
+                    }
                 
                 // Redirect to log in
                 HStack {

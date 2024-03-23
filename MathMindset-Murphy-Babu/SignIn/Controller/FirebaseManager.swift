@@ -38,7 +38,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    func registerUser(email: String, pass: String, username: String, dateOfBirth: Date, pfpImage: Image?) {
+    func registerUser(email: String, pass: String, username: String, dateOfBirth: Date, pfpImage: Image?, showAlert: Binding<Bool>) {
         // register for authentication
         auth.createUser(withEmail: email, password: pass) { authResult, err in
             if let err = err {
@@ -70,6 +70,7 @@ class FirebaseManager: ObservableObject {
             
             // save user details (after sign-in) to database
             self.saveUserDetails(uid: uid, data: data)
+            showAlert.wrappedValue = true   // signify successful registeration
         }
     }
     
