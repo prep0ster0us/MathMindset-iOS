@@ -101,7 +101,7 @@ func printPoly(numbers: [Int]) -> String {
         for character in String(theDegree) {
             stringTheDegree += String(supers[Int(String(character))!])
         }
-//        stringTheDegree = String(supers[theDegree])
+        //        stringTheDegree = String(supers[theDegree])
     }
     // This is WAY easier than formatting at the same time
     theString.replace("+", with: " + ")
@@ -219,18 +219,18 @@ class Poly: Problem {
     
     override func print() -> String {
         return printPoly(numbers: self.getCoefficients())
-//        return printPoly(numbers: [5, 5, -5, 5, 5, 0, 5, 5, 5, 55, 0, 0, 1, 5, 6 , 7, 8, 9,0 , 225, 6 , 2, 1, 5,6,7 , 8])
+        //        return printPoly(numbers: [5, 5, -5, 5, 5, 0, 5, 5, 5, 55, 0, 0, 1, 5, 6 , 7, 8, 9,0 , 225, 6 , 2, 1, 5,6,7 , 8])
     }
 }
 
 class Derivative: Problem {
     var coeffNumerator: [Int] = []
     var coeffSol: [Int] = []
-//    var coeffDenominator: [Int] = []
+    //    var coeffDenominator: [Int] = []
     init() {
         for _ in (0..<3) {
             coeffNumerator.append(Int.random(in: -13..<13))
-//            coeffDenominator.append(Int.random(in: -13..<13))
+            //            coeffDenominator.append(Int.random(in: -13..<13))
         }
         
         for i in (0..<coeffNumerator.count - 1) {
@@ -244,7 +244,7 @@ class Derivative: Problem {
     override func print() -> String {
         return printPoly(numbers: coeffNumerator)
     }
-
+    
     func printSol() -> String {
         return printPoly(numbers: coeffSol)
     }
