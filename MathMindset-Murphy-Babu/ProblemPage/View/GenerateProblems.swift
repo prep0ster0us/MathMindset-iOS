@@ -8,8 +8,11 @@ struct GenerateProblems: View {
         // TODO: complete this map based on the available problem sets
         // for which the question generation logic has been developed
         "Trig" : "Trigometry",
-        "Poly" : "Polynomial"
+        "Poly" : "Polynomial",
+        "Factoring" : "Factoring"
     ]
+    
+    
     
     var body: some View {
         // TODO: call the question builder, generate objects which contain the
@@ -20,6 +23,17 @@ struct GenerateProblems: View {
         let question: String = ""
         let choices: [String] = []
         let answer: String = ""
+        
+       
+        
+//
+//        case "Trig":
+//            self.thisProblem = Trig()
+//        case "Factoring":
+//            self.thisProblem = Poly()
+//        default:
+//            self.thisProblem = Poly()
+//        }
         
 //        let data: [String: Any] = [
 //            "question"  : question,

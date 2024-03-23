@@ -14,6 +14,8 @@
 		CE1000652BA64EE600B9D7B1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE1000642BA64EE600B9D7B1 /* GoogleSignInSwift */; };
 		CE10006B2BA7507C00B9D7B1 /* ProblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */; };
 		CE5A964F2BADFCDA009411D4 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A964E2BADFCDA009411D4 /* FirebaseManager.swift */; };
+		CE5A96562BAE6BED009411D4 /* MultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96552BAE6BED009411D4 /* MultipleChoice.swift */; };
+		CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */; };
 		CE7312B02B97A026002F11DD /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7312AF2B97A026002F11DD /* SignInView.swift */; };
 		CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95242E2B9FC3E200146CD3 /* SignUpView.swift */; };
 		CEAC07EB2B93875900C3AA10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */; };
@@ -57,6 +59,8 @@
 		CE0BDE332BABC71600D82078 /* HelperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperView.swift; sourceTree = "<group>"; };
 		CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
 		CE5A964E2BADFCDA009411D4 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		CE5A96552BAE6BED009411D4 /* MultipleChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoice.swift; sourceTree = "<group>"; };
+		CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProblems.swift; sourceTree = "<group>"; };
 		CE7312AF2B97A026002F11DD /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		CE95242E2B9FC3E200146CD3 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		CEAC07EA2B93875900C3AA10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -129,6 +133,7 @@
 			children = (
 				CE10006A2BA7507C00B9D7B1 /* ProblemView.swift */,
 				CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */,
+				CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
+				CE5A96552BAE6BED009411D4 /* MultipleChoice.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,9 +403,11 @@
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				CE5A964F2BADFCDA009411D4 /* FirebaseManager.swift in Sources */,
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
+				CE5A96562BAE6BED009411D4 /* MultipleChoice.swift in Sources */,
 				FA78F7052B71B455006BF7C3 /* Factoring.swift in Sources */,
 				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CE95242F2B9FC3E200146CD3 /* SignUpView.swift in Sources */,
+				CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */,
 				CE0BDE342BABC71600D82078 /* HelperView.swift in Sources */,
 				CE7312B02B97A026002F11DD /* SignInView.swift in Sources */,
 			);

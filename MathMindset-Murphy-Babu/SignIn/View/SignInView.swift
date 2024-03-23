@@ -186,10 +186,10 @@ struct SignInView: View {
                 Spacer()
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
                     Text("Use Biometrics")
-                        .font(.system(size: 14))
-                    //                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                        .foregroundStyle(Color(.textTint))
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(Color(.textContrast))
                         .underline()
+                        .padding(.bottom, 25)
                 })
                 Spacer()
             }.padding(.horizontal, 24)
