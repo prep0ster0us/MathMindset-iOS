@@ -12,7 +12,7 @@ struct ProblemOfDay: View {
     let choices     : [String]
     
     @EnvironmentObject private var app: AppVariables
-    @State private var isPressed: CGFloat = 0
+    @State private var isPressed: CGFloat = -1
     
     var body: some View {
         VStack {

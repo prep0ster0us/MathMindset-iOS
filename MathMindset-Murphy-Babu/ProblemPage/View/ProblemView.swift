@@ -199,6 +199,7 @@ struct SubmitButton: View {
     @Environment(\.dismiss) var dismiss
     @State private var isCorrect = false
     @State private var showAlert = false
+    @State private var showConfetti = 0
     
     var width: CGFloat = UIScreen.main.bounds.width-60
     var height: CGFloat = 58
@@ -216,6 +217,7 @@ struct SubmitButton: View {
             Button(action: {
                 if isPressed == 0 {
                     isCorrect = true
+                    showConfetti = 1
                 } else {
                     isCorrect = false
                 }
@@ -244,6 +246,7 @@ struct SubmitButton: View {
                     .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
                     .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
             }).buttonStyle(SubmitButtonStyle())
+                .confettiCannon(counter: $showConfetti, num: 150, confettiSize: 10, rainHeight: 400)
                 .alert(isPresented: $showAlert) {
                     Alert(title: Text("Problem Submission"),
                           message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
@@ -253,6 +256,7 @@ struct SubmitButton: View {
                                 $app.streak.wrappedValue += 1
                                 $app.primes.wrappedValue += 5
                                 $app.probOfDaySolved.wrappedValue = true
+                                print($app.streak)
                                 dismiss()
                             } else {
                                 // TODO: go to next question
