@@ -21,6 +21,9 @@ var choices: [String] = [
     problem.printFakeSol(choice: 4),
 ]
 
+// add questions
+
+
 let data: [String: Any] = [
     "question"  : question,
     "choices"   : choices
@@ -28,19 +31,19 @@ let data: [String: Any] = [
 ]
 //addProblem(problemSet: "Derivative", problemData: data)
 //
-//private func addProblem(
-//    problemSet  : String,
-//    problemData : [String: Any]
-//) {
-//    var ref: DocumentReference? = nil
-//    ref = db.collection("Problems")
-//        .document("Derivative")
-//        .collection("Derivative")
-//        .addDocument(data: problemData) { err in
-//            if let err = err {
-//                print("Error adding question to \(problemSet): \(err.localizedDescription)")
-//            } else {
-//                print("Question added to \(problemMap[problemSet]!): \(ref!.documentID)")
-//            }
-//        }
-//}
+private func addProblem(
+    problemSet  : String,
+    problemData : [String: Any]
+) {
+    var ref: DocumentReference? = nil
+    ref = db.collection("Problems")
+        .document("Derivative")
+        .collection("Derivative")
+        .addDocument(data: problemData) { err in
+            if let err = err {
+                print("Error adding question to \(problemSet): \(err.localizedDescription)")
+            } else {
+                print("Question added to \(problemMap[problemSet]!): \(ref!.documentID)")
+            }
+        }
+}
