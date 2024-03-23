@@ -9,7 +9,7 @@ import SwiftUI
 
 class AppVariables: ObservableObject {
     @Published var selectedTab: Int = 0
-    @Published var streak: Int = 0
+    @Published var streak: Int = 4
     @Published var primes: Int = 45
     @Published var probOfDaySolved: Bool = true
     @Published var timeLeft: Int = 0

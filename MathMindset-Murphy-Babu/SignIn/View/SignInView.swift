@@ -18,6 +18,9 @@ struct SignInView: View {
     @State private var animLogin = false
     @State private var animLoading = false
     
+    @State private var loginStatus = false
+    @State private var showAlert = false
+    
     private var width = 0.5;
     
     private var auth = Auth.auth()
@@ -55,7 +58,7 @@ struct SignInView: View {
             Image("appLogo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 150, height: 150)
+                .frame(width: 125, height: 125)
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.black, lineWidth: 4))
                 .shadow(radius: 25, x: 12, y: 16)
@@ -163,25 +166,41 @@ struct SignInView: View {
             
             // Login Button
             
-            Button(action: {
-                dbManager.loginUser(
-                    email: email,
-                    pass: pass
-                )
-            }, label: {
-                Text("LOGIN")
-                    .padding(.vertical)
-                    .foregroundColor(.textTint)
-                    .fontWeight(.bold)
-                    .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
-                
-            }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
-                .cornerRadius(8)
-                .offset(y: -40)
-                .padding(.bottom, -40)
-                .shadow(radius: 25)
+            NavigationLink(
+                destination: HomeView().environmentObject(AppVariables()),
+                isActive: $loginStatus
+            ) {
+                Button(action: {
+                    dbManager.loginUser(
+                        email: email,
+                        pass: pass,
+                        loginStatus: $loginStatus,
+                        showAlert: $showAlert
+                    )
+                }, label: {
+                    Text("LOGIN")
+                        .padding(.vertical)
+                        .foregroundColor(.textContrast)
+                        .fontWeight(.bold)
+                        .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
+                        .alert(isPresented: $showAlert) {
+                            Alert(title: Text("Login Error"),
+                                  message: Text("Wrong credentials! Try Again"),
+                                  dismissButton: .default(Text("Ok")) {
+                                pass=""     // clear password field
+                            })
+                        }
+                    
+                }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
+                    .cornerRadius(8)
+                    .offset(y: -40)
+                    .padding(.bottom, -40)
+                    .shadow(radius: 25)
+            }.navigationBarBackButtonHidden()
             
             // Biometrics
+            // TODO: configure biometric login
+            /*
             HStack {
                 Spacer()
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
@@ -194,13 +213,14 @@ struct SignInView: View {
                 Spacer()
             }.padding(.horizontal, 24)
                 .padding(.top, 16)
+             */
             Spacer()
             HStack {
                 NavigationLink(destination: SignUpView()) {
                     Text("New User? \(Text("Create an account!").underline())")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
-                        .padding(.bottom, 36)
+                        .padding(.bottom, 24)
                 }
             }
             
@@ -210,6 +230,20 @@ struct SignInView: View {
                     isLoggedIn.toggle()
                 }
             }
+        }
+    }
+    
+    private func loginUser() {
+        self.auth.signIn(withEmail: email, password: pass) { authResult, err in
+            if let err = err {
+                print("Error logging in user: \(err.localizedDescription)")
+                return
+            }
+            // sign-in
+            guard let user = authResult?.user else { return }
+            let uid = user.uid
+            print("User logged in: \(uid)")
+            loginStatus = true // signify successful login
         }
     }
 }

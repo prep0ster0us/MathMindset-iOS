@@ -23,17 +23,17 @@ struct BottomBar: View {
         self.Profile = Profile
         
         // TODO: Below does nothing?
-//        UITabBar.appearance().barTintColor = UIColor(.yellow)
+        //        UITabBar.appearance().barTintColor = UIColor(.yellow)
         UITabBar.appearance().backgroundColor = UIColor(Color(red: 0, green: 0.8, blue: 1))
         UITabBar.appearance().unselectedItemTintColor = UIColor(.gray)
     }
-
+    
     var body: some View {
         TabView(selection: $app.selectedTab){
             Home
                 .tabItem{
                     Image(systemName: "house.fill")
-//                    Text("Cart")
+                    //                    Text("Cart")
                 }
                 .tag(0)
             Leaderboards
@@ -61,5 +61,5 @@ struct BottomBar: View {
         AnyView(Leaderboards()),
         AnyView(Profile())
     )
-        .environmentObject(AppVariables())
+    .environmentObject(AppVariables())
 }
