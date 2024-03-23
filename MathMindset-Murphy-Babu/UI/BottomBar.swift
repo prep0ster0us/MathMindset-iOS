@@ -29,35 +29,45 @@ struct BottomBar: View {
     }
     
     var body: some View {
-        TabView(selection: $app.selectedTab){
-            Home
-                .tabItem{
-                    Image(systemName: "house.fill")
-                    //                    Text("Cart")
-                }
-                .tag(0)
-            Leaderboards
-                .tabItem{
-                    // TODO: Issue is that no tint can be added
-                    // to a png
-                    ($app.selectedTab.wrappedValue == 1) ?
-                    Image("Leaderboards") :
-                    Image("Leaderboards2")
-                }
-                .tag(1)
-            Profile
-                .tabItem {
-                    Image(systemName: "person")
-                }
-                .tag(2)
-        }
-        .tint(.yellow)
+        NavigationStack {
+            TabView(selection: $app.selectedTab){
+                Home
+                    .tabItem{
+                        // Image($app.selectedTab.wrappedValue == 0 ? "homeActive" : "homeInactive")
+                        Image(systemName: $app.selectedTab.wrappedValue == 0
+                              ? "house.fill"
+                              : "house")
+                        // Text("Home")
+                    }
+                    .tag(0)
+                Leaderboards
+                    .tabItem{
+                        // TODO: Issue is that no tint can be added
+                        // to a png
+//                        ($app.selectedTab.wrappedValue == 1) ?
+//                        Image("Leaderboards") :
+//                        Image("Leaderboards2")
+                        Image($app.selectedTab.wrappedValue == 1 ? "Leaderboards" : "Leaderboards2")
+                    }
+                    .tag(1)
+                Profile
+                    .tabItem {
+                        // Image($app.selectedTab.wrappedValue == 2 ? "profileActive" : "profileInactive")
+                        Image(systemName: $app.selectedTab.wrappedValue == 2
+                              ? "person.fill"
+                              : "person")
+                        
+                    }
+                    .tag(2)
+            }.tint(.yellow)
+                .ignoresSafeArea(.all)
+        }.navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
     BottomBar(
-        AnyView(Home()),
+        AnyView(HomeView()),
         AnyView(Leaderboards()),
         AnyView(Profile())
     )

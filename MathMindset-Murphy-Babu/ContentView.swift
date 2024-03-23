@@ -19,12 +19,13 @@ class AppVariables: ObservableObject {
 
 struct ContentView: View {
     var body: some View {
-        BottomBar(
-            AnyView(Home()),
-            AnyView(Leaderboards()),
-            AnyView(Profile())
-        )
-        .environmentObject(AppVariables())
+//        BottomBar(
+//            AnyView(Home()),
+//            AnyView(Leaderboards()),
+//            AnyView(Profile())
+//        )
+//        .environmentObject(AppVariables())
+        SignInView()
     }
 }
 

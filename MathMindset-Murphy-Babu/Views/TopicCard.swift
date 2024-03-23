@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct TopicCard: View {
     
@@ -18,45 +19,73 @@ struct TopicCard: View {
         self.name = name
         self.image = image
         self.completed = completed
-        self.starCount = Double(completed) / 2.0
+//        self.starCount = Double(completed) / 2.0
+        self.starCount = Double(completed)
     }
+    
+    let db = Firestore.firestore()
     
     func increaseCompleted() {
         if self.completed <= 9 {
             self.completed += 1
-            self.starCount += 0.5
+//            self.starCount += 0.5
+            self.starCount += 1
         }
     }
     
     var body: some View {
-        HStack {
-            Text(self.name)
-                .font(.system(size: 16, weight: .bold))
-                .padding(.trailing, 8)// TODO: update to Image(self.image) if we find enough images
-            
-            VStack {
-                HStack {
-                    StarImage(count: 0, completed: self.completed)
-                    StarImage(count: 1, completed: self.completed)
-                    StarImage(count: 2, completed: self.completed)
-                    StarImage(count: 3, completed: self.completed)
-                    StarImage(count: 4, completed: self.completed)
-                }
-                HStack {
-                    StarImage(count: 5, completed: self.completed)
-                    StarImage(count: 6, completed: self.completed)
-                    StarImage(count: 7, completed: self.completed)
-                    StarImage(count: 8, completed: self.completed)
-                    StarImage(count: 9, completed: self.completed)
+//        let problemSet = fetchProblemSet()
+        NavigationStack  {
+            HStack {
+                Spacer().overlay(
+                    Text(self.name)
+                        .font(.system(size: 16, weight: .bold))
+                    .padding(.trailing, 8)
+                )
+                // TODO: update to Image(self.image) if we find enough images
+                Spacer().overlay (
+                    VStack {
+                        HStack {
+                            ForEach(0..<5) { i in
+                                StarImage(count: i, completed: self.completed)
+                            }
+                        }
+                        HStack {
+                            ForEach(5..<10) { i in
+                                StarImage(count: i, completed: self.completed)
+                            }
+                        }
+                    }.padding(.trailing, 50)
+                )
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(red: 0.85, green: 0.95, blue: 1))
+                    .shadow(radius: 5)
+                    .frame(width: 285, height: 80))
+        .padding(42)
+        }
+    }
+    
+    func fetchProblemSet() -> [ProblemData] {
+        var problemSet: [ProblemData] = []
+        db.collection("/Problems/\(name)/\(name)")
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error fetching documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        print("Doc ID: \(document.documentID)")
+                        if let problem = ProblemData(id: document.documentID,
+                                                      data: document.data()) {
+                            print("Retrieved problem with id= \(problem.id), data= \(document.data())")
+                            problemSet.append(problem)
+                            print("final count of items: \(problemSet.count)")
+                        }
+                    }
                 }
             }
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 25)
-                .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                .shadow(radius: 5)
-        .frame(width: 285, height: 80))
-        .padding(20)
+        return problemSet
     }
     
     

@@ -2,9 +2,11 @@ import SwiftUI
 
 struct ProblemView: View {
     
-    let problemNum: CGFloat
-    let question: String
-    let choices: [String]
+    let problemNum  : CGFloat
+    let question    : String
+    let choices     : [String]
+    
+    @State private var isPressed: CGFloat = -1
     
     var body: some View {
         VStack {
@@ -13,51 +15,67 @@ struct ProblemView: View {
                 .font(.system(size: 32))
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .underline()
-                .padding(.top, 32)
+                .padding(.top, 20)
                 .padding(.bottom, 24)
+            
             // Progress Bar
             ProblemProgressBar2(progress: problemNum, color1: Color(.systemTeal), color2: Color(.systemGreen))
                 .animation(.easeIn, value: 0.5)     // TODO: figure out load-in animation for bar
                 .padding(.bottom, 16)
             
+            
             // Problem Statement
-            Text(question)
+            let problemStatement = question.split(whereSeparator: \.isNewline)
+            
+            Text(problemStatement[0])
+                .font(.title2)
+                .fontWeight(.semibold)
+                .shadow(radius: 20)
+                .padding(.top, 24)
+                .padding(.horizontal, 16)
+                .animation(.easeIn, value: 0.8)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            Text(problemStatement[1])
                 .font(.title)
                 .fontWeight(.bold)
                 .shadow(radius: 20)
-                .padding(24)
+                .padding(EdgeInsets(top: 8, leading: 16, bottom: 20, trailing: 16))
                 .animation(.easeIn, value: 0.8)
-                
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
             
             // Problem Choices
-//            VStack(spacing: 30) {
-//                HStack {
-//                    ProblemOption(choice: choices[0])
-//                    Spacer()
-//                    ProblemOption(choice: choices[1])
-//                }.padding(.horizontal, 40)
-//                HStack {
-//                    ProblemOption(choice: choices[2])
-//                    Spacer()
-//                    ProblemOption(choice: choices[3])
-//                }.padding(.horizontal, 40)
-//            }
+            //            VStack(spacing: 30) {
+            //                HStack {
+            //                    ProblemOption(choice: choices[0])
+            //                    Spacer()
+            //                    ProblemOption(choice: choices[1])
+            //                }.padding(.horizontal, 40)
+            //                HStack {
+            //                    ProblemOption(choice: choices[2])
+            //                    Spacer()
+            //                    ProblemOption(choice: choices[3])
+            //                }.padding(.horizontal, 40)
+            //            }
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                    ProblemOption(choice: choices[0])
-                    ProblemOption(choice: choices[1])
-                    ProblemOption(choice: choices[2])
-                    ProblemOption(choice: choices[3])
+                ProblemOption(choices, $isPressed, 0)
+                ProblemOption(choices, $isPressed, 1)
+                ProblemOption(choices, $isPressed, 2)
+                ProblemOption(choices, $isPressed, 3)
             }.padding(.horizontal, 40)
             
             Spacer()
             
             // Submit answer
-            SubmitButton()
+            SubmitButton(isPressed, isPOTD: false)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .foregroundStyle(.ultraThinMaterial)
                 .ignoresSafeArea()                  // to cover the entire screen
         )
@@ -65,31 +83,53 @@ struct ProblemView: View {
 }
 
 struct ProblemOption: View {
-    let choice: String
+    let choices     : [String]
+    let isPressed   : Binding<CGFloat>
+    let choiceNum   : CGFloat
+    
+    init(
+        _ choices   : [String],
+        _ isPressed : Binding<CGFloat>,
+        _ choiceNum : CGFloat
+    ) {
+        self.choices   = choices
+        self.isPressed = isPressed
+        self.choiceNum = choiceNum
+    }
     
     // Horizontal buttons - For options which don't fit in the vertical view)
     var width: CGFloat = UIScreen.main.bounds.width-100
     var height: CGFloat = UIScreen.main.bounds.height/14
     
-//    var width: CGFloat = UIScreen.main.bounds.width/3
-//    var height: CGFloat = UIScreen.main.bounds.height/6
+    //    var width: CGFloat = UIScreen.main.bounds.width/3
+    //    var height: CGFloat = UIScreen.main.bounds.height/6
     var offset: CGFloat = 6
     
-    var color1: Color = Color(.systemTeal)
+    let active  : Color = Color(.systemTeal)
+    let inactive: Color = Color(.systemGray3)
     var color2: Color = Color(.bgTint)
     
     var body: some View {
         // OPTION-I - Rectangle with shadows
         VStack {
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                Text(choice)
+            Button(action: {
+                isPressed.wrappedValue = choiceNum
+            }, label: {
+                Text(choices[Int(choiceNum)])
                     .font(.title2)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .foregroundStyle(Color(.textTint))
                     .frame(width: width, height: height)
+                    .overlay {
+                        if (isPressed.wrappedValue == choiceNum) {
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color(.bgContrast), lineWidth: 10)
+                        }
+                    }
                     .background(
                         ZStack {
-                            Color(color1).opacity(0.4)
+                            Color(isPressed.wrappedValue == choiceNum ? active : inactive)
+                                .opacity(0.4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                             //                            .stroke(Color(.black), lineWidth: 3)
                                 .fill(color2)
@@ -97,7 +137,10 @@ struct ProblemOption: View {
                                 .offset(x: -4, y: -4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                             //                            .stroke(Color(.black), lineWidth: 3)
-                                .fill(LinearGradient(colors: [color1.opacity(0.1), color2], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .fill(
+                                    LinearGradient(colors: [
+                                        (isPressed.wrappedValue == choiceNum ? active : inactive)
+                                            .opacity(0.1), color2], startPoint: .topLeading, endPoint: .bottomTrailing))
                                 .padding(2)
                                 .blur(radius: 2)
                         }
@@ -141,6 +184,22 @@ struct OptionButtonStyle: ButtonStyle {
 
 struct SubmitButton: View {
     
+    var isPressed: CGFloat
+    var isPOTD   : Bool
+    init(
+        _ isPressed: CGFloat,
+        isPOTD  : Bool
+    ) {
+        self.isPressed = isPressed
+        self.isPOTD = isPOTD
+    }
+    
+    @EnvironmentObject private var app: AppVariables
+    
+    @Environment(\.dismiss) var dismiss
+    @State private var isCorrect = false
+    @State private var showAlert = false
+    
     var width: CGFloat = UIScreen.main.bounds.width-60
     var height: CGFloat = 58
     var radius: CGFloat = 24
@@ -154,7 +213,14 @@ struct SubmitButton: View {
     var body: some View {
         // Shadow Rectangle Button
         VStack {
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                if isPressed == 0 {
+                    isCorrect = true
+                } else {
+                    isCorrect = false
+                }
+                showAlert = true
+            }, label: {
                 Text("Check")
                     .font(.system(size: 24))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
@@ -175,10 +241,27 @@ struct SubmitButton: View {
                                 .blur(radius: 2)
                         }
                     ).clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
-//                    .background(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(.black, lineWidth: 5))
                     .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
                     .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
             }).buttonStyle(SubmitButtonStyle())
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Problem Submission"),
+                          message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
+                          dismissButton: .default(Text(isCorrect ? (isPOTD ? "Back to Home" : "Next Problem") : "Ok")) {
+                        if isCorrect {
+                            if isPOTD {
+                                $app.streak.wrappedValue += 1
+                                $app.primes.wrappedValue += 5
+                                $app.probOfDaySolved.wrappedValue = true
+                                dismiss()
+                            } else {
+                                // TODO: go to next question
+                                
+                            }
+                        }
+                        
+                    })
+                }
         }
         
         // OPTION-II - Raised Button
@@ -209,8 +292,6 @@ struct SubmitButtonStyle: ButtonStyle {
     }
 }
 
-
-
 struct ProblemProgressBar2: View {
     let progress: CGFloat
     let color1: Color
@@ -219,7 +300,7 @@ struct ProblemProgressBar2: View {
     var width: CGFloat = UIScreen.main.bounds.width-60
     var height: CGFloat = 32
     var radius: CGFloat = 24
-//    @Environment(\.colorScheme) var colorScheme
+    //    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -300,8 +381,8 @@ struct ProblemProgressBar1: View {
 
 #Preview {
     ProblemView(
-        problemNum: 4, 
-        question: "Which of these shapes have 4 sides?",
+        problemNum: 4,
+        question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
         choices: ["Triangle", "Circle", "Square", "Rectangle"]
     )
 }
