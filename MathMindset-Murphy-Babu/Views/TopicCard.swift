@@ -34,59 +34,47 @@ struct TopicCard: View {
     }
     
     var body: some View {
-//        let problemSet = fetchProblemSet()
+//        let _ = sleep(2)
+//        let _ = fetchProblemSet()
+//        var num = (completed<10 ? completed+1 : completed)
+//        let problemSet = (name == "Factoring") ? PolySet : ((name == "Trig") ? TrigSet : DerivativeSet)
         NavigationStack  {
-            HStack {
-                Spacer().overlay(
-                    Text(self.name)
-                        .font(.system(size: 16, weight: .bold))
-                    .padding(.trailing, 8)
-                )
-                // TODO: update to Image(self.image) if we find enough images
-                Spacer().overlay (
-                    VStack {
-                        HStack {
-                            ForEach(0..<5) { i in
-                                StarImage(count: i, completed: self.completed)
+//            NavigationLink(destination: ProblemView(problemNum: CGFloat(completed),
+//                                                    question: problemSet[completed].question,
+//                                                    choices: problemSet[completed].choices)) {
+            NavigationLink(destination: EmptyView()) {
+                HStack {
+                    Spacer().overlay(
+                        Text(self.name)
+                            .font(.system(size: 16, weight: .bold))
+                        .padding(.trailing, 8)
+                    )
+                    // TODO: update to Image(self.image) if we find enough images
+                    Spacer().overlay (
+                        VStack {
+                            HStack {
+                                ForEach(0..<5) { i in
+                                    StarImage(count: i, completed: self.completed)
+                                }
                             }
-                        }
-                        HStack {
-                            ForEach(5..<10) { i in
-                                StarImage(count: i, completed: self.completed)
+                            HStack {
+                                ForEach(5..<10) { i in
+                                    StarImage(count: i, completed: self.completed)
+                                }
                             }
-                        }
-                    }.padding(.trailing, 50)
-                )
+                        }.padding(.trailing, 50)
+                    )
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(red: 0.85, green: 0.95, blue: 1))
+                        .shadow(radius: 5)
+                        .frame(width: 285, height: 80))
+            .padding(42)
             }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                    .shadow(radius: 5)
-                    .frame(width: 285, height: 80))
-        .padding(42)
         }
     }
     
-    func fetchProblemSet() -> [ProblemData] {
-        var problemSet: [ProblemData] = []
-        db.collection("/Problems/\(name)/\(name)")
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error fetching documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        print("Doc ID: \(document.documentID)")
-                        if let problem = ProblemData(id: document.documentID,
-                                                      data: document.data()) {
-                            print("Retrieved problem with id= \(problem.id), data= \(document.data())")
-                            problemSet.append(problem)
-                            print("final count of items: \(problemSet.count)")
-                        }
-                    }
-                }
-            }
-        return problemSet
-    }
     
     
 }

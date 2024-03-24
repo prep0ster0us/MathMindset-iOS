@@ -62,10 +62,10 @@ struct ProblemView: View {
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                ProblemOption(choices, $isPressed, 0)
                 ProblemOption(choices, $isPressed, 1)
                 ProblemOption(choices, $isPressed, 2)
                 ProblemOption(choices, $isPressed, 3)
+                ProblemOption(choices, $isPressed, 4)
             }.padding(.horizontal, 40)
             
             Spacer()
@@ -115,7 +115,7 @@ struct ProblemOption: View {
             Button(action: {
                 isPressed.wrappedValue = choiceNum
             }, label: {
-                Text(choices[Int(choiceNum)])
+                Text(choices[Int(choiceNum)-1])
                     .font(.title2)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .foregroundStyle(Color(.textTint))
@@ -215,7 +215,7 @@ struct SubmitButton: View {
         // Shadow Rectangle Button
         VStack {
             Button(action: {
-                if isPressed == 0 {
+                if isPressed == 1 {
                     isCorrect = true
                     showConfetti = 1
                 } else {
@@ -247,16 +247,17 @@ struct SubmitButton: View {
                     .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
             }).buttonStyle(SubmitButtonStyle())
                 .confettiCannon(counter: $showConfetti, num: 150, confettiSize: 10, rainHeight: 400)
+            // TODO: add red hue to the background if answer is incorrect
                 .alert(isPresented: $showAlert) {
                     Alert(title: Text("Problem Submission"),
                           message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
                           dismissButton: .default(Text(isCorrect ? (isPOTD ? "Back to Home" : "Next Problem") : "Ok")) {
                         if isCorrect {
                             if isPOTD {
-                                $app.streak.wrappedValue += 1
-                                $app.primes.wrappedValue += 5
-                                $app.probOfDaySolved.wrappedValue = true
-                                print($app.streak)
+                                app.setStreak(newVal: $app.streak.wrappedValue+1)
+                                self.app.primes += 5
+                                self.app.probOfDaySolved = true
+                                print(self.app.streak)
                                 dismiss()
                             } else {
                                 // TODO: go to next question
@@ -389,5 +390,6 @@ struct ProblemProgressBar1: View {
         question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
         choices: ["Triangle", "Circle", "Square", "Rectangle"]
     )
+//    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
 }
 

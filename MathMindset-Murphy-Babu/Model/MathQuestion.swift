@@ -227,6 +227,8 @@ class Derivative: Problem {
     var coeffNumerator: [Int] = []
     var coeffSol: [Int] = []
     //    var coeffDenominator: [Int] = []
+    var indexList = [-5,-4,-3,-2,-1,1,2,3,4,5]
+    
     init() {
         for _ in (0..<3) {
             coeffNumerator.append(Int.random(in: -13..<13))
@@ -262,15 +264,23 @@ class Derivative: Problem {
         case 2:
             // this is a deep copy
             var fakeCoeffSol: [Int] = coeffSol
-            fakeCoeffSol.insert(Int.random(in: -2..<3), at: 0)
+//            fakeCoeffSol.insert([-3,-2,-1,1,2,3].randomElement()!, at: 0)
+            let randomInt = indexList.randomElement()!
+            indexList.remove(at: indexList.firstIndex(of: randomInt)!)
+            fakeCoeffSol.insert(randomInt, at: 0)
             theString = printPoly(numbers: fakeCoeffSol)
         case 3:
             var fakeCoeffSol: [Int] = coeffSol
-            fakeCoeffSol.append(Int.random(in: -2..<3))
+            let randomInt = indexList.randomElement()!
+            indexList.remove(at: indexList.firstIndex(of: randomInt)!)
+            fakeCoeffSol.append(randomInt)
             theString = printPoly(numbers: fakeCoeffSol)
         case 4:
             var fakeCoeffSol: [Int] = coeffSol
-            fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += Int.random(in: -3..<4)
+            let randomInt = indexList.randomElement()!
+            indexList.remove(at: indexList.firstIndex(of: randomInt)!)
+            fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += randomInt
+//            fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += Int.random(in: -3..<4)
             theString = printPoly(numbers: fakeCoeffSol)
         default:
             theString = printPoly(numbers: coeffSol)
@@ -410,18 +420,18 @@ class Trig: Problem {
         case 2:
             // picks a random value that is not equal to the solution
             if (trigType == "Tan") {
-                returnString = tan[valueIndex - 1]
+                returnString = tan[(valueIndex - 1)%tan.count]
             } else {
                 // Sin or Cos
-                returnString = (trigType == "Sin") ? sines[valueIndex - 1] : cosines[valueIndex - 1]
+                returnString = (trigType == "Sin") ? sines[(valueIndex - 1)%sines.count] : cosines[(valueIndex - 1)%cosines.count]
             }
         case 3:
             // picks a random value not picked in case 2
             if (trigType == "Tan") {
-                returnString = tan[valueIndex + 1]
+                returnString = tan[(valueIndex + 1)%tan.count]
             } else {
                 // Sin or Cos
-                returnString = (trigType == "Sin") ? sines[valueIndex + 1] : cosines[valueIndex + 1]
+                returnString = (trigType == "Sin") ? sines[(valueIndex + 1)%sines.count] : cosines[(valueIndex + 1)%cosines.count]
             }
         case 4:
             // Invert sign

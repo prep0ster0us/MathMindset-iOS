@@ -70,8 +70,9 @@ struct ForgotPwdView: View {
             // Send reset mail btn
             Button(action: {
 //                print("\(emailAddress)")        // debug
+                // TODO: error testing this on preview/simulator; need to check on real device
                 auth.sendPasswordReset(withEmail: emailAddress)
-                // TODO: show pop-up to confirm to user that the reset password has been sent
+                // show pop-up to confirm to user that the reset password has been sent
                 // and once they acknowledge reading it, click button to go back to the login page
                 withAnimation(Animation.easeIn(duration: 0.5)) {
                     showAlert = true

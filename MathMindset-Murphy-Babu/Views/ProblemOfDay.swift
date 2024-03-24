@@ -61,16 +61,16 @@ struct ProblemOfDay: View {
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                ProblemOption(choices, $isPressed, 0)
                 ProblemOption(choices, $isPressed, 1)
                 ProblemOption(choices, $isPressed, 2)
                 ProblemOption(choices, $isPressed, 3)
+                ProblemOption(choices, $isPressed, 4)
             }.padding(.horizontal, 40)
             
             Spacer()
             
             // Submit answer
-            SubmitButton(isPressed, isPOTD: true).environmentObject(AppVariables())
+            SubmitButton(isPressed, isPOTD: true).environmentObject(app)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)

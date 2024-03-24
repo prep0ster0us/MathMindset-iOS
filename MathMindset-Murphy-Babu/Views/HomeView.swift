@@ -15,9 +15,15 @@ struct HomeView: View {
                             "Trig"]
     
     // TODO: static question for now, make this dynamic by fetching from db
-    let problem = Derivative()
+    let problem = Poly()
+    @State var disableBtn: Bool = false
+    
     
     var body: some View {
+//        let _ = fetchProblemSet("Factoring")
+//        let _ = fetchProblemSet("Trig")
+//        let _ = fetchProblemSet("Derivative")
+        
         NavigationStack {
             VStack {
                 HStack {
@@ -49,18 +55,19 @@ struct HomeView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 80)
                     NavigationLink(destination: ProblemOfDay(
-                        question    : problem.printQuestion()+"\n"+problem.print(),
-                        choices     : [problem.printFakeSol(choice: 0),
-                                       problem.printFakeSol(choice: 1),
-                                       problem.printFakeSol(choice: 2),
-                                       problem.printFakeSol(choice: 3)]
-                    ).environmentObject(AppVariables())) {
-                            Text(($app.probOfDaySolved.wrappedValue) ? "Solve" : "\($app.timeLeft.wrappedValue)")
+                                        question    : problem.printQuestion()+"\n"+problem.print(),
+                                        choices     : [problem.printFakeSol(choice: 1),
+                                                       problem.printFakeSol(choice: 2),
+                                                       problem.printFakeSol(choice: 3),
+                                                       problem.printFakeSol(choice: 4)]).environmentObject(app),
+                                        isActive: $disableBtn
+                    ) {
+                        Text(($app.probOfDaySolved.wrappedValue) ? "\($app.timeLeft.wrappedValue)" : "Solve" )
                                 .font(.title2)
                                 .padding(12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 25)
-                                        .fill(($app.probOfDaySolved.wrappedValue) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
+                                        .fill(($app.probOfDaySolved.wrappedValue) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
                                         .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
                                         .shadow(radius: 5)
                                         .frame(width: 175, height: 50)
@@ -80,12 +87,15 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            TopicCard(name: title, image: title, completed: 1)
+                            TopicCard(name: title, image: title, completed: 0)
                                 .frame(width: $app.screenWidth.wrappedValue)
                         }.padding(.top, 10)
                     }
+                    Text("test").onTapGesture {
+                        print("poly: \(PolySet.count)\ntrig: \(TrigSet.count)\nDerivative: \(DerivativeSet.count)")
+                    }
                 }.padding(.top, 30)
-                
+
                 Spacer()
                 
             }.ignoresSafeArea(.all)
@@ -95,6 +105,39 @@ struct HomeView: View {
                 )
         }.navigationBarBackButtonHidden(true)
     }
+    
+//    func fetchProblemSet(_ name: String) {
+//        let docName = (name == "Factoring") ? "Poly" : name
+//        print(docName)
+//        let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+//        if !problemSet.isEmpty { return }
+//        
+//        db.collection("Problems").document(docName).getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                let data: [String: Any] = document.data() ?? [:]
+//                //                print(data)
+//                
+//                for (probNum, problem) in data {
+//                    let problemData = ProblemData(id: probNum, data: problem as! [String : Any])!
+//                    switch(docName) {
+//                    case "Poly":
+//                        PolySet.append(problemData)
+//                        break
+//                    case "Trig":
+//                        TrigSet.append(problemData)
+//                        break
+//                    case "Derivative":
+//                        DerivativeSet.append(problemData)
+//                        break
+//                    default:
+//                        break
+//                    }
+//                }
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//    }
     
 //    func ProblemOfDay() {
 //        // does nothing right nowc

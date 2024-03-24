@@ -11,20 +11,26 @@ class AppVariables: ObservableObject {
     @Published var selectedTab: Int = 0
     @Published var streak: Int = 4
     @Published var primes: Int = 45
-    @Published var probOfDaySolved: Bool = true
-    @Published var timeLeft: Int = 0
+    @Published var probOfDaySolved: Bool = false
+    @Published var timeLeft: String = "10:09:45"
+//    @Published var timeLeft: Int = 0
     @Published var screenWidth: CGFloat = UIScreen.main.bounds.width
     @Published var screenHeight: CGFloat = UIScreen.main.bounds.height
+    
+    func setStreak(newVal: Int) {
+        streak = newVal
+    }
 }
 
 struct ContentView: View {
     var body: some View {
 //        BottomBar(
-//            AnyView(Home()),
+//            AnyView(HomeView()),
 //            AnyView(Leaderboards()),
 //            AnyView(Profile())
 //        )
 //        .environmentObject(AppVariables())
+//        GenerateProblems()
         SignInView()
     }
 }

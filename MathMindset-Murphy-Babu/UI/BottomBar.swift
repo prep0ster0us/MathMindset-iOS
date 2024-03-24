@@ -33,33 +33,24 @@ struct BottomBar: View {
             TabView(selection: $app.selectedTab){
                 Home
                     .tabItem{
-                        // Image($app.selectedTab.wrappedValue == 0 ? "homeActive" : "homeInactive")
-                        Image(systemName: $app.selectedTab.wrappedValue == 0
-                              ? "house.fill"
-                              : "house")
-                        // Text("Home")
+                         Image($app.selectedTab.wrappedValue == 0 ? "homeActive" : "homeInactive")
+                         Text("Home")
                     }
                     .tag(0)
                 Leaderboards
                     .tabItem{
-                        // TODO: Issue is that no tint can be added
-                        // to a png
-//                        ($app.selectedTab.wrappedValue == 1) ?
-//                        Image("Leaderboards") :
-//                        Image("Leaderboards2")
                         Image($app.selectedTab.wrappedValue == 1 ? "Leaderboards" : "Leaderboards2")
+                        Text("Leaderboard")
                     }
                     .tag(1)
                 Profile
                     .tabItem {
-                        // Image($app.selectedTab.wrappedValue == 2 ? "profileActive" : "profileInactive")
-                        Image(systemName: $app.selectedTab.wrappedValue == 2
-                              ? "person.fill"
-                              : "person")
+                         Image($app.selectedTab.wrappedValue == 2 ? "profileActive" : "profileInactive")
+                        Text("Profile")
                         
                     }
                     .tag(2)
-            }.tint(.yellow)
+            }.tint(.black)
                 .ignoresSafeArea(.all)
         }.navigationBarBackButtonHidden(true)
     }
