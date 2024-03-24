@@ -4,22 +4,31 @@ import Firebase
 struct GenerateProblems: View {
     
     let db = Firestore.firestore()
+    
+    let probNum = [2,3,4,5,6,7,8,9,10]
+    @State private var polyNum = 1
+    @State private var derivNum = 1
+    @State private var trigNum = 1
+    @State private var num: Int = 1
 
     var body: some View {
         Text("<< Add more questions to database >> ")
             .font(.system(size: 16, weight: .bold))
             .foregroundStyle(Color(.textTint))
         
-        /* test show */
-                let problem: Problem = Trig()
-        
-                Text(problem.printQuestion() + "\n" + problem.print())
-                ForEach(0..<4) { i in
-                    Text(problem.printFakeSol(choice: i+1))
-                }
+//        /* test show */
+//                let problem: Problem = Trig()
+//
+//                Text(problem.printQuestion() + "\n" + problem.print())
+//                ForEach(0..<4) { i in
+//                    Text(problem.printFakeSol(choice: i+1))
+//                }
         
         VStack {
-            Button(action: {addProblem("Derivative")}, label: {
+            Button(action: {
+                addProblem("Derivative")
+                derivNum += 1
+            }, label: {
                 Text("Add Derivative questions")
                     .foregroundStyle(Color(.white))
                     .font(.system(size: 16, weight: .bold))
@@ -29,8 +38,11 @@ struct GenerateProblems: View {
                 .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
                 .padding()
             
-            // *** Trig question sometimes crashes preview (possibly due to special symbol)
-            Button(action: {addProblem("Trig")}, label: {
+            // *** Trig question sometimes crashes preview
+            Button(action: {
+                addProblem("Trig")
+                trigNum += 1
+            }, label: {
                 Text("Add Trig questions")
                     .foregroundStyle(Color(.white))
                     .font(.system(size: 16, weight: .bold))
@@ -40,7 +52,10 @@ struct GenerateProblems: View {
                 .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
                 .padding()
             
-            Button(action: {addProblem("Poly")}, label: {
+            Button(action: {
+                addProblem("Poly")
+                polyNum += 1
+            }, label: {
                 Text("Add Poly questions")
                     .foregroundStyle(Color(.white))
                     .font(.system(size: 16, weight: .bold))
@@ -59,10 +74,13 @@ struct GenerateProblems: View {
         switch(problemTopic) {
         case "Derivative":
             problem = Derivative()
+            num = derivNum
         case "Trig":
             problem = Trig()
+            num = trigNum
         case "Poly":
             problem = Poly()
+            num = polyNum
         default:
             print("Invalid problem topic")
             return
@@ -76,21 +94,34 @@ struct GenerateProblems: View {
         ]
         
         let problemData: [String: Any] = [
-            "question"  : question,
+            "question"  : problem.printQuestion() + "\n" + problem.print(),
             "choices"   : choices
         ]
         
-        var ref: DocumentReference? = nil
-        ref = db.collection("Problems")
-            .document(problemTopic)
-            .collection(problemTopic)
-            .addDocument(data: problemData) { err in
+        let docRef = db.collection("Problems").document(problemTopic)
+        
+        // first
+        if(num == 1) {
+            docRef.setData([
+                "Problem\(num)" : problemData
+            ]) { err in
                 if let err = err {
                     print("Error adding question to \(problemTopic): \(err.localizedDescription)")
                 } else {
-                    print("Question added to \(problemTopic): \(ref!.documentID)")
+                    print("Question added to \(problemTopic)")
                 }
             }
+        } else if(num < 11) {
+            docRef.updateData([
+                "Problem\(num)" : problemData
+            ]) { err in
+                if let err = err {
+                    print("Error adding question to \(problemTopic): \(err.localizedDescription)")
+                } else {
+                    print("Question added to \(problemTopic)")
+                }
+            }
+        }
     }
 }
 
