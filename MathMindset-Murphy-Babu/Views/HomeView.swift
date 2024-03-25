@@ -96,11 +96,13 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            NavigationLink(destination: 
+                            let problemSet = title == "Factoring" ? PolySet : (title == "Trig" ? TrigSet : DerivativeSet)
+                            NavigationLink(destination:
                                             ProblemView(
                                                 problemNum: topicProgress[title] as! Int+1,
-                                                question: PolySet[topicProgress[title] as! Int].question,
-                                                choices: PolySet[topicProgress[title] as! Int].choices
+                                                question: problemSet[topicProgress[title] as! Int].question,
+                                                choices: problemSet[topicProgress[title] as! Int].choices,
+                                                problemSet: problemSet
                                             )
                             ) {
                                 TopicCard(name: title, image: title, completed: topicProgress[title] as! Int)
@@ -116,19 +118,6 @@ struct HomeView: View {
                 Spacer()
                 
             }.ignoresSafeArea(.all)
-//                .onAppear {
-//                    // TODO: Update timeleft string
-//                    //            $app.timeLeft
-//                    let _ = fetchProblemSet("Factoring")
-//                    let _ = fetchProblemSet("Trig")
-//                    let _ = fetchProblemSet("Derivative")
-//                    
-////                    print("poly count: \(PolySet.count)")
-////                    print("deriv count: \(DerivativeSet.count)")
-////                    print("trig count: \(TrigSet.count)")
-//                    
-//                    let _ = fetchUserProgress()
-//                }
         }.navigationBarBackButtonHidden(true)
     }
     
@@ -145,19 +134,12 @@ struct HomeView: View {
 
                 for (probNum, problem ) in data {
                     let problemInfo = problem as! NSDictionary
-//                    print("Question: \(problemInfo["question"] ?? "")")
-//                    print("Choices:  \(problemInfo["choices"] ?? "")")
-//                    print("\n\n\n")
-                    
                     let question = problemInfo["question"]!
                     let choices = problemInfo["choices"]!
 
                     let problemData = ProblemData(id: probNum,
                                                   question: question as! String,
                                                   choices: choices as! [String])
-//                    print(question)
-//                    print(choices)
-//                    print("\n\n")
                     switch(docName) {
                     case "Poly":
                         PolySet.append(problemData!)
@@ -172,9 +154,6 @@ struct HomeView: View {
                         break
                     }
                 }
-//                print("poly count: \(PolySet.count)")
-//                print("deriv count: \(DerivativeSet.count)")
-//                print("trig count: \(TrigSet.count)")
                 if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
                     isLoading = false
                 }
@@ -201,28 +180,8 @@ struct HomeView: View {
                 }
         }
         
-        
-//        db.collection("Users").document(Auth.auth().currentUser!.uid).getDocument { (document, error) in
-//            if let document = document, document.exists {
-//                isLoading = true
-//                let data: [String: Any] = document.data() ?? [:]
-////                print(data)
-//                topicProgress = data["progress"]
-//                print(topicProgress)
-//                print("progress of \(Auth.auth().currentUser!.uid) = \(topicProgress)")
-//            } else {
-//                print("Document does not exist")
-//            }
-////            isLoading = false
-//        }
-        
     }
-    
-//    func ProblemOfDay() {
-//        // does nothing right nowc
-//        // TODO: needs to generate a MultipleChoice question
-//        
-//    }
+
 }
 
 #Preview {

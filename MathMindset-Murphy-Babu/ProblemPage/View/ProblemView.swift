@@ -5,6 +5,7 @@ struct ProblemView: View {
     let problemNum  : Int
     let question    : String
     let choices     : [String]
+    let problemSet  : [ProblemData]
     
     @State private var isPressed: CGFloat = -1
     
@@ -22,7 +23,6 @@ struct ProblemView: View {
             ProblemProgressBar2(progress: problemNum, color1: Color(.systemTeal), color2: Color(.systemGreen))
                 .animation(.easeIn, value: 0.5)     // TODO: figure out load-in animation for bar
                 .padding(.bottom, 16)
-            
             
             // Problem Statement
             let problemStatement = question.split(whereSeparator: \.isNewline)
@@ -46,7 +46,7 @@ struct ProblemView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
             
-            // Problem Choices
+            // Vertical Layout Problem Choices
             //            VStack(spacing: 30) {
             //                HStack {
             //                    ProblemOption(choice: choices[0])
@@ -71,7 +71,7 @@ struct ProblemView: View {
             Spacer()
             
             // Submit answer
-            SubmitButton(isPressed, isPOTD: false)
+            SubmitProblem(isPressed, problemNum, problemSet)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -81,6 +81,120 @@ struct ProblemView: View {
         ).onAppear {
             print("on problem page of \(question)")
         }
+    }
+}
+
+struct SubmitProblem: View {
+    
+    var isPressed: CGFloat
+    var problemNum: Int
+    var problemSet: [ProblemData]
+    init(
+        _ isPressed: CGFloat,
+        _ problemNum: Int,
+        _ problemSet: [ProblemData]
+    ) {
+        self.isPressed = isPressed
+        self.problemNum = problemNum
+        self.problemSet = problemSet
+    }
+    
+    @EnvironmentObject private var app: AppVariables
+    
+    @Environment(\.dismiss) var dismiss
+    @State private var isCorrect = false
+    @State private var showAlert = false
+    @State private var showConfetti = 0
+    @State private var navigateToNext = false
+    
+    var width: CGFloat = UIScreen.main.bounds.width-60
+    var height: CGFloat = 58
+    var radius: CGFloat = 24
+    var offset: CGFloat = 6
+    
+    var color1: Color = Color(.systemTeal).opacity(0.6)
+    var color2: Color = Color(.systemTeal)
+    var color3: Color = Color(.systemBlue).opacity(0.5)
+    var color4: Color = Color(.green).opacity(0.5)
+    
+    var body: some View {
+        // Shadow Rectangle Button
+        NavigationStack {
+            VStack {
+                NavigationLink(destination: 
+                                ProblemView(problemNum: problemNum+1,
+                                            question: problemSet[problemNum+1].question,
+                                            choices: problemSet[problemNum+1].choices,
+                                            problemSet: problemSet),
+                               isActive: $navigateToNext
+                ){
+                    Button(action: {
+                        if isPressed == 1 {
+                            isCorrect = true
+                            showConfetti = 1
+                        } else {
+                            isCorrect = false
+                        }
+                        showAlert = true
+                    }, label: {
+                        Text("Check")
+                            .font(.system(size: 24))
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                            .foregroundStyle(Color(.textContrast))
+                            .frame(width: width, height: height)
+                            .background(
+                                ZStack {
+                                    LinearGradient(colors: [color1, color2, color3, color4], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                                    //                            .stroke(Color(.black), lineWidth: 3)
+                                        .fill(color1)
+                                        .blur(radius: 4)
+                                        .offset(x: -4, y: -4)
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    //                            .stroke(Color(.black), lineWidth: 3)
+                                        .fill(LinearGradient(colors: [color2.opacity(0.1), color2], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                        .padding(2)
+                                        .blur(radius: 2)
+                                }
+                            ).clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+                            .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
+                            .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
+                    }).buttonStyle(SubmitButtonStyle())
+                        .confettiCannon(counter: $showConfetti, num: 150, confettiSize: 10, rainHeight: 400)
+                    // TODO: add red hue to the background if answer is incorrect
+                        .alert(isPresented: $showAlert) {
+                            Alert(title: Text("Problem Submission"),
+                                  message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
+                                  dismissButton: .default(Text(isCorrect ? "Next Problem" : "Ok")) {
+                                if isCorrect {
+                                    navigateToNext.toggle()
+                                }
+                                
+                            })
+                        }
+                }
+            }
+        }
+        
+        // OPTION-II - Raised Button
+        /*
+         ZStack {
+         RoundedRectangle(cornerRadius: 12)
+         .fill(.black).opacity(0.2)
+         .frame(width: width, height: height)
+         .offset(x: offset, y: offset)
+         Text(choice)
+         .font(.title2)
+         .foregroundStyle(Color(.textTint))
+         .background(
+         RoundedRectangle(cornerRadius: 12)
+         .stroke(Color(.bgContrast), lineWidth: 3)
+         .fill(.bgTint)
+         .frame(width: width, height: height)
+         .shadow(color: Color(.bgContrast).opacity(0.4), radius: 6, x: offset, y: offset)
+         ).padding(0)
+         }
+         */
     }
 }
 
@@ -152,25 +266,6 @@ struct ProblemOption: View {
             }).buttonStyle(OptionButtonStyle())
         }
         
-        // OPTION-II - Raised Button
-        /*
-         ZStack {
-         RoundedRectangle(cornerRadius: 12)
-         .fill(.black).opacity(0.2)
-         .frame(width: width, height: height)
-         .offset(x: offset, y: offset)
-         Text(choice)
-         .font(.title2)
-         .foregroundStyle(Color(.textTint))
-         .background(
-         RoundedRectangle(cornerRadius: 12)
-         .stroke(Color(.bgContrast), lineWidth: 3)
-         .fill(.bgTint)
-         .frame(width: width, height: height)
-         .shadow(color: Color(.bgContrast).opacity(0.4), radius: 6, x: offset, y: offset)
-         ).padding(0)
-         }
-         */
     }
 }
 
@@ -388,9 +483,10 @@ struct ProblemProgressBar1: View {
 
 #Preview {
     ProblemView(
-        problemNum: 4,
+        problemNum: 0,
         question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
-        choices: ["Triangle", "Circle", "Square", "Rectangle"]
+        choices: ["Triangle", "Circle", "Square", "Rectangle"],
+        problemSet: PolySet
     )
 //    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
 }
