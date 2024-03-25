@@ -64,6 +64,18 @@ struct GenerateProblems: View {
                 .padding(.horizontal, 16)
                 .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
                 .padding()
+            
+            Button(action: {
+                addPOTD()
+            }, label: {
+                Text("Add Problem of the day questions")
+                    .foregroundStyle(Color(.white))
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 200)
+            }).padding()
+                .padding(.horizontal, 16)
+                .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
+                .padding()
         }
         
     }
@@ -120,6 +132,50 @@ struct GenerateProblems: View {
                 } else {
                     print("Question added to \(problemTopic)")
                 }
+            }
+        }
+    }
+    
+    private func addPOTD() {
+        // create problem
+        var problem: Problem
+        let problemTopic = ["Derivative", "Trig", "Poly"].randomElement()
+        
+        switch(problemTopic) {
+        case "Derivative":
+            problem = Derivative()
+            num = derivNum
+        case "Trig":
+            problem = Trig()
+            num = trigNum
+        case "Poly":
+            problem = Poly()
+            num = polyNum
+        default:
+            print("Invalid problem topic")
+            return
+        }
+        
+        let choices: [String] = [
+            problem.printFakeSol(choice: 1),        // this is the correct choice
+            problem.printFakeSol(choice: 2),
+            problem.printFakeSol(choice: 3),
+            problem.printFakeSol(choice: 4),
+        ]
+        
+        let problemData: [String: Any] = [
+            "question"  : problem.printQuestion() + "\n" + problem.print(),
+            "choices"   : choices,
+            "answered_correctly" : 0,       // TODO: update to reflect actual acount
+            "answered_incorrectly" : 0
+        ]
+        
+        let docRef = db.collection("DailyProblems").document()
+        docRef.setData(problemData) { err in
+            if let err = err {
+                print("Error adding question to \(String(describing: problemTopic))-POTD: \(err.localizedDescription)")
+            } else {
+                print("Question added to \(String(describing: problemTopic))-POTD")
             }
         }
     }

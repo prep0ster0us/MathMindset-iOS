@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProblemView: View {
     
-    let problemNum  : CGFloat
+    let problemNum  : Int
     let question    : String
     let choices     : [String]
     
@@ -11,7 +11,7 @@ struct ProblemView: View {
     var body: some View {
         VStack {
             // Problem Number header
-            Text("Problem \(Int(round(problemNum)))")
+            Text("Problem \(problemNum)")
                 .font(.system(size: 32))
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .underline()
@@ -78,7 +78,9 @@ struct ProblemView: View {
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .foregroundStyle(.ultraThinMaterial)
                 .ignoresSafeArea()                  // to cover the entire screen
-        )
+        ).onAppear {
+            print("on problem page of \(question)")
+        }
     }
 }
 
@@ -298,7 +300,7 @@ struct SubmitButtonStyle: ButtonStyle {
 }
 
 struct ProblemProgressBar2: View {
-    let progress: CGFloat
+    let progress: Int
     let color1: Color
     let color2: Color
     
@@ -321,7 +323,7 @@ struct ProblemProgressBar2: View {
             RoundedRectangle(cornerRadius: radius, style: .continuous)
                 .fill(LinearGradient(colors: [color1, color2],
                                      startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(width: (progress/10)*width, height: height)
+                .frame(width: (CGFloat(progress)/10)*width, height: height)
                 .foregroundStyle(Color(.bgContrast).opacity(0.1))
         }
     }

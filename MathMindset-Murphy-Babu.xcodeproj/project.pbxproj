@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */; };
+		CE3864302BB13ED50001DB55 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE38642F2BB13ED50001DB55 /* UserData.swift */; };
 		CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */; };
 		CE5A965C2BAE7E1A009411D4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE5A965B2BAE7E1A009411D4 /* FirebaseAuth */; };
 		CE5A965E2BAE7E1A009411D4 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CE5A965D2BAE7E1A009411D4 /* FirebaseAuthCombine-Community */; };
@@ -63,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateProblems.swift; sourceTree = "<group>"; };
+		CE38642F2BB13ED50001DB55 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProblems.swift; sourceTree = "<group>"; };
 		CE5A96812BAE87FD009411D4 /* ProblemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
 		CE5A96842BAE896A009411D4 /* HelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperView.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 			children = (
 				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
 				CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */,
+				CE38642F2BB13ED50001DB55 /* UserData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */,
 				CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */,
+				CE3864302BB13ED50001DB55 /* UserData.swift in Sources */,
 				CE5A96882BAE896A009411D4 /* HelperView.swift in Sources */,
 				CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */,
 				CE5A968E2BAE89BB009411D4 /* FirebaseManager.swift in Sources */,

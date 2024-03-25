@@ -3,17 +3,13 @@ import Foundation
 class ProblemData: ObservableObject {
     let id: String
     @Published var question : String = ""
-    @Published var choices  : [String: Any] = [:]
-//    @Published var choices  : [String] = []
+    @Published var choices  : [String] = []
     
     required init?(
-        id: String,
-        data: [String: Any]
+        id      : String,
+        question: String,
+        choices : [String]
     ) {
-        let question = data["question"] as? String != nil ? data["question"] as! String: ""
-//        let choices = data["choices"] as? [String] != nil ? data["type"] as! [String]: []
-        let choices = data["choices"] as? [String: Any] != nil ? data["type"] as! [String: Any]: [:]
-        
         self.id = id
         self.question = question
         self.choices = choices

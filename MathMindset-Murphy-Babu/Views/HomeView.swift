@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct HomeView: View {
     @EnvironmentObject private var app: AppVariables
@@ -17,13 +18,26 @@ struct HomeView: View {
     // TODO: static question for now, make this dynamic by fetching from db
     let problem = Poly()
     @State var disableBtn: Bool = false
+    @State var topicProgress: [String: Any?] = [:]
     
+    @State private var isLoading = true
     
     var body: some View {
-//        let _ = fetchProblemSet("Factoring")
-//        let _ = fetchProblemSet("Trig")
-//        let _ = fetchProblemSet("Derivative")
-        
+        Group {
+            if(isLoading) {
+                ProgressView()
+            } else {
+                content
+            }
+        }.onAppear {
+            fetchProblemSet("Factoring")
+            fetchProblemSet("Trig")
+            fetchProblemSet("Derivative")
+            fetchUserProgress()
+        }
+    }
+    
+    var content: some View {
         NavigationStack {
             VStack {
                 HStack {
@@ -54,12 +68,7 @@ struct HomeView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 80)
-                    NavigationLink(destination: ProblemOfDay(
-                                        question    : problem.printQuestion()+"\n"+problem.print(),
-                                        choices     : [problem.printFakeSol(choice: 1),
-                                                       problem.printFakeSol(choice: 2),
-                                                       problem.printFakeSol(choice: 3),
-                                                       problem.printFakeSol(choice: 4)]).environmentObject(app),
+                    NavigationLink(destination: ProblemOfDay().environmentObject(app),
                                         isActive: $disableBtn
                     ) {
                         Text(($app.probOfDaySolved.wrappedValue) ? "\($app.timeLeft.wrappedValue)" : "Solve" )
@@ -87,8 +96,16 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            TopicCard(name: title, image: title, completed: 0)
-                                .frame(width: $app.screenWidth.wrappedValue)
+                            NavigationLink(destination: 
+                                            ProblemView(
+                                                problemNum: topicProgress[title] as! Int+1,
+                                                question: PolySet[topicProgress[title] as! Int].question,
+                                                choices: PolySet[topicProgress[title] as! Int].choices
+                                            )
+                            ) {
+                                TopicCard(name: title, image: title, completed: topicProgress[title] as! Int)
+                                    .frame(width: $app.screenWidth.wrappedValue)
+                            }
                         }.padding(.top, 10)
                     }
                     Text("test").onTapGesture {
@@ -99,45 +116,107 @@ struct HomeView: View {
                 Spacer()
                 
             }.ignoresSafeArea(.all)
-                .onAppear(
-                    // TODO: Update timeleft string
-                    //            $app.timeLeft
-                )
+//                .onAppear {
+//                    // TODO: Update timeleft string
+//                    //            $app.timeLeft
+//                    let _ = fetchProblemSet("Factoring")
+//                    let _ = fetchProblemSet("Trig")
+//                    let _ = fetchProblemSet("Derivative")
+//                    
+////                    print("poly count: \(PolySet.count)")
+////                    print("deriv count: \(DerivativeSet.count)")
+////                    print("trig count: \(TrigSet.count)")
+//                    
+//                    let _ = fetchUserProgress()
+//                }
         }.navigationBarBackButtonHidden(true)
     }
     
-//    func fetchProblemSet(_ name: String) {
-//        let docName = (name == "Factoring") ? "Poly" : name
-//        print(docName)
-//        let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
-//        if !problemSet.isEmpty { return }
-//        
-//        db.collection("Problems").document(docName).getDocument { (document, error) in
+    func fetchProblemSet(_ name: String) {
+        let docName = (name == "Factoring") ? "Poly" : name
+        print(docName)
+        let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+        if !problemSet.isEmpty { return }
+        
+        db.collection("Problems").document(docName).getDocument { (document, error) in
+            if let document = document, document.exists {
+                isLoading = true
+                let data: [String: Any] = document.data() ?? [:]
+
+                for (probNum, problem ) in data {
+                    let problemInfo = problem as! NSDictionary
+//                    print("Question: \(problemInfo["question"] ?? "")")
+//                    print("Choices:  \(problemInfo["choices"] ?? "")")
+//                    print("\n\n\n")
+                    
+                    let question = problemInfo["question"]!
+                    let choices = problemInfo["choices"]!
+
+                    let problemData = ProblemData(id: probNum,
+                                                  question: question as! String,
+                                                  choices: choices as! [String])
+//                    print(question)
+//                    print(choices)
+//                    print("\n\n")
+                    switch(docName) {
+                    case "Poly":
+                        PolySet.append(problemData!)
+                        break
+                    case "Trig":
+                        TrigSet.append(problemData!)
+                        break
+                    case "Derivative":
+                        DerivativeSet.append(problemData!)
+                        break
+                    default:
+                        break
+                    }
+                }
+//                print("poly count: \(PolySet.count)")
+//                print("deriv count: \(DerivativeSet.count)")
+//                print("trig count: \(TrigSet.count)")
+                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+                    isLoading = false
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+    
+    func fetchUserProgress() {
+        print("coming here")
+        
+        db.collection("Users")
+            .document(Auth.auth().currentUser!.uid)
+            .getDocument(as: UserData.self) { result in
+                switch result {
+                    case .success(let document):
+//                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
+                    topicProgress = document.progress as [String: Int]
+                        print(topicProgress)
+
+                    case .failure(let error):
+                        print("Error fetching document: \(error)")
+                }
+        }
+        
+        
+//        db.collection("Users").document(Auth.auth().currentUser!.uid).getDocument { (document, error) in
 //            if let document = document, document.exists {
+//                isLoading = true
 //                let data: [String: Any] = document.data() ?? [:]
-//                //                print(data)
-//                
-//                for (probNum, problem) in data {
-//                    let problemData = ProblemData(id: probNum, data: problem as! [String : Any])!
-//                    switch(docName) {
-//                    case "Poly":
-//                        PolySet.append(problemData)
-//                        break
-//                    case "Trig":
-//                        TrigSet.append(problemData)
-//                        break
-//                    case "Derivative":
-//                        DerivativeSet.append(problemData)
-//                        break
-//                    default:
-//                        break
-//                    }
-//                }
+////                print(data)
+//                topicProgress = data["progress"]
+//                print(topicProgress)
+//                print("progress of \(Auth.auth().currentUser!.uid) = \(topicProgress)")
 //            } else {
 //                print("Document does not exist")
 //            }
+////            isLoading = false
 //        }
-//    }
+        
+    }
     
 //    func ProblemOfDay() {
 //        // does nothing right nowc

@@ -6,15 +6,33 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ProblemOfDay: View {
-    let question    : String
-    let choices     : [String]
+
     
     @EnvironmentObject private var app: AppVariables
     @State private var isPressed: CGFloat = -1
+    @State private var isLoading: Bool = true
+    
+    @State private var question : String = ""
+    @State private var choices  : [String] = []
+    
+    let db = Firestore.firestore()
     
     var body: some View {
+        Group {
+            if isLoading {
+                ProgressView()
+            } else {
+                content
+            }
+        }.onAppear {
+            fetchProblemOfTheDay()
+        }
+    }
+    
+    var content: some View {
         VStack {
             
             // Problem Number header
@@ -79,11 +97,42 @@ struct ProblemOfDay: View {
                 .ignoresSafeArea()                  // to cover the entire screen
         )
     }
+    func fetchProblemOfTheDay() {
+        // fetch a question at random
+        let ref = db.collection("DailyProblems")
+        ref.getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error.localizedDescription)")
+                } else {
+                    // fetch all documents
+                    let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
+//                    let shuffledIDs = documentIDs.shuffled()
+                    
+                    if let firstID = documentIDs.randomElement() {
+                        ref.document(firstID)
+                            .getDocument { (document, error) in
+                            if let document = document, document.exists {
+                                let data: [String: Any] = document.data() ?? [:]
+                                print(data)
+                                question = data["question"] as! String
+                                choices = data["choices"] as! [String]
+                                isLoading = false
+                            } else {
+                                print("Document does not exist")
+                            }
+                        }
+                    }
+                }
+            }
+    }
+    
 }
 
 #Preview {
-    ProblemOfDay(
-        question: "This is a sample question\nThis is sample equation",
-        choices : ["Circle", "Triangle", "Square", "Polygon"]
-    ).environmentObject(AppVariables())
+    ProblemOfDay()
+        .environmentObject(AppVariables())
+//    ProblemOfDay(
+//        question: "This is a sample question\nThis is sample equation",
+//        choices : ["Circle", "Triangle", "Square", "Polygon"]
+//    ).environmentObject(AppVariables())
 }

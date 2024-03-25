@@ -56,7 +56,8 @@ class FirebaseManager: ObservableObject {
                 "username"              : username,
                 "dateOfBirth"           : dateOfBirth,
                 "account_creation_date" : Date(),
-                "last_login"            : Date()
+                "last_login"            : Date(),
+                "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0]
                 // "profileImage"       : self.pfpImage // TODO: save firestore storage downloadURL here
             ]
             

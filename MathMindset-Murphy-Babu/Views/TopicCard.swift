@@ -19,7 +19,7 @@ struct TopicCard: View {
         self.name = name
         self.image = image
         self.completed = completed
-//        self.starCount = Double(completed) / 2.0
+        //        self.starCount = Double(completed) / 2.0
         self.starCount = Double(completed)
     }
     
@@ -28,50 +28,42 @@ struct TopicCard: View {
     func increaseCompleted() {
         if self.completed <= 9 {
             self.completed += 1
-//            self.starCount += 0.5
+            //            self.starCount += 0.5
             self.starCount += 1
         }
     }
     
     var body: some View {
-//        let _ = sleep(2)
-//        let _ = fetchProblemSet()
-//        var num = (completed<10 ? completed+1 : completed)
-//        let problemSet = (name == "Factoring") ? PolySet : ((name == "Trig") ? TrigSet : DerivativeSet)
+
         NavigationStack  {
-//            NavigationLink(destination: ProblemView(problemNum: CGFloat(completed),
-//                                                    question: problemSet[completed].question,
-//                                                    choices: problemSet[completed].choices)) {
-            NavigationLink(destination: EmptyView()) {
-                HStack {
-                    Spacer().overlay(
-                        Text(self.name)
-                            .font(.system(size: 16, weight: .bold))
+            HStack {
+                Spacer().overlay(
+                    Text(self.name)
+                        .font(.system(size: 16, weight: .bold))
                         .padding(.trailing, 8)
-                    )
-                    // TODO: update to Image(self.image) if we find enough images
-                    Spacer().overlay (
-                        VStack {
-                            HStack {
-                                ForEach(0..<5) { i in
-                                    StarImage(count: i, completed: self.completed)
-                                }
+                )
+                // TODO: update to Image(self.image) if we find enough images
+                Spacer().overlay (
+                    VStack {
+                        HStack {
+                            ForEach(0..<5) { i in
+                                StarImage(count: i, completed: self.completed)
                             }
-                            HStack {
-                                ForEach(5..<10) { i in
-                                    StarImage(count: i, completed: self.completed)
-                                }
+                        }
+                        HStack {
+                            ForEach(5..<10) { i in
+                                StarImage(count: i, completed: self.completed)
                             }
-                        }.padding(.trailing, 50)
-                    )
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                        .shadow(radius: 5)
-                        .frame(width: 285, height: 80))
-            .padding(42)
+                        }
+                    }.padding(.trailing, 50)
+                )
             }
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(red: 0.85, green: 0.95, blue: 1))
+                    .shadow(radius: 5)
+                    .frame(width: 285, height: 80))
+            .padding(42)
         }
     }
     
