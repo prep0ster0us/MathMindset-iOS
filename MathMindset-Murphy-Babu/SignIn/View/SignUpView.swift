@@ -37,18 +37,22 @@ struct SignUpView: View {
     
     @State private var pwdVisible = false
     @State private var confirmPwdVisible = false
+    @State private var useruuid = ""
     
     @State private var loginText = "LOGIN"
     @State private var animLogin = false
     @State private var animLoading = false
     @State private var showAlert = false
     
+    @State private var dbPfpImage: UIImage = UIImage()
+    @State private var fetchedImageUrl: URL?
+    
     private var width = 0.5;
     
     // for authentication
     private var auth = Auth.auth()
     private var db = Firestore.firestore()
-    private var storage = Storage.storage()
+    private var storage = Storage.storage().reference()
     
     @State private var btnColor = Color("#1FA744")
     
@@ -137,8 +141,12 @@ struct SignUpView: View {
                     }.onChange(of: photoPickerItem) { _, _ in
                         Task {
                             if let photoPickerItem,
-                               let image = try? await photoPickerItem.loadTransferable(type: Image.self) {
-                                pfpImage = image
+                               let image = try? await photoPickerItem.loadTransferable(type: Data.self) {
+                                if let uiImage = UIImage(data: image) {
+                                    print(image)
+                                    self.dbPfpImage = uiImage
+                                    self.pfpImage = Image(uiImage: uiImage)
+                                }
                             }
                         }
                     }
@@ -311,8 +319,8 @@ struct SignUpView: View {
                         pass: pass,
                         username: username,
                         dateOfBirth: dateOfBirth,
-                        pfpImage: pfpImage,
-                        showAlert: $showAlert
+                        showAlert: $showAlert,
+                        userid: $useruuid
                     )
                 }, label: {
                     Text("REGISTER")
@@ -331,6 +339,7 @@ struct SignUpView: View {
                               message: Text("Sign up complete. Please log in using your credentials."),
                               dismissButton: .default(Text("Ok")) {
                             dismiss()
+                            saveProfileImage()
                         })
                     }
                 
@@ -353,6 +362,51 @@ struct SignUpView: View {
                     }
                 }
             }
+        }
+    }
+
+    func saveProfileImage() {
+        // no photo uploaded
+        if dbPfpImage == UIImage() {
+            print ("no photo to upload")
+            return
+        }
+        guard let imageData = dbPfpImage.jpegData(compressionQuality: 0.5) else { return }
+        let imgRef = storage.child("Users/\(useruuid)/profileImage.jpg")
+        
+        imgRef.putData(imageData, metadata: nil) { (metadata, error) in
+            if let error = error {
+                print("Error uploading image: \(error.localizedDescription)")
+                return
+            }
+            print("Image uploaded successfully")
+            
+            
+            // get download url for image
+            imgRef.downloadURL(completion: { (url, err) in
+                // error
+                if let err = err {
+                    print("Error getting download URL: \(err.localizedDescription)")
+                    return
+                }
+                // nil data
+                guard let url = url else {
+                    print("Error: URL is nil")
+                    return
+                }
+                let imageUrl = url.absoluteString
+                
+                // write url to database
+                db.collection("Users")
+                    .document(useruuid)
+                    .updateData( ["profileImage": imageUrl]) { err in
+                        if let err = err {
+                            print("Error saving url to user's database")
+                            return
+                        }
+                        print("image url successfully uploaded to user's database")
+                    }
+            })
         }
     }
 }

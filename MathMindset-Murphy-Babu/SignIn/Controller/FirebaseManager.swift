@@ -38,7 +38,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    func registerUser(email: String, pass: String, username: String, dateOfBirth: Date, pfpImage: Image?, showAlert: Binding<Bool>) {
+    func registerUser(email: String, pass: String, username: String, dateOfBirth: Date, showAlert: Binding<Bool>, userid: Binding<String>) {
         // register for authentication
         auth.createUser(withEmail: email, password: pass) { authResult, err in
             if let err = err {
@@ -48,7 +48,8 @@ class FirebaseManager: ObservableObject {
             
             // sign-in
             guard let user = authResult?.user else { return }
-            let uid = user.uid
+            let uid = user.uid      // used to upload profile photo, if any
+            userid.wrappedValue = uid        // used to u
             print("User registered: \(uid)")
             
             let data: [String: Any] = [
@@ -57,18 +58,10 @@ class FirebaseManager: ObservableObject {
                 "dateOfBirth"           : dateOfBirth,
                 "account_creation_date" : Date(),
                 "last_login"            : Date(),
-                "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0]
-                // "profileImage"       : self.pfpImage // TODO: save firestore storage downloadURL here
+                "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
+                "profileImage"          : "" // save firestore storage downloadURL here
             ]
-            
-            // TODO: safe profile image, if any
-            //            if pfpImage != Image(systemName: "person.crop.circle") {
-            //                let storageRef = self.storage.reference().child("/Users/\(String(describing: self.auth.currentUser?.uid))/profileImage.jpg")
-            //                let metaImage = ImageRenderer(content: self.pfpImage)
-            //                let imageData = .jpegData(withCompressionQuality: 0.5)
-            //                storageRef.putData(image)
-            //            }
-            
+        
             // save user details (after sign-in) to database
             self.saveUserDetails(uid: uid, data: data)
             showAlert.wrappedValue = true   // signify successful registeration
