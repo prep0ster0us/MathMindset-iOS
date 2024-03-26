@@ -30,6 +30,7 @@
 		CE5A96952BAE8BC4009411D4 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96942BAE8BC4009411D4 /* BottomBar.swift */; };
 		CE5A96982BAE8E9F009411D4 /* ProblemOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */; };
 		CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96972BAE8E9F009411D4 /* TopicCard.swift */; };
+		CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98FFD82BB257160035F720 /* SplashScreenView.swift */; };
 		CEA1B5162BAE90EE0068A0D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */; };
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
@@ -75,6 +76,7 @@
 		CE5A96942BAE8BC4009411D4 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemOfDay.swift; sourceTree = "<group>"; };
 		CE5A96972BAE8E9F009411D4 /* TopicCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCard.swift; sourceTree = "<group>"; };
+		CE98FFD82BB257160035F720 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../BACKUP/MathMindset-Murphy-Babu/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				FA7FAEAB2BA8F1430056EF19 /* Profile.swift */,
 				FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */,
 				CEA1B5172BAE9B370068A0D3 /* HomeView.swift */,
+				CE98FFD82BB257160035F720 /* SplashScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */,
 				CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */,
+				CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */,
 				CE3864302BB13ED50001DB55 /* UserData.swift in Sources */,
 				CE5A96882BAE896A009411D4 /* HelperView.swift in Sources */,
 				CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */,

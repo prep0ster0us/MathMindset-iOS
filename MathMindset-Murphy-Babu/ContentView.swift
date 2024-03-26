@@ -31,7 +31,7 @@ struct ContentView: View {
 //        )
 //        .environmentObject(AppVariables())
 //        GenerateProblems()
-        SignInView()
+        SplashScreenView()
     }
 }
 
