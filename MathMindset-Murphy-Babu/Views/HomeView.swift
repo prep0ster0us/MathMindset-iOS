@@ -110,9 +110,6 @@ struct HomeView: View {
                             }
                         }.padding(.top, 10)
                     }
-                    Text("test").onTapGesture {
-                        print("poly: \(PolySet.count)\ntrig: \(TrigSet.count)\nDerivative: \(DerivativeSet.count)")
-                    }
                 }.padding(.top, 30)
 
                 Spacer()

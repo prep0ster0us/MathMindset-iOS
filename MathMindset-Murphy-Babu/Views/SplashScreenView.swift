@@ -1,5 +1,9 @@
 import SwiftUI
 
+// followed youtube tutorial by Indently
+// https://www.youtube.com/watch?v=0ytO3wCRKZU
+// SplashScreen for iOS in SwiftUI Tutorial 2022 (Xcode)
+
 struct SplashScreenView: View {
     
     @State private var isActive = false
