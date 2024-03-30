@@ -34,6 +34,7 @@
 		CEA1B5162BAE90EE0068A0D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */; };
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
+		CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */; };
 		FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */; };
 		FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */; };
 		FA566EAD2B69AFCE00F0FF20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 		CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../BACKUP/MathMindset-Murphy-Babu/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
+		CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		FA566EA52B69AFCD00F0FF20 /* MathMindset-Murphy-Babu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MathMindset-Murphy-Babu.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMindset_Murphy_BabuApp.swift; sourceTree = "<group>"; };
 		FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */,
 				CEA1B5172BAE9B370068A0D3 /* HomeView.swift */,
 				CE98FFD82BB257160035F720 /* SplashScreenView.swift */,
+				CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */,
 				CE5A968E2BAE89BB009411D4 /* FirebaseManager.swift in Sources */,
 				CE5A96982BAE8E9F009411D4 /* ProblemOfDay.swift in Sources */,
+				CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */,
 				CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

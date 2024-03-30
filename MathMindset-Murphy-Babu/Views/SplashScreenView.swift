@@ -12,7 +12,7 @@ struct SplashScreenView: View {
     
     var body: some View {
         if isActive {
-            SignInView()
+            OnboardingView()
         } else {
             content
         }
