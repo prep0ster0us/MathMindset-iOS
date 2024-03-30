@@ -7,6 +7,12 @@ struct OnboardingView: View {
     
     private var dotAppearance = UIPageControl.appearance()
     
+    init() {
+        for name in UIFont.fontNames(forFamilyName: "The Serif Hand") {
+            print(name)
+        }
+    }
+    
     var body: some View {
         if !UserDefaults.standard.bool(forKey: "firstRun") {
             content
@@ -22,9 +28,9 @@ struct OnboardingView: View {
                 HStack {
                     if activeTab == 0 {
                         Text("Hello Solvers!")
-                            .font(.title)
-                            .fontWeight(.medium)
-                            .kerning(1.2)       // character spacing
+                            .font(.custom("TheSerifHandBlack", size: 24))
+//                            .fontWeight(.bold)
+                            .kerning(2.0)       // character spacing
                     }
                     Spacer()
                     NavigationLink (destination: SignInView().navigationBarBackButtonHidden(true)) {
@@ -39,9 +45,10 @@ struct OnboardingView: View {
                     .frame(height: 40)
                 
                 Text(slideTitle)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .kerning(1.2)
+//                    .font(.title)
+                    .font(.custom("TheSerifHandExtraBlack", size: 48))
+//                    .fontWeight(.bold)
+                    .kerning(1.5)
                     .padding(.top, 36)
                 
                 TabView(selection: $activeTab) {
