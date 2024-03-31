@@ -11,11 +11,16 @@ struct SplashScreenView: View {
     @State private var size = 0.8
     
     var body: some View {
+        
         if isActive {
-            OnboardingView()
+            SignInView()
+            // TODO: **** redirect to onboarding slides
+            // (commented out since it once runs for first launch)
+            // OnboardingView()
         } else {
             content
         }
+//        content
     }
     
     var content: some View {

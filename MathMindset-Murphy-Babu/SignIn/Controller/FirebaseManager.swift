@@ -23,7 +23,12 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    func loginUser(email: String, pass: String, loginStatus: Binding<Bool>, showAlert: Binding<Bool>) {
+    func loginUser(email: String, 
+                   pass: String,
+                   loginStatus: Binding<Bool>,
+                   showAlert: Binding<Bool>,
+                   requestBiometricAlert: Binding<Bool>
+    ) {
         self.auth.signIn(withEmail: email, password: pass) { authResult, err in
             if let err = err {
                 print("Error logging in user: \(err.localizedDescription)")
@@ -35,6 +40,22 @@ class FirebaseManager: ObservableObject {
             let uid = user.uid
             print("User logged in: \(uid)")
             loginStatus.wrappedValue = true // signify successful login
+            
+            // check if first login (i.e. biometricEnabled = "" [not false] )
+            self.db.collection("Users")
+                .document(uid)
+                .getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let data: [String: Any] = document.data() ?? [:]
+                        if data["biometricEnabled"] as! String == "" {
+                            withAnimation(Animation.easeIn) {
+                                requestBiometricAlert.wrappedValue = true
+                            }
+                        }
+                    } else {
+                        print("Document does not exist")
+                    }
+                }
         }
     }
     
@@ -52,6 +73,17 @@ class FirebaseManager: ObservableObject {
             userid.wrappedValue = uid        // used to u
             print("User registered: \(uid)")
             
+            // update display name (as username)
+            let changeRequest = user.createProfileChangeRequest()
+            changeRequest.displayName = username
+            changeRequest.commitChanges { error in
+                if let error = error {
+                    print("Error updating display name: \(error.localizedDescription)")
+                } else {
+                    print("Display name updated successfully")
+                }
+            }
+            
             let data: [String: Any] = [
                 "email"                 : email,
                 "username"              : username,
@@ -59,7 +91,8 @@ class FirebaseManager: ObservableObject {
                 "account_creation_date" : Date(),
                 "last_login"            : Date(),
                 "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
-                "profileImage"          : "" // save firestore storage downloadURL here
+                "profileImage"          : "", // save firestore storage downloadURL here
+                "biometricEnabled"      : ""
             ]
         
             // save user details (after sign-in) to database
@@ -76,6 +109,20 @@ class FirebaseManager: ObservableObject {
                     print("Error adding user details : \(err.localizedDescription)")
                 } else {
                     print("User details added: \(self.auth.currentUser!.uid)")
+                }
+            }
+    }
+    
+    func setBiometric(_ status: String) {
+        // enable/disable biometric login
+        let currentUser = self.auth.currentUser?.uid
+        self.db.collection("Users")
+            .document(currentUser!)
+            .updateData(["biometricEnabled" : status]) { err in
+                if let err = err {
+                    print("Error updating biometric status for \(currentUser!): \(err.localizedDescription)")
+                } else {
+                    print("\(currentUser!)'s biometric status updated to: \(status)")
                 }
             }
     }

@@ -7,19 +7,12 @@ struct OnboardingView: View {
     
     private var dotAppearance = UIPageControl.appearance()
     
-    init() {
-        for name in UIFont.fontNames(forFamilyName: "The Serif Hand") {
-            print(name)
-        }
-    }
-    
     var body: some View {
         if !UserDefaults.standard.bool(forKey: "firstRun") {
             content
         } else {
             SignInView()
         }
-        //        SignInView()
     }
     
     var content: some View {

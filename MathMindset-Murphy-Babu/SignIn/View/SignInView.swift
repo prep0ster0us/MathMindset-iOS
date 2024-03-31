@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import LocalAuthentication      // for biometric login
 
 private var auth = Auth.auth()
 private var isLoggedIn = false
@@ -20,6 +21,8 @@ struct SignInView: View {
     
     @State private var loginStatus = false
     @State private var showAlert = false
+    @State private var requestBiometricAlert = false
+    @State private var usnEntered = false
     
     private var width = 0.5;
     
@@ -104,6 +107,13 @@ struct SignInView: View {
                         .textInputAutocapitalization(.never)
                         .padding()
                         .padding(.leading, -12)
+                        .onChange(of: email, {
+                            if isValidEmail(email) {
+                                withAnimation(Animation.easeIn) {
+                                    usnEntered.toggle()
+                                }
+                            }
+                        })
                 }.padding(.horizontal, 12)          // internal padding
                     .background(RoundedRectangle(cornerRadius:6)
                         .stroke(Color("loginTextField"),lineWidth:2))
@@ -181,7 +191,8 @@ struct SignInView: View {
                         email: email,
                         pass: pass,
                         loginStatus: $loginStatus,
-                        showAlert: $showAlert
+                        showAlert: $showAlert,
+                        requestBiometricAlert: $requestBiometricAlert
                     )
                 }, label: {
                     Text("LOGIN")
@@ -202,24 +213,38 @@ struct SignInView: View {
                     .offset(y: -40)
                     .padding(.bottom, -40)
                     .shadow(radius: 25)
+                    .alert(isPresented: $requestBiometricAlert) {
+                        Alert(title: Text("Biometric"),
+                              message: Text("Enable Biometric Login?"),
+                              primaryButton: .default(Text("Sure")) {
+                                UserDefaults.standard.set(email, forKey: "email")
+                                UserDefaults.standard.set(pass, forKey: "password")
+                                dbManager.setBiometric("true")
+                              },
+                              secondaryButton: .cancel(Text("Not now")) {
+                                dbManager.setBiometric("false")
+                              }
+                        )
+                    }
             }.navigationBarBackButtonHidden()
             
             // Biometrics
             // TODO: configure biometric login
-            /*
-            HStack {
-                Spacer()
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            HStack (alignment: .center) {
+                Button(action: {
+                    biometricLogin()
+                }, label: {
                     Text("Use Biometrics")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(Color(.textContrast))
                         .underline()
                         .padding(.bottom, 25)
                 })
-                Spacer()
             }.padding(.horizontal, 24)
                 .padding(.top, 16)
-             */
+                .opacity(usnEntered ? 1 : 0)
+            
+
             Spacer()
             HStack {
                 NavigationLink(destination: SignUpView()) {
@@ -235,8 +260,19 @@ struct SignInView: View {
                 if user != nil {
                     isLoggedIn.toggle()
                 }
+                if UserDefaults.standard.string(forKey: "email") != nil {
+                    print(UserDefaults.standard.string(forKey: "email") as Any)
+                    email = UserDefaults.standard.string(forKey: "email")!
+                }
             }
         }
+    }
+    
+    // email format validation
+    // reference: https://xavier7t.com/regex-in-swiftui
+    private func isValidEmail(_ email: String) -> Bool {
+        let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{3,}$", options: [.caseInsensitive])
+        return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
     }
     
     private func loginUser() {
@@ -250,6 +286,45 @@ struct SignInView: View {
             let uid = user.uid
             print("User logged in: \(uid)")
             loginStatus = true // signify successful login
+        }
+    }
+    
+    private func biometricLogin() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: "This is for security reasons"
+            ) { success, authError in
+                if authError != nil {
+                    print(authError?.localizedDescription ?? "<invalid error>")
+                    return
+                }
+                // if successful
+                // first check if email matches saved credentials
+                if UserDefaults.standard.string(forKey: "email") != nil {
+                    if email == UserDefaults.standard.string(forKey: "email")! {
+                        // if so, enter saved credentials and login
+                        email = UserDefaults.standard.string(forKey: "email")!
+                        pass = UserDefaults.standard.string(forKey: "password")!
+                        dbManager.loginUser(
+                            email: email,
+                            pass: pass,
+                            loginStatus: $loginStatus,
+                            showAlert: $showAlert,
+                            requestBiometricAlert: $requestBiometricAlert
+                        )
+                    } else {
+                        print("Credentials don't match: \(email) - \(String(describing: UserDefaults.standard.string(forKey: "email")))")
+                        return
+                    }
+                } else {
+                    print("No saved credentials")
+                    return
+                }
+                
+            }
         }
     }
 }
