@@ -6,13 +6,320 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct Leaderboards: View {
+    let screenWidth = UIScreen.main.bounds.width
+    
+    @State private var index  = 0
+    @State private var isLoading = false // TODO: change for implementation
+    
     var body: some View {
-        Text("Leaderboards")
+        if isLoading {
+            ShapeProgressView()
+        } else {
+            ZStack {
+                LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                               , startPoint: .top, endPoint: .bottom)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    tabSwitch
+                    
+                }.background(Color(.black).opacity(0.1))
+                    .clipShape(Capsule())
+            }
+        }
+    }
+    
+    var tabSwitch: some View {
+        HStack {
+            Button(action: {
+                withAnimation(Animation.smooth(duration: 0.2)) {
+                    self.index = 0
+                }
+            }, label: {
+                Text("Streak")
+                    .foregroundStyle(self.index == 0 ? Color(.textTint) : Color(.textContrast))
+                    .fontWeight(.bold)
+                    .padding(.vertical, 10)
+                    .frame(width: (screenWidth-50)/2)
+                
+            }).background(self.index == 0 ? Color.bgTint : Color.clear)
+                .clipShape(Capsule())
+//                        .overlay(Capsule().stroke(self.index == 0 ? .black : .clear, lineWidth: 2))
+                
+            
+            Button(action: {
+                withAnimation(Animation.linear(duration: 0.2)) {
+                    self.index = 1
+                }
+            }, label: {
+                Text("Score")
+                    .foregroundStyle(self.index == 1 ? Color(.textTint) : Color(.textContrast).opacity(0.8))
+                    .fontWeight(.bold)
+                    .padding(.vertical, 10)
+                    .frame(width: (screenWidth-50)/2)
+                
+            }).background(self.index == 1 ? Color.bgTint : Color.clear)
+                .clipShape(Capsule())
+//                        .overlay(Capsule().stroke(self.index == 1 ? .black : .clear, lineWidth: 2))
+        }.padding(2)
+    }
+    
+}
+
+// reference for creating custom shape animation, for use as progress view
+// https://blog.stackademic.com/custom-progressview-in-swiftui-c94f51ba598b
+struct ShapeProgressView: View {
+    
+    let width: CGFloat = 45
+    let height: CGFloat = 45
+    let animDuration: CGFloat = 1.8
+    let delay: CGFloat = 0.3
+    @State private var animEnd: CGFloat = 0.0
+    
+    var body: some View {
+        VStack {
+            HStack (spacing: 25) {
+                loadTriangle
+                loadRectangle
+                loadCircle
+            }.padding(.bottom, 25)
+            loadUnderline
+            // TODO: finalize with Alex
+//            HStack (spacing: 0) {
+//                ShimmerText("Loading", 32, 3.0)
+//                AnimatedLoadingDots()
+//                    .padding(.top, 18)
+//                    .padding(.leading, -16)
+//            }
+        }
+    }
+    
+    var loadCircle: some View {
+        Circle()
+            .trim(from: 0.0, to: animEnd)
+            .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+            .frame(width: width, height: height)
+            .rotationEffect(.degrees(-90))
+            .opacity(animEnd)
+            .animation(
+                Animation.easeInOut(duration: animDuration)
+                    .repeatForever(autoreverses: true).delay(delay)
+                , value: animEnd
+            )
+            .onAppear {
+                self.animEnd = 1.0
+            }
+    }
+    
+    var loadRectangle: some View {
+        Rectangle()
+            .trim(from: 0.0, to: animEnd)
+            .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+            .frame(width: width, height: height)
+            .opacity(animEnd)
+            .animation(
+                Animation.easeInOut(duration: animDuration)
+                    .repeatForever(autoreverses: true).delay(delay)
+                , value: animEnd
+            )
+            .onAppear {
+                self.animEnd = 1.0
+            }
+    }
+    
+    var loadTriangle: some View {
+        Triangle()
+            .trim(from: 0.0, to: animEnd)
+            .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+            .frame(width: width, height: height)
+            .opacity(animEnd)
+            .animation(
+                Animation.easeInOut(duration: animDuration)
+                    .repeatForever(autoreverses: true).delay(delay)
+                , value: animEnd
+            )
+            .onAppear {
+                self.animEnd = 1.0
+            }
+    }
+    
+    var loadUnderline: some View {
+        HStack (spacing: 2) {
+            Rectangle()
+                .trim(from: 0.0, to: animEnd)
+                .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+                .frame(width: width*2.2, height: 0.5)
+                .opacity(animEnd)
+                .animation(
+                    Animation.easeInOut(duration: animDuration)
+                        .repeatForever(autoreverses: true).delay(delay)
+                    , value: animEnd
+                )
+                .onAppear {
+                    self.animEnd = 1.0
+                }
+            Rectangle()
+                .trim(from: 0.0, to: animEnd)
+                .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+                .frame(width: width*2.2, height: 0.5)
+                .opacity(animEnd)
+                .rotationEffect(.degrees(180))
+                .animation(
+                    Animation.easeInOut(duration: animDuration)
+                        .repeatForever(autoreverses: true).delay(delay)
+                    , value: animEnd
+                )
+                .onAppear {
+                    self.animEnd = 1.0
+                }
+        }
+    }
+
+}
+
+struct Triangle: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+// Tutorial reference for shimmer effect on text view
+// https://www.youtube.com/watch?v=KYokxl1inRs
+struct ShimmerText: View {
+    
+    let displayText: String
+    let fontSize: CGFloat
+    let animDuration: CGFloat
+    init(
+        _ displayText: String = "",
+        _ fontSize: CGFloat = 14,
+        _ animDuration: CGFloat = 2.0
+    ){
+        self.displayText = displayText
+        self.fontSize = fontSize
+        self.animDuration = animDuration
+    }
+    
+    @State private var animate: Bool = false
+    
+    var body: some View {
+        ZStack {
+            Text(displayText)
+                .font(.system(size: fontSize, weight: .bold))
+                .foregroundStyle(Color.textTint)
+            
+            HStack(spacing: 0) {
+                ForEach(0..<displayText.count, id: \.self) { index in
+                    Text(String(displayText[displayText.index(displayText.startIndex, offsetBy: index)]))
+                        .font(.system(size: fontSize, weight: .bold))
+                        .foregroundStyle(.teal)
+                }
+            }.mask(
+                Rectangle()
+                    .rotationEffect(.degrees(75))
+                    .offset(x: -100)
+                    .offset(x: animate ? 300 : 0)
+                    .onAppear(perform: {
+                        withAnimation(Animation.linear(duration: animDuration)
+                            .repeatForever(autoreverses: false)) {
+                                self.animate.toggle()
+                            }
+                    })
+            )
+        }
+    }
+}
+
+struct DotView: View {
+//    @State var delay: Double
+//    @State var scale: CGFloat = 0.5
+    @State var dots = "."
+    
+    var body: some View {
+        // bounce scaling dots /* test */
+//        Text(".")
+//            .frame(width: 24, height: 24)
+//            .scaleEffect(scale)
+//            .onAppear {
+//                withAnimation(Animation.easeInOut(duration: 0.6).repeatForever().delay(delay)) {
+//                    self.scale = 1
+//                }
+//            }.padding(-16)
+//            .padding(.top, 16)
+        Text(dots)
+            .frame(width: 24, height: 24)
+            .onAppear {
+                withAnimation(Animation.linear(duration: 0.1).delay(1.0).repeatForever()) {
+                    dots = String(repeating: ".", count: (dots.count+1)%5)
+                }
+            }
+    }
+}
+
+struct AnimatedLoadingDots: View {
+    @State var animRight = false
+    @State var animLeft = false
+    @State var animDuration = 0.8
+    @State var width: CGFloat = 6
+    @State var height: CGFloat = 16
+    @State var offset: CGFloat = 20
+    
+    var body: some View {
+        
+        ZStack {
+            
+            VStack(alignment: .leading) {
+                HStack(alignment: .center, spacing: 4){
+                    Circle()
+                        .fill(Color.textTint)
+                        .scaleEffect( animLeft ? 1: 0.8)
+                        .offset(x: offset)
+                        .onAppear() {
+                            withAnimation(Animation.linear(duration: animDuration)
+                                .repeatForever()
+                                .delay(1.0)) {
+                                    self.animLeft.toggle()
+                                }
+                        }
+                    Circle()
+                        .fill(Color.textTint)
+                        .scaleEffect( animLeft ? 1: 0.8)
+                        .offset(x: offset)
+                        .onAppear {
+                            withAnimation(Animation.linear(duration: animDuration)
+                                .repeatForever()
+                                .delay(0.0)) {
+                                    self.animRight.toggle()
+                                }
+                        }
+
+                    Circle()
+                        .fill(Color.textTint)
+                        .scaleEffect( animRight ? 1: 0.8)
+                        .offset(x: offset)
+                        .onAppear {
+                            withAnimation(Animation.linear(duration: animDuration).repeatForever()
+                                .delay(0.5)) {
+                                    self.animRight.toggle()
+                                }
+                        }
+                }.frame(height: height)
+            }.frame(width: width*5, height: height)
+        }
     }
 }
 
 #Preview {
     Leaderboards()
+//    idktest()
+//    ShapeProgressView()
 }
