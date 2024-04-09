@@ -81,12 +81,16 @@ struct Leaderboards: View {
     var leaderboardList: some View {
         VStack (spacing: 0) {
             if index == 0 {
+                let _ = self.users.sort { $0.score > $1.score }
+                
                 ForEach(self.users, id: \.self) { user in
                     let standing = self.users.firstIndex(of: user)!
                     UserCard(user.username, user.pfpImageUrl, CGFloat(user.score), "primes", standing)
-                        .padding(8)
+                        .padding(4)
                         .padding(.top, standing == 0 ? 36 : 0)
                         .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
+                }.onAppear {
+                    self.users.sort { $0.score > $1.score }
                 }
             } else {
                 ForEach(self.users, id: \.self) { user in
@@ -95,7 +99,8 @@ struct Leaderboards: View {
                         .padding(8)
                         .padding(.top, standing == 0 ? 36 : 0)
                         .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
-                    
+                }.onAppear {
+                    self.users.sort { $0.streak > $1.streak }
                 }
             }
         }
@@ -137,7 +142,6 @@ struct Leaderboards: View {
                             streak      : streak,
                             score       : score
                         )
-                        
                     } ?? []
                     
 //                    if let firstID = documentIDs.randomElement() {

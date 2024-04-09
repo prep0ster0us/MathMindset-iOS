@@ -58,7 +58,7 @@ struct UserCard: View {
                         .foregroundStyle(standing == 0 ? 
                                          Color(.red) : (standing == 1 ? 
                                                         Color(.teal) : (standing == 2 ?
-                                                                        Color(.yellow)
+                                                                        Color(.blue)
                                                                         : Color(.black)
                                                                        )
                                                        )
@@ -84,7 +84,8 @@ struct UserCard: View {
                         .font(.title3)
                         .fontWeight(.heavy)
                         .foregroundStyle(.textTint)
-                        .padding()
+                        .padding(.horizontal, 4)
+                        .lineLimit(1)
                     
                     Spacer()
                     
@@ -188,7 +189,7 @@ struct UserCard: View {
 //    }
 
 #Preview {
-    UserCard("UserXYZ", "https://firebasestorage.googleapis.com:443/v0/b/mathmindset.appspot.com/o/Users%2FJbMMFqWltOhHk27cLgJ1CWCykzm1%2FprofileImage.jpg?alt=media&token=9562e9db-1589-4a4d-8746-a3080448ef5f", 9, "primes", 2)
+    UserCard("UsernameVeryLong", "https://firebasestorage.googleapis.com:443/v0/b/mathmindset.appspot.com/o/Users%2FJbMMFqWltOhHk27cLgJ1CWCykzm1%2FprofileImage.jpg?alt=media&token=9562e9db-1589-4a4d-8746-a3080448ef5f", 9, "primes", 2)
 //        AnyView(Text("this")
 //            .padding(.vertical)
 //            .padding(.horizontal, 20))
