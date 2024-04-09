@@ -1,6 +1,7 @@
 import Foundation
 
-@Identifiable class TopUser {
+struct TopUser: Codable, Hashable {
+    
     var username    : String
     var pfpImageUrl : String
     var streak      : Int

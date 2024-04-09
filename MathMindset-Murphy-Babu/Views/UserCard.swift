@@ -48,8 +48,8 @@ struct UserCard: View {
                         .stroke(.iconTint, lineWidth: 2)
                 )
                 .frame(maxWidth: width, minHeight: height, maxHeight: height)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
+                .padding(.horizontal, 12)
+//                .padding(.vertical, 16)
             
             VStack {
                 HStack {
@@ -81,7 +81,7 @@ struct UserCard: View {
                     
                     // Username
                     Text(username)
-                        .font(.title2)
+                        .font(.title3)
                         .fontWeight(.heavy)
                         .foregroundStyle(.textTint)
                         .padding()
@@ -91,10 +91,10 @@ struct UserCard: View {
                     // Leaderboard metric
                     VStack(alignment: .trailing) {
                         Text("\(Int(round(metric))) \(metricType)")
-                            .font(.title3)
+                            .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(.textTint)
-                    }
-                }.padding(.horizontal, 20)
+                    }.padding(.trailing, 4)
+                }.padding(.horizontal, 16)
             }
             .frame(maxWidth: width, maxHeight: height)
         }

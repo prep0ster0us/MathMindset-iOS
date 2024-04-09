@@ -26,24 +26,19 @@ struct Leaderboards: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.all)
                     
-                    ZStack {
+                    ZStack (alignment: .top) {
                         leaderboardList
-                            .frame(width: screenWidth - 50, height: UIScreen.main.bounds.height - 150)
+//                            .frame(width: screenWidth - 50, height: UIScreen.main.bounds.height - 150)
                         tabSwitch
                             .background(Color(.black).opacity(0.1))
                             .clipShape(Capsule())
-                            .offset(y: 20)
+                            .offset(y: -12)
                         
                     }
                 }
             }
         }.onAppear {
-//            fetchTopUsers()
-            if index == 0 {
-                fetchTopScore()
-            } else {
-//                fetchTopStreak()
-            }
+            fetchTopUsers()
         }
     }
     
@@ -58,9 +53,9 @@ struct Leaderboards: View {
                     .foregroundStyle(self.index == 0 ? Color(.textTint) : Color(.textContrast))
                     .fontWeight(.bold)
                     .padding(.vertical, 10)
-                    .frame(width: (screenWidth-50)/2)
+                    .frame(width: (screenWidth-40)/2)
                 
-            }).background(self.index == 0 ? Color.bgTint : Color.clear)
+            }).background(self.index == 0 ? Color.bgTint : Color.bgContrast)
                 .clipShape(Capsule())
 //                        .overlay(Capsule().stroke(self.index == 0 ? .black : .clear, lineWidth: 2))
                 
@@ -74,30 +69,46 @@ struct Leaderboards: View {
                     .foregroundStyle(self.index == 1 ? Color(.textTint) : Color(.textContrast).opacity(0.8))
                     .fontWeight(.bold)
                     .padding(.vertical, 10)
-                    .frame(width: (screenWidth-50)/2)
+                    .frame(width: (screenWidth-40)/2)
                 
-            }).background(self.index == 1 ? Color.bgTint : Color.clear)
+            }).background(self.index == 1 ? Color.bgTint : Color.bgContrast)
                 .clipShape(Capsule())
 //                        .overlay(Capsule().stroke(self.index == 1 ? .black : .clear, lineWidth: 2))
         }.padding(2)
+            .background(Color(.bgContrast))
     }
     
     var leaderboardList: some View {
-        VStack {
-            List {
-                if index == 0 {
-                    ForEach(self.users, id: \.self) { index, user in
-                        UserCard(user.username, user.pfpImageUrl, user.score, "primes", index)
-                    }
+        VStack (spacing: 0) {
+            if index == 0 {
+                ForEach(self.users, id: \.self) { user in
+                    let standing = self.users.firstIndex(of: user)!
+                    UserCard(user.username, user.pfpImageUrl, CGFloat(user.score), "primes", standing)
+                        .padding(8)
+                        .padding(.top, standing == 0 ? 36 : 0)
+                        .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
                 }
-                
+            } else {
+                ForEach(self.users, id: \.self) { user in
+                    let standing = self.users.firstIndex(of: user)!
+                    UserCard(user.username, user.pfpImageUrl, CGFloat(user.streak), "days", standing)
+                        .padding(8)
+                        .padding(.top, standing == 0 ? 36 : 0)
+                        .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
+                    
+                }
             }
-        }.padding(.vertical)
-            .padding(.horizontal, 20)
-            .background(Color.bgTint)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .shadow(radius: 16, x: 8, y: 12)
+                .foregroundStyle(.bgTint)
+        )
+        .padding()
+
     }
     
-    func fetchTopScore() {
+    func fetchTopUsers() {
         let db = Firestore.firestore()
         var standing = 0
         
@@ -112,6 +123,7 @@ struct Leaderboards: View {
                     
                     self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
                         let data = document.data()
+//                        print(data)
                         guard let username = data["username"] as? String,
                               let pfpImageUrl = data["profileImage"] as? String,
                               let streak = data["streak"] as? Int,
