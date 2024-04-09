@@ -11,24 +11,38 @@ import Firebase
 struct Leaderboards: View {
     let screenWidth = UIScreen.main.bounds.width
     
-    @State private var index  = 0
+    @State private var index = 0
     @State private var isLoading = false // TODO: change for implementation
+    @State private var users = [TopUser]()
     
     var body: some View {
-        if isLoading {
-            ShapeProgressView()
-        } else {
-            ZStack {
-                LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
-                               , startPoint: .top, endPoint: .bottom)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
-                
-                VStack {
-                    tabSwitch
+        Group {
+            if isLoading {
+                ShapeProgressView()
+            } else {
+                ZStack {
+                    LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                                   , startPoint: .top, endPoint: .bottom)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
                     
-                }.background(Color(.black).opacity(0.1))
-                    .clipShape(Capsule())
+                    ZStack {
+                        leaderboardList
+                            .frame(width: screenWidth - 50, height: UIScreen.main.bounds.height - 150)
+                        tabSwitch
+                            .background(Color(.black).opacity(0.1))
+                            .clipShape(Capsule())
+                            .offset(y: 20)
+                        
+                    }
+                }
+            }
+        }.onAppear {
+//            fetchTopUsers()
+            if index == 0 {
+                fetchTopScore()
+            } else {
+//                fetchTopStreak()
             }
         }
     }
@@ -68,6 +82,103 @@ struct Leaderboards: View {
         }.padding(2)
     }
     
+    var leaderboardList: some View {
+        VStack {
+            List {
+                if index == 0 {
+                    ForEach(self.users, id: \.self) { index, user in
+                        UserCard(user.username, user.pfpImageUrl, user.score, "primes", index)
+                    }
+                }
+                
+            }
+        }.padding(.vertical)
+            .padding(.horizontal, 20)
+            .background(Color.bgTint)
+    }
+    
+    func fetchTopScore() {
+        let db = Firestore.firestore()
+        var standing = 0
+        
+        let ref = db.collection("Leaderboard")
+        ref.getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting leaderboard users: \(error.localizedDescription)")
+                } else {
+                    // fetch all users from Leaderboard
+                    let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
+                    // NOTE: $0 is shorthand for first argument in QuerySnapshot
+                    
+                    self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
+                        let data = document.data()
+                        guard let username = data["username"] as? String,
+                              let pfpImageUrl = data["profileImage"] as? String,
+                              let streak = data["streak"] as? Int,
+                              let score = data["score"] as? Int else {
+                            return nil
+                        }
+                        standing += 1
+                        return TopUser(
+                            username    : username,
+                            pfpImageUrl : pfpImageUrl,
+                            streak      : streak,
+                            score       : score
+                        )
+                        
+                    } ?? []
+                    
+//                    if let firstID = documentIDs.randomElement() {
+//                        ref.document(firstID)
+//                            .getDocument { (document, error) in
+//                            if let document = document, document.exists {
+//                                let data: [String: Any] = document.data() ?? [:]
+//                                print(data)
+//                                question = data["question"] as! String
+//                                choices = data["choices"] as! [String]
+//                                withAnimation(Animation.smooth) { isLoading = false }
+//                            } else {
+//                                print("Document does not exist")
+//                            }
+//                        }
+//                    }
+                }
+            }
+//            .getDocuments { (document, error) in
+//            if let document = document, document.exists {
+//                isLoading = true
+//                let data: [String: Any] = document.data() ?? [:]
+//
+//                for (probNum, problem ) in data {
+//                    let problemInfo = problem as! NSDictionary
+//                    let question = problemInfo["question"]!
+//                    let choices = problemInfo["choices"]!
+//
+//                    let problemData = ProblemData(id: probNum,
+//                                                  question: question as! String,
+//                                                  choices: choices as! [String])
+//                    switch(docName) {
+//                    case "Poly":
+//                        PolySet.append(problemData!)
+//                        break
+//                    case "Trig":
+//                        TrigSet.append(problemData!)
+//                        break
+//                    case "Derivative":
+//                        DerivativeSet.append(problemData!)
+//                        break
+//                    default:
+//                        break
+//                    }
+//                }
+//                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+//                    isLoading = false
+//                }
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+    }
 }
 
 // reference for creating custom shape animation, for use as progress view
