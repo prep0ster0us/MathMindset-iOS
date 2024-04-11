@@ -1,6 +1,10 @@
 import SwiftUI
 import Firebase
 import LocalAuthentication      // for biometric login
+import GoogleSignIn
+import GoogleSignInSwift
+import FirebaseCore
+import FirebaseAuth
 
 private var auth = Auth.auth()
 private var isLoggedIn = false
@@ -23,6 +27,8 @@ struct SignInView: View {
     @State private var showAlert = false
     @State private var requestBiometricAlert = false
     @State private var usnEntered = false
+    
+//    @StateObject private var googleSignInModel = GoogleSignInModel()
     
     private var width = 0.5;
     
@@ -72,7 +78,9 @@ struct SignInView: View {
             
             // Google-Sign in
             // Placeholder, TODO: update to actual sign-in button
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                GoogleSignInModel().signIn() {
+            }, label: {
                 Image(systemName: "key.viewfinder")
                     .foregroundStyle(Color(.iconTint))
                     .frame(width: 24, height: 24, alignment: .center)
@@ -84,6 +92,9 @@ struct SignInView: View {
                 .frame(width: UIScreen.main.bounds.width-50)
                 .background(RoundedRectangle(cornerRadius: 24).stroke(Color(.black), lineWidth: 2).fill(.bgTint).opacity(0.85))
                 .padding(.bottom, 12)
+//            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal), action: {
+//                handleGoogleSignIn()
+//            })
             
             // divider
             HStack {
