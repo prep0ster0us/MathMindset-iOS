@@ -11,9 +11,13 @@ import Firebase
 struct Leaderboards: View {
     let screenWidth = UIScreen.main.bounds.width
     
+    let db = Firestore.firestore()
+    let auth = Auth.auth()
+    
     @State private var index = 0
     @State private var isLoading = false // TODO: change for implementation
     @State private var users = [TopUser]()
+    @State private var currentUser = TopUser()
     
     var body: some View {
         Group {
@@ -26,24 +30,36 @@ struct Leaderboards: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.all)
                     
-                    ZStack (alignment: .top) {
-                        leaderboardList
-//                            .frame(width: screenWidth - 50, height: UIScreen.main.bounds.height - 150)
-                        tabSwitch
-                            .background(Color(.black).opacity(0.1))
-                            .clipShape(Capsule())
-                            .offset(y: -12)
-                        
+                    VStack {
+                        ZStack (alignment: .top) {
+                            leaderboardList
+                            //.frame(width: screenWidth - 50, height: UIScreen.main.bounds.height - 150)
+                            tabSwitch
+                                .background(Color(.black).opacity(0.1))
+                                .clipShape(Capsule())
+                                .offset(y: -12)
+                        }.padding(.top, 24)
+                        Spacer()
+                        if auth.currentUser != nil {
+                            UserCard(
+                                currentUser.username,
+                                currentUser.pfpImageUrl,
+                                index == 0 ? CGFloat(currentUser.score) : CGFloat(currentUser.streak),
+                                index == 0 ? "primes" : "days",
+                                -1
+                            ).padding(4)
+                        }
                     }
                 }
             }
         }.onAppear {
             fetchTopUsers()
+            getCurrentUser()
         }
     }
     
     var tabSwitch: some View {
-        HStack {
+        HStack (spacing: 0) {
             Button(action: {
                 withAnimation(Animation.smooth(duration: 0.2)) {
                     self.index = 0
@@ -59,7 +75,6 @@ struct Leaderboards: View {
                 .clipShape(Capsule())
 //                        .overlay(Capsule().stroke(self.index == 0 ? .black : .clear, lineWidth: 2))
                 
-            
             Button(action: {
                 withAnimation(Animation.linear(duration: 0.2)) {
                     self.index = 1
@@ -114,7 +129,6 @@ struct Leaderboards: View {
     }
     
     func fetchTopUsers() {
-        let db = Firestore.firestore()
         var standing = 0
         
         let ref = db.collection("Leaderboard")
@@ -123,8 +137,7 @@ struct Leaderboards: View {
                     print("Error getting leaderboard users: \(error.localizedDescription)")
                 } else {
                     // fetch all users from Leaderboard
-                    let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
-                    // NOTE: $0 is shorthand for first argument in QuerySnapshot
+                    // let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
                     
                     self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
                         let data = document.data()
@@ -143,57 +156,33 @@ struct Leaderboards: View {
                             score       : score
                         )
                     } ?? []
-                    
-//                    if let firstID = documentIDs.randomElement() {
-//                        ref.document(firstID)
-//                            .getDocument { (document, error) in
-//                            if let document = document, document.exists {
-//                                let data: [String: Any] = document.data() ?? [:]
-//                                print(data)
-//                                question = data["question"] as! String
-//                                choices = data["choices"] as! [String]
-//                                withAnimation(Animation.smooth) { isLoading = false }
-//                            } else {
-//                                print("Document does not exist")
-//                            }
-//                        }
-//                    }
                 }
             }
-//            .getDocuments { (document, error) in
-//            if let document = document, document.exists {
-//                isLoading = true
-//                let data: [String: Any] = document.data() ?? [:]
-//
-//                for (probNum, problem ) in data {
-//                    let problemInfo = problem as! NSDictionary
-//                    let question = problemInfo["question"]!
-//                    let choices = problemInfo["choices"]!
-//
-//                    let problemData = ProblemData(id: probNum,
-//                                                  question: question as! String,
-//                                                  choices: choices as! [String])
-//                    switch(docName) {
-//                    case "Poly":
-//                        PolySet.append(problemData!)
-//                        break
-//                    case "Trig":
-//                        TrigSet.append(problemData!)
-//                        break
-//                    case "Derivative":
-//                        DerivativeSet.append(problemData!)
-//                        break
-//                    default:
-//                        break
-//                    }
-//                }
-//                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
-//                    isLoading = false
-//                }
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
+    }
+    
+    func getCurrentUser() {
+        let user = auth.currentUser!
+        let ref = db.collection("Users")
+        ref.document(user.uid)
+            .getDocument { (document, error) in
+                if let document = document, document.exists {
+                    let data: [String: Any] = document.data() ?? [:]
+                    guard let username = data["username"] as? String,
+                          let pfpImageUrl = data["profileImage"] as? String,
+                          let streak = data["streak"] as? Int,
+                          let score = data["score"] as? Int else {
+                        return
+                    }
+                    currentUser = TopUser(
+                        username: username,
+                        pfpImageUrl: pfpImageUrl,
+                        streak: streak,
+                        score: score
+                    )
+                } else {
+                    print("User does not exist")
+                }
+            }
     }
 }
 

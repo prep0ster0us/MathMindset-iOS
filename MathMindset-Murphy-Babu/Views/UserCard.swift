@@ -94,6 +94,7 @@ struct UserCard: View {
                         Text("\(Int(round(metric))) \(metricType)")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(.textTint)
+                            .opacity(standing > 0 ? 1 : 0)
                     }.padding(.trailing, 4)
                 }.padding(.horizontal, 16)
             }

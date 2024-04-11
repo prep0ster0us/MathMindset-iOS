@@ -92,7 +92,9 @@ class FirebaseManager: ObservableObject {
                 "last_login"            : Date(),
                 "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
                 "profileImage"          : "", // save firestore storage downloadURL here
-                "biometricEnabled"      : ""
+                "biometricEnabled"      : "",
+                "score"                 : 0,
+                "streak"                : 0
             ]
         
             // save user details (after sign-in) to database
