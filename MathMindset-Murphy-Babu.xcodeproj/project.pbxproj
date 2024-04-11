@@ -32,7 +32,7 @@
 		CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96972BAE8E9F009411D4 /* TopicCard.swift */; };
 		CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98FFD82BB257160035F720 /* SplashScreenView.swift */; };
 		CE9C8E542BC0C75A00E60A93 /* UserCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C8E532BC0C75A00E60A93 /* UserCard.swift */; };
-		CEA1B5162BAE90EE0068A0D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */; };
+		CE9DB6C02BC7896D002C5AE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */; };
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
 		CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */; };
@@ -49,7 +49,6 @@
 		FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA566ED22B69B11500F0FF20 /* MathQuestion.swift */; };
 		FA78F7052B71B455006BF7C3 /* MultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F7042B71B455006BF7C3 /* MultipleChoice.swift */; };
 		FA7FAEA42B9268510056EF19 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FA7FAEA32B9268510056EF19 /* ConfettiSwiftUI */; };
-		FA7FAEA82BA8EEA10056EF19 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FAEA72BA8EEA10056EF19 /* Home.swift */; };
 		FA7FAEAC2BA8F1430056EF19 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FAEAB2BA8F1430056EF19 /* Profile.swift */; };
 		FA7FAEB12BA8F2C30056EF19 /* Leaderboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */; };
 /* End PBXBuildFile section */
@@ -69,7 +68,7 @@
 		CE5A96972BAE8E9F009411D4 /* TopicCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCard.swift; sourceTree = "<group>"; };
 		CE98FFD82BB257160035F720 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CE9C8E532BC0C75A00E60A93 /* UserCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCard.swift; sourceTree = "<group>"; };
-		CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../BACKUP/MathMindset-Murphy-Babu/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
 		CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -87,7 +86,6 @@
 		FA566EAF2B69AFCE00F0FF20 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA566ED22B69B11500F0FF20 /* MathQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathQuestion.swift; sourceTree = "<group>"; };
 		FA78F7042B71B455006BF7C3 /* MultipleChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoice.swift; sourceTree = "<group>"; };
-		FA7FAEA72BA8EEA10056EF19 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		FA7FAEAB2BA8F1430056EF19 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaderboards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -215,8 +213,8 @@
 		FA566E9C2B69AFCD00F0FF20 = {
 			isa = PBXGroup;
 			children = (
+				CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */,
 				FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */,
-				CEA1B5152BAE90EE0068A0D3 /* GoogleService-Info.plist */,
 				FA566EA62B69AFCD00F0FF20 /* Products */,
 				CE5A96592BAE7596009411D4 /* Recovered References */,
 			);
@@ -273,7 +271,6 @@
 				CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */,
 				CE5A96972BAE8E9F009411D4 /* TopicCard.swift */,
 				FA78F7042B71B455006BF7C3 /* MultipleChoice.swift */,
-				FA7FAEA72BA8EEA10056EF19 /* Home.swift */,
 				FA7FAEAB2BA8F1430056EF19 /* Profile.swift */,
 				FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */,
 				CEA1B5172BAE9B370068A0D3 /* HomeView.swift */,
@@ -362,13 +359,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEBEDE432BB8C7B500E13BEF /* TheSerifHandXtraBlk.ttf in Resources */,
+				CE9DB6C02BC7896D002C5AE5 /* GoogleService-Info.plist in Resources */,
 				FA566EB02B69AFCE00F0FF20 /* Preview Assets.xcassets in Resources */,
 				CEBEDE422BB8C7B500E13BEF /* TheSerifHandLight.ttf in Resources */,
 				CEBEDE412BB8C7B500E13BEF /* TheSerifHandBlack.ttf in Resources */,
 				CEBEDE402BB8C7B500E13BEF /* TheSerifHandBold.ttf in Resources */,
 				FA566EAD2B69AFCE00F0FF20 /* Assets.xcassets in Resources */,
 				CEBEDE3F2BB8C7B500E13BEF /* TheSerifHandRegular.ttf in Resources */,
-				CEA1B5162BAE90EE0068A0D3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +380,6 @@
 				CE5A968A2BAE896A009411D4 /* SignUpView.swift in Sources */,
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
-				FA7FAEA82BA8EEA10056EF19 /* Home.swift in Sources */,
 				CE5A968B2BAE896A009411D4 /* ForgotPwdView.swift in Sources */,
 				FA7FAEAC2BA8F1430056EF19 /* Profile.swift in Sources */,
 				CE5A96952BAE8BC4009411D4 /* BottomBar.swift in Sources */,
@@ -537,7 +533,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = MKFL94JB3V;
+				DEVELOPMENT_TEAM = 3MR74X8CA9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
@@ -569,7 +565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = MKFL94JB3V;
+				DEVELOPMENT_TEAM = 3MR74X8CA9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
