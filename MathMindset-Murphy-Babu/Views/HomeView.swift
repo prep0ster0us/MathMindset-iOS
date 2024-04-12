@@ -18,14 +18,19 @@ struct HomeView: View {
     // TODO: static question for now, make this dynamic by fetching from db
     let problem = Poly()
     @State var disableBtn: Bool = false
+    
+    // fetch user-stats
     @State var topicProgress: [String: Any?] = [:]
+    @State var userStreak   : Int = 0
+    @State var userScore    : Int = 0
     
     @State private var isLoading = true
     
     var body: some View {
         Group {
             if(isLoading) {
-                ProgressView()
+//                ProgressView()
+                ShapeProgressView()
             } else {
                 content
             }
@@ -41,16 +46,16 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 HStack {
-                    Image(app.streak>0 ? "streakActive" : "streakInactive")
+                    Image(userStreak>0 ? "streakActive" : "streakInactive")
                         .resizable()
                         .frame(width: 32, height: 32)
-                    Text("\(app.streak)")
+                    Text("\(userStreak)")
                         .font(.system(size: 20, weight: .bold))
                     Spacer()
-                    Image(app.primes>0 ? "primes" : "primesEmpty")
+                    Image(userScore>0 ? "primes" : "primesEmpty")
                         .resizable()
                         .frame(width: 32, height: 32)
-                    Text("\(app.primes)")
+                    Text("\(userScore)")
                         .font(.system(size: 20, weight: .bold))
                 }
                 .padding()
@@ -120,7 +125,7 @@ struct HomeView: View {
     
     func fetchProblemSet(_ name: String) {
         let docName = (name == "Factoring") ? "Poly" : name
-        print(docName)
+//        print(docName)
         let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
         if !problemSet.isEmpty { return }
         
@@ -151,9 +156,9 @@ struct HomeView: View {
                         break
                     }
                 }
-                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
-                    isLoading = false
-                }
+//                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+//                    isLoading = false
+//                }
             } else {
                 print("Document does not exist")
             }
@@ -161,8 +166,6 @@ struct HomeView: View {
     }
     
     func fetchUserProgress() {
-        print("coming here")
-        
         db.collection("Users")
             .document(Auth.auth().currentUser!.uid)
             .getDocument(as: UserData.self) { result in
@@ -170,7 +173,12 @@ struct HomeView: View {
                     case .success(let document):
 //                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
                     topicProgress = document.progress as [String: Int]
-                        print(topicProgress)
+                    print(topicProgress)
+                    userScore = document.score
+                    userStreak = document.streak
+                    
+                    // set flag to indicate all necessary data has been loaded in
+                    isLoading = false
 
                     case .failure(let error):
                         print("Error fetching document: \(error)")
