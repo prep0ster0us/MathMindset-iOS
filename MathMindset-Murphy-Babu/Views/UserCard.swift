@@ -54,30 +54,40 @@ struct UserCard: View {
             VStack {
                 HStack {
                     // Top3 badge
-                    Image(systemName: "trophy")
-                        .foregroundStyle(standing == 0 ? 
-                                         Color(.red) : (standing == 1 ? 
-                                                        Color(.teal) : (standing == 2 ?
-                                                                        Color(.blue)
-                                                                        : Color(.black)
-                                                                       )
-                                                       )
-                        )
-                        .opacity(standing < 3 ? 1 : 0)    // TODO: update top3 badge image
-                    
-                    // Profile Image
-                    AsyncImage(url: URL(string: pfpImageUrl)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        ProgressView()
-                    }.frame(width: height-25, height: height-25)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                        .overlay(
-                            Circle()
-                                .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                        )
+//                    Image(systemName: "trophy")
+//                        .foregroundStyle(standing == 0 ? 
+//                                         Color(.red) : (standing == 1 ? 
+//                                                        Color(.teal) : (standing == 2 ?
+//                                                                        Color(.blue)
+//                                                                        : Color(.black)
+//                                                                       )
+//                                                       )
+//                        )
+//                        .opacity(standing < 3 ? 1 : 0)    // TODO: update top3 badge image
+                    ZStack {
+                        
+                        // Profile Image
+                        AsyncImage(url: URL(string: pfpImageUrl)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            ProgressView()
+                        }.frame(width: height-25, height: height-25)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            .overlay(
+                                Circle()
+                                    .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                            )
+                        Group {
+                            switch(standing) {
+                            case 0: Image("rank1")
+                            case 1: Image("rank2")
+                            case 2: Image("rank3")
+                            default: Image(systemName: "trophy").opacity(0)
+                            }
+                        }.offset(x: -height/3, y: -height/4)
+                    }.padding(.leading, 4)
                     
                     // Username
                     Text(username)
@@ -94,7 +104,6 @@ struct UserCard: View {
                         Text("\(Int(round(metric))) \(metricType)")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(.textTint)
-                            .opacity(standing > 0 ? 1 : 0)
                     }.padding(.trailing, 4)
                 }.padding(.horizontal, 16)
             }

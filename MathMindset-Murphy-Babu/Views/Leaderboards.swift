@@ -1,10 +1,3 @@
-//
-//  Leaderboards.swift
-//  MathMindset-Murphy-Babu
-//
-//  Created by Alex Murphy on 3/18/24.
-//
-
 import SwiftUI
 import Firebase
 
@@ -40,14 +33,16 @@ struct Leaderboards: View {
                                 .offset(y: -12)
                         }.padding(.top, 24)
                         Spacer()
+                        // show current user's card
                         if auth.currentUser != nil {
                             UserCard(
                                 currentUser.username,
-                                currentUser.pfpImageUrl,
-                                index == 0 ? CGFloat(currentUser.score) : CGFloat(currentUser.streak),
-                                index == 0 ? "primes" : "days",
+                                currentUser.profileImage,
+                                self.index == 0 ? CGFloat(currentUser.score) : CGFloat(currentUser.streak),
+                                self.index == 0 ? "primes" : "days",
                                 -1
                             ).padding(4)
+                                .padding(.vertical, 12)
                         }
                     }
                 }
@@ -61,7 +56,7 @@ struct Leaderboards: View {
     var tabSwitch: some View {
         HStack (spacing: 0) {
             Button(action: {
-                withAnimation(Animation.smooth(duration: 0.2)) {
+                withAnimation(Animation.smooth()) {
                     self.index = 0
                 }
             }, label: {
@@ -94,38 +89,35 @@ struct Leaderboards: View {
     }
     
     var leaderboardList: some View {
-        VStack (spacing: 0) {
-            if index == 0 {
-                let _ = self.users.sort { $0.score > $1.score }
-                
+        ScrollView {
+            VStack (spacing: 0) {
                 ForEach(self.users, id: \.self) { user in
                     let standing = self.users.firstIndex(of: user)!
-                    UserCard(user.username, user.pfpImageUrl, CGFloat(user.score), "primes", standing)
-                        .padding(4)
-                        .padding(.top, standing == 0 ? 36 : 0)
-                        .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
-                }.onAppear {
-                    self.users.sort { $0.score > $1.score }
+                    UserCard(
+                        user.username,
+                        user.profileImage,
+                        index == 0 ? CGFloat(user.score) : CGFloat(user.streak),
+                        index == 0 ? "primes" : "days",
+                        standing
+                    )
+                    .padding(4)
+                    .padding(.top, standing == 0 ? 36 : 0)
+                    .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
                 }
-            } else {
-                ForEach(self.users, id: \.self) { user in
-                    let standing = self.users.firstIndex(of: user)!
-                    UserCard(user.username, user.pfpImageUrl, CGFloat(user.streak), "days", standing)
-                        .padding(8)
-                        .padding(.top, standing == 0 ? 36 : 0)
-                        .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
-                }.onAppear {
-                    self.users.sort { $0.streak > $1.streak }
+                .onAppear {
+                    print(users)
+                    self.users.sort { index == 0
+                        ? ($0.score > $1.score)
+                        : ($0.streak > $1.streak)
+                    }
                 }
             }
-        }
-        .background(
+        }.background(
             RoundedRectangle(cornerRadius: 16)
                 .shadow(radius: 16, x: 8, y: 12)
                 .foregroundStyle(.bgTint)
         )
         .padding()
-
     }
     
     func fetchTopUsers() {
@@ -143,7 +135,7 @@ struct Leaderboards: View {
                         let data = document.data()
 //                        print(data)
                         guard let username = data["username"] as? String,
-                              let pfpImageUrl = data["profileImage"] as? String,
+                              let profileImage = data["profileImage"] as? String,
                               let streak = data["streak"] as? Int,
                               let score = data["score"] as? Int else {
                             return nil
@@ -151,38 +143,54 @@ struct Leaderboards: View {
                         standing += 1
                         return TopUser(
                             username    : username,
-                            pfpImageUrl : pfpImageUrl,
+                            profileImage : profileImage,
                             streak      : streak,
                             score       : score
                         )
                     } ?? []
+//                    print(self.users.count)
+//                    print(self.users)
                 }
             }
     }
     
     func getCurrentUser() {
+        
         let user = auth.currentUser!
         let ref = db.collection("Users")
         ref.document(user.uid)
-            .getDocument { (document, error) in
-                if let document = document, document.exists {
-                    let data: [String: Any] = document.data() ?? [:]
-                    guard let username = data["username"] as? String,
-                          let pfpImageUrl = data["profileImage"] as? String,
-                          let streak = data["streak"] as? Int,
-                          let score = data["score"] as? Int else {
-                        return
-                    }
-                    currentUser = TopUser(
-                        username: username,
-                        pfpImageUrl: pfpImageUrl,
-                        streak: streak,
-                        score: score
-                    )
-                } else {
-                    print("User does not exist")
+            .getDocument(as: TopUser.self) { result in
+                switch result {
+                case .success(let user):
+                    currentUser = user
+                    
+                case .failure(let error):
+                    print("Error fetching current user: \(error.localizedDescription)")
                 }
             }
+        //        let user = auth.currentUser!
+        //        let ref = db.collection("Users")
+        //        ref.document(user.uid)
+        //            .getDocument { (document, error) in
+        //                if let document = document, document.exists {
+        //                    let data: [String: Any] = document.data() ?? [:]
+        //                    guard let username = data["username"] as? String,
+        //                          let profileImage = data["profileImage"] as? String,
+        //                          let streak = data["streak"] as? Int,
+        //                          let score = data["score"] as? Int else {
+        //                        return
+        //                    }
+        //                    currentUser = TopUser(
+        //                        username: username,
+        //                        profileImage: profileImage,
+        //                        streak: streak,
+        //                        score: score
+        //                    )
+        //                    print(currentUser)
+        //                } else {
+        //                    print("User does not exist")
+        //                }
+        //            }
     }
 }
 
