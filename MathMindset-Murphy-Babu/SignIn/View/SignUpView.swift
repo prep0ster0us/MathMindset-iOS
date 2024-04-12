@@ -401,7 +401,7 @@ struct SignUpView: View {
                     .document(useruuid)
                     .updateData( ["profileImage": imageUrl]) { err in
                         if let err = err {
-                            print("Error saving url to user's database")
+                            print("Error saving url to user's database: \(err.localizedDescription)")
                             return
                         }
                         print("image url successfully uploaded to user's database")

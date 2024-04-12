@@ -32,7 +32,8 @@
 		CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96972BAE8E9F009411D4 /* TopicCard.swift */; };
 		CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98FFD82BB257160035F720 /* SplashScreenView.swift */; };
 		CE9C8E542BC0C75A00E60A93 /* UserCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C8E532BC0C75A00E60A93 /* UserCard.swift */; };
-		CE9DB6C02BC7896D002C5AE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */; };
+		CE9DB6C22BC794F1002C5AE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9DB6C12BC794F1002C5AE5 /* GoogleService-Info.plist */; };
+		CE9DB6C62BC847D4002C5AE5 /* GoogleSignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DB6C52BC847D4002C5AE5 /* GoogleSignInModel.swift */; };
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
 		CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */; };
@@ -68,7 +69,8 @@
 		CE5A96972BAE8E9F009411D4 /* TopicCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCard.swift; sourceTree = "<group>"; };
 		CE98FFD82BB257160035F720 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CE9C8E532BC0C75A00E60A93 /* UserCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCard.swift; sourceTree = "<group>"; };
-		CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE9DB6C12BC794F1002C5AE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE9DB6C52BC847D4002C5AE5 /* GoogleSignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInModel.swift; sourceTree = "<group>"; };
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
 		CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		CE7312AE2B97A00A002F11DD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE9DB6C52BC847D4002C5AE5 /* GoogleSignInModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -213,7 +216,7 @@
 		FA566E9C2B69AFCD00F0FF20 = {
 			isa = PBXGroup;
 			children = (
-				CE9DB6BF2BC7896D002C5AE5 /* GoogleService-Info.plist */,
+				CE9DB6C12BC794F1002C5AE5 /* GoogleService-Info.plist */,
 				FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */,
 				FA566EA62B69AFCD00F0FF20 /* Products */,
 				CE5A96592BAE7596009411D4 /* Recovered References */,
@@ -359,7 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEBEDE432BB8C7B500E13BEF /* TheSerifHandXtraBlk.ttf in Resources */,
-				CE9DB6C02BC7896D002C5AE5 /* GoogleService-Info.plist in Resources */,
+				CE9DB6C22BC794F1002C5AE5 /* GoogleService-Info.plist in Resources */,
 				FA566EB02B69AFCE00F0FF20 /* Preview Assets.xcassets in Resources */,
 				CEBEDE422BB8C7B500E13BEF /* TheSerifHandLight.ttf in Resources */,
 				CEBEDE412BB8C7B500E13BEF /* TheSerifHandBlack.ttf in Resources */,
@@ -394,6 +397,7 @@
 				CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */,
 				CE3864302BB13ED50001DB55 /* UserData.swift in Sources */,
 				CEDAF37A2BC4C120002EA5C7 /* TopUser.swift in Sources */,
+				CE9DB6C62BC847D4002C5AE5 /* GoogleSignInModel.swift in Sources */,
 				CE5A96882BAE896A009411D4 /* HelperView.swift in Sources */,
 				CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */,
 				CE5A968E2BAE89BB009411D4 /* FirebaseManager.swift in Sources */,

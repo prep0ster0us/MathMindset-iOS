@@ -122,3 +122,4 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/xcode,swift,firebase,cocoapods
+GoogleService-Info_old.plist

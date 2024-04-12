@@ -19,38 +19,14 @@ class GoogleSignInModel: ObservableObject {
 //    @Published var state: SignInState = .signedOut
     @Published var isSignedIn = false
     
-//    private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
-//        // if error, throw and return
-//        if let error = error {
-//            print(error.localizedDescription)
-//            return
-//        }
-//        // get user details
-//        guard 
-//            let user = user.user,
-//            let idToken = user.idToken else { return }
-//        
-//        
-//        // 2
-//        guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
-//        
-//        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authentication.accessToken)
-//        
-//        // 3
-//        Auth.auth().signIn(with: credential) { [unowned self] (_, error) in
-//            if let error = error {
-//                print(error.localizedDescription)
-//            } else {
-//                self.state = .signedIn
-//            }
-//        }
-//    }
+    var dbManager = FirebaseManager()
+
     
     func signIn() {
         // If user already logged in, restore session
-        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
-            GIDSignIn.sharedInstance.restorePreviousSignIn()
-        } else {    // if not logged in previously
+//        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+//            GIDSignIn.sharedInstance.restorePreviousSignIn()
+//        } else {    // if not logged in previously
             // fetch clientID of app
             guard let clientID = FirebaseApp.app()?.options.clientID else { return }
             
@@ -93,9 +69,12 @@ class GoogleSignInModel: ObservableObject {
                     let uid = user.uid
                     print("User logged in: \(uid)")
                     self.isSignedIn = true // signify successful login
+                    
+                    // check if the user already exists
+                    self.dbManager.checkIfGoogleUserExists(userID: uid, user: user)
                 }
             }
-        }
+//        }
     }
 }
 

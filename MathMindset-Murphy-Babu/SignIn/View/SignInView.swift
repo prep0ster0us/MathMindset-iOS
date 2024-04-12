@@ -12,6 +12,7 @@ private var isLoggedIn = false
 struct SignInView: View {
     
     @StateObject var dbManager = FirebaseManager()
+    @StateObject var googleAuthManager = GoogleSignInModel()
     
     // TODO: delegate these state variables to have the values from the TextFields
     @State private var email = ""
@@ -46,7 +47,17 @@ struct SignInView: View {
 //            // show login page
 //            content
 //        }
-        content
+        if googleAuthManager.isSignedIn {
+            BottomBar(
+                AnyView(HomeView()),
+                AnyView(Leaderboards()),
+                AnyView(Profile())
+            )
+            .environmentObject(AppVariables())
+        } else {
+            content
+        }
+//        content
     }
     
     var content: some View {
@@ -79,7 +90,7 @@ struct SignInView: View {
             // Google-Sign in
             // Placeholder, TODO: update to actual sign-in button
             Button(action: {
-                GoogleSignInModel().signIn() {
+                googleAuthManager.signIn()
             }, label: {
                 Image(systemName: "key.viewfinder")
                     .foregroundStyle(Color(.iconTint))
