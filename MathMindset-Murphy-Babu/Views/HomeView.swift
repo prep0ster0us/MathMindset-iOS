@@ -57,7 +57,7 @@ struct HomeView: View {
                 }
                 .padding()
                 .padding(.top, 50)
-                
+                Text("\(String(describing: topicProgress["Trig"]))").font(.title)
                 VStack {
                     Text("Problem of the Day")
                     // TODO: Find our own smallcaps font
@@ -124,11 +124,15 @@ struct HomeView: View {
                                     .frame(width: $app.screenWidth.wrappedValue)
                                     .onAppear {
                                         print("title= \(title) --> \(topicProgress[title] as! Int)")
+                                        print("after populating topic card: \(topicProgress)")
+                                    }.onDisappear {
+                                        isLoading = true
                                     }
                             }
                         }.padding(.top, 10)
                     }
                 }.padding(.top, 30)
+                
 
                 Spacer()
                 
@@ -186,7 +190,7 @@ struct HomeView: View {
                     case .success(let document):
 //                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
                     topicProgress = document.progress as [String: Int]
-                    print(topicProgress)
+                    print("fetched progress: \(topicProgress)")
                     userScore = document.score
                     userStreak = document.streak
                     

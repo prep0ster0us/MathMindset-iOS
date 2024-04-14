@@ -11,6 +11,8 @@ struct ProblemView: View {
     
     @State private var isPressed: CGFloat = -1
     
+    @State private var selections: [CGFloat] = [1,2,3,4].shuffled()
+    
     var body: some View {
         VStack {
             // Problem Number header
@@ -64,16 +66,16 @@ struct ProblemView: View {
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                ProblemOption(choices, $isPressed, 1)
-                ProblemOption(choices, $isPressed, 2)
-                ProblemOption(choices, $isPressed, 3)
-                ProblemOption(choices, $isPressed, 4)
+                ProblemOption(choices, $isPressed, selections[0])
+                ProblemOption(choices, $isPressed, selections[1])
+                ProblemOption(choices, $isPressed, selections[2])
+                ProblemOption(choices, $isPressed, selections[3])
             }.padding(.horizontal, 40)
             
             Spacer()
             
             // Submit answer
-            SubmitProblem(isPressed, problemNum, problemSet, topic)
+            SubmitProblem(isPressed, problemNum, problemSet, topic, selections)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -92,16 +94,19 @@ struct SubmitProblem: View {
     var problemNum: Int
     var problemSet: [ProblemData]
     var topic     : String
+    var selections: [CGFloat]
     init(
         _ isPressed: CGFloat,
         _ problemNum: Int,
         _ problemSet: [ProblemData],
-        _ topic     : String
+        _ topic     : String,
+        _ selections: [CGFloat]
     ) {
         self.isPressed = isPressed
         self.problemNum = problemNum
         self.problemSet = problemSet
         self.topic      = topic
+        self.selections = selections
     }
     
     @EnvironmentObject private var app: AppVariables

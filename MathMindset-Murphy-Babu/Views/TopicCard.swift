@@ -72,8 +72,8 @@ struct TopicCard: View {
 }
 
 struct StarImage: View {
-    var count : Int
-    var completed: Int
+    @State var count : Int
+    @State var completed: Int
     var body : some View {
         VStack {
             Image(systemName: completed>count ? "star.fill" : "star")
