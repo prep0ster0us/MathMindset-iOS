@@ -156,6 +156,10 @@ struct Leaderboards: View {
                             score       : score
                         )
                     } ?? []
+                    self.users.sort { index == 0
+                        ? ($0.score > $1.score)
+                        : ($0.streak > $1.streak)
+                    }
 //                    print(self.users.count)
 //                    print(self.users)
                 }

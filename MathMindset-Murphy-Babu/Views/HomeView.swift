@@ -128,7 +128,7 @@ struct HomeView: View {
         
         db.collection("Problems").document(docName).getDocument { (document, error) in
             if let document = document, document.exists {
-                isLoading = true
+//                isLoading = true
                 let data: [String: Any] = document.data() ?? [:]
 
                 for (probNum, problem ) in data {

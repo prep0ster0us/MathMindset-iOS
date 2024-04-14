@@ -12,18 +12,22 @@ struct UserData: Codable, Identifiable {
     var score                   : Int
     var streak                  : Int
     var biometricEnabled        : String
+    var profileImage            : String
+    var streak_update_timestamp : Date
     
     init(
-        _ id                    : String?,
-        _ email                 : String,
-        _ username              : String,
-        _ dateOfBirth           : Date,
-        _ last_login            : Date,
-        _ progress              : [String: Int],
-        _ account_creation_date : Date,
-        _ score                 : Int,
-        _ streak                : Int,
-        _ biometricEnabled      : String
+        _ id                        : String?,
+        _ email                     : String,
+        _ username                  : String,
+        _ dateOfBirth               : Date,
+        _ last_login                : Date,
+        _ progress                  : [String: Int],
+        _ account_creation_date     : Date,
+        _ score                     : Int,
+        _ streak                    : Int,
+        _ biometricEnabled          : String,
+        _ profileImage              : String,
+        _ streak_update_timestamp   : Date
     ) {
         self.id = id
         self.email = email
@@ -35,6 +39,8 @@ struct UserData: Codable, Identifiable {
         self.score = score
         self.streak = streak
         self.biometricEnabled = biometricEnabled
+        self.profileImage = profileImage
+        self.streak_update_timestamp = streak_update_timestamp
     }
     
 //    enum CodingKeys: String, CodingKey {
