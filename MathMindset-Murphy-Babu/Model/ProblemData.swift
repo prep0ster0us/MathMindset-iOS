@@ -1,14 +1,14 @@
 import Foundation
 
-class ProblemData: ObservableObject {
-    let id: String
-    @Published var question : String = ""
-    @Published var choices  : [String] = []
+struct ProblemData: Codable, Hashable {
+    var id       : String
+    var question : String = ""
+    var choices  : [String] = []
     
-    required init?(
-        id      : String,
-        question: String,
-        choices : [String]
+    init(
+        id      : String = "",
+        question: String = "",
+        choices : [String] = []
     ) {
         self.id = id
         self.question = question

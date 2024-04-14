@@ -38,6 +38,8 @@ struct SignInView: View {
     //    @State private var visible = false
     @State private var btnColor = Color("#1FA744")
     
+    @State var homePath = NavigationPath()
+    
     var body: some View {
         // to enable view, based on 'stay signed in'
 //        if isLoggedIn {
@@ -61,7 +63,7 @@ struct SignInView: View {
     }
     
     var content: some View {
-        NavigationStack {
+        NavigationStack(path: $homePath) {
             ZStack {
                 LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
                                , startPoint: .top, endPoint: .bottom)

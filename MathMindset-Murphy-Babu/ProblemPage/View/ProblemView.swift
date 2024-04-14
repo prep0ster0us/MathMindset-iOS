@@ -1,7 +1,9 @@
 import SwiftUI
+import Firebase
 
 struct ProblemView: View {
     
+    let topic       : String
     let problemNum  : Int
     let question    : String
     let choices     : [String]
@@ -71,7 +73,7 @@ struct ProblemView: View {
             Spacer()
             
             // Submit answer
-            SubmitProblem(isPressed, problemNum, problemSet)
+            SubmitProblem(isPressed, problemNum, problemSet, topic)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -89,14 +91,17 @@ struct SubmitProblem: View {
     var isPressed: CGFloat
     var problemNum: Int
     var problemSet: [ProblemData]
+    var topic     : String
     init(
         _ isPressed: CGFloat,
         _ problemNum: Int,
-        _ problemSet: [ProblemData]
+        _ problemSet: [ProblemData],
+        _ topic     : String
     ) {
         self.isPressed = isPressed
         self.problemNum = problemNum
         self.problemSet = problemSet
+        self.topic      = topic
     }
     
     @EnvironmentObject private var app: AppVariables
@@ -121,11 +126,14 @@ struct SubmitProblem: View {
         // Shadow Rectangle Button
         NavigationStack {
             VStack {
-                NavigationLink(destination: 
-                                ProblemView(problemNum: problemNum+1,
-                                            question: problemSet[problemNum+1].question,
-                                            choices: problemSet[problemNum+1].choices,
-                                            problemSet: problemSet),
+                NavigationLink(destination:
+                                ProblemView(
+                                    topic: topic,
+                                    problemNum: problemNum+1,
+                                    question: problemSet[problemNum+1].question,
+                                    choices: problemSet[problemNum+1].choices,
+                                    problemSet: problemSet
+                                ),
                                isActive: $navigateToNext
                 ){
                     Button(action: {
@@ -167,7 +175,9 @@ struct SubmitProblem: View {
                                   message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
                                   dismissButton: .default(Text(isCorrect ? "Next Problem" : "Ok")) {
                                 if isCorrect {
-                                    navigateToNext.toggle()
+                                    Task {
+                                        await updateProgress(topic, problemNum)
+                                    }
                                 }
                                 
                             })
@@ -175,26 +185,100 @@ struct SubmitProblem: View {
                 }
             }
         }
+    }
+    
+    func updateProgress(_ topic: String, _ problemNum: Int) async {
+        let userID = Auth.auth().currentUser!.uid
+        let db = Firestore.firestore()
+        let ref = db.collection("Users").document(userID)
+//        ref.updateData([
+////            "streak": last_login < Date.now() ? FieldValue.increment(1.0) : FieldValue.increment(0.0)
+//            "score" : FieldValue.increment(5.0),
+//            "progress.\(topic)": problemNum
+//        ]) { err in
+//            if let err = err {
+//                print("Error updating progresss to \(topic): \(err.localizedDescription)")
+//                return
+//            }
+//                
+//            print("Progress updated for \(topic) of user: \(userID)")
+//            navigateToNext.toggle()
+//        }
         
-        // OPTION-II - Raised Button
-        /*
-         ZStack {
-         RoundedRectangle(cornerRadius: 12)
-         .fill(.black).opacity(0.2)
-         .frame(width: width, height: height)
-         .offset(x: offset, y: offset)
-         Text(choice)
-         .font(.title2)
-         .foregroundStyle(Color(.textTint))
-         .background(
-         RoundedRectangle(cornerRadius: 12)
-         .stroke(Color(.bgContrast), lineWidth: 3)
-         .fill(.bgTint)
-         .frame(width: width, height: height)
-         .shadow(color: Color(.bgContrast).opacity(0.4), radius: 6, x: offset, y: offset)
-         ).padding(0)
-         }
-         */
+        // try out transaction:
+        do {
+            let _ = try await db.runTransaction({ (transaction, errorPointer) -> Any? in
+                // 1. fetch doc
+                let document: DocumentSnapshot
+                do {
+                    try document = transaction.getDocument(ref)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                print("got doc")
+                
+                // 2. get existing data
+//                guard let lastLogin = document.data()?["last_login"] as? Date,
+//                      let currStreak = document.data()?["streak"] as? Int else {
+//                    return nil
+//                }
+                // debug
+//                print(document.data()?["last_login"] as Any)
+//                print("fetched data = \(String(describing: (document.data()?["streak_update_timestamp"] as? Timestamp)?.dateValue()))")
+                let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
+                let lastStreakUpdate = document.data()?["streak_update_timestamp"] as? Timestamp
+                let currStreak = document.data()?["streak"] as? Int ?? -1
+                // debug
+//                print("streak update timestamp = \(String(describing: lastStreakUpdate))")
+//                print("day start= \(dayStart())")
+//                print("current streak= \(currStreak)")
+                print("got data")
+                
+                // 3. update data (based on criteria)
+                
+                // Compare the values and update if the condition is met
+//                if lastLogin < Date.now && lastLogin > dateYesterday() {
+                if (lastStreakUpdate?.dateValue())! < dayStart() {      // if last streak update was before 12AM today (start of new day); update streak & timestamp
+                    print("updating streak, timestamp and progress --> \(currStreak) , \(lastStreakUpdate?.dateValue() ?? Date())")
+                    transaction.updateData([
+                        "streak": currStreak + 1,
+                        "streak_update_timestamp" : Date(),
+                        "progress.\(topic)": problemNum
+                    ], forDocument: ref)
+                } else {
+                    print("only streak updated")
+                    transaction.updateData([
+                        "progress.\(topic)": problemNum
+                    ], forDocument: ref)
+                }
+                print("updated data")
+                return nil
+            })
+            print("Transaction successful!")
+        } catch {
+            print("Transaction failed! \(error)")
+        }
+        navigateToNext.toggle()
+    }
+
+    func dateYesterday() -> Date {
+        Calendar(identifier: .gregorian).date(from: DateComponents(
+            year: Calendar.current.component(.year, from: Date.now),
+            month: Calendar.current.component(.month, from: Date.now),
+            day: Calendar.current.component(.day, from: Date.now)-1))!
+    }
+    
+    func dayStart() -> Date {
+        let calendar = Calendar.current
+        return Calendar(identifier: .gregorian).date(from: DateComponents(
+            year   : calendar.component(.year, from: Date.now),
+            month  : calendar.component(.month, from: Date.now),
+            day    : calendar.component(.day, from: Date.now),
+            hour   : 0,
+            minute : 0,
+            second : 0)
+        )!
     }
 }
 
@@ -365,26 +449,6 @@ struct SubmitButton: View {
                     })
                 }
         }
-        
-        // OPTION-II - Raised Button
-        /*
-         ZStack {
-         RoundedRectangle(cornerRadius: 12)
-         .fill(.black).opacity(0.2)
-         .frame(width: width, height: height)
-         .offset(x: offset, y: offset)
-         Text(choice)
-         .font(.title2)
-         .foregroundStyle(Color(.textTint))
-         .background(
-         RoundedRectangle(cornerRadius: 12)
-         .stroke(Color(.bgContrast), lineWidth: 3)
-         .fill(.bgTint)
-         .frame(width: width, height: height)
-         .shadow(color: Color(.bgContrast).opacity(0.4), radius: 6, x: offset, y: offset)
-         ).padding(0)
-         }
-         */
     }
 }
 
@@ -483,6 +547,7 @@ struct ProblemProgressBar1: View {
 
 #Preview {
     ProblemView(
+        topic: "Trig",
         problemNum: 0,
         question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
         choices: ["Triangle", "Circle", "Square", "Rectangle"],

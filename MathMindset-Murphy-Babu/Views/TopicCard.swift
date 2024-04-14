@@ -24,18 +24,18 @@ struct TopicCard: View {
     }
     
     let db = Firestore.firestore()
-    
-    func increaseCompleted() {
-        if self.completed <= 9 {
-            self.completed += 1
-            //            self.starCount += 0.5
-            self.starCount += 1
-        }
-    }
+//    
+//    func increaseCompleted() {
+//        if self.completed <= 9 {
+//            self.completed += 1
+//            //            self.starCount += 0.5
+//            self.starCount += 1
+//        }
+//    }
     
     var body: some View {
 
-        NavigationStack  {
+//        NavigationStack  {
             HStack {
                 Spacer().overlay(
                     Text(self.name)
@@ -64,7 +64,7 @@ struct TopicCard: View {
                     .shadow(radius: 5)
                     .frame(width: 285, height: 80))
             .padding(42)
-        }
+//        }
     }
     
     

@@ -192,7 +192,7 @@ class FirebaseManager: ObservableObject {
                     // NOTE that this DOB is explicitly made to be a placeholder
                     // so it can be verified that the user does not have a DOB in place
                     // since this data is regulative to privacy control, we can't get this info from google directly
-                    
+                    let calendar = Calendar.current
                     let data: [String: Any] = [
                         "email"                 : gEmail,
                         "username"              : gName,
@@ -203,7 +203,12 @@ class FirebaseManager: ObservableObject {
                         "profileImage"          : gProfileImage, // save firestore storage downloadURL here
                         "biometricEnabled"      : "",
                         "score"                 : 0,
-                        "streak"                : 0
+                        "streak"                : 0,
+                        "streak_update_timestamp" : calendar.date(from: DateComponents(
+                            year: calendar.component(.year, from: .now)-1,
+                            month: calendar.component(.month, from: .now),
+                            day: calendar.component(.day, from: .now))
+                        )!      // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
                     ]
                 
                     // save user details (after sign-in) to database

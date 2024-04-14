@@ -1,10 +1,3 @@
-//
-//  Home.swift
-//  MathMindset-Murphy-Babu
-//
-//  Created by Alex Murphy on 3/18/24.
-//
-
 import SwiftUI
 import Firebase
 
@@ -104,6 +97,7 @@ struct HomeView: View {
                             let problemSet = title == "Factoring" ? PolySet : (title == "Trig" ? TrigSet : DerivativeSet)
                             NavigationLink(destination:
                                             ProblemView(
+                                                topic: title,
                                                 problemNum: topicProgress[title] as! Int+1,
                                                 question: problemSet[topicProgress[title] as! Int].question,
                                                 choices: problemSet[topicProgress[title] as! Int].choices,
@@ -112,6 +106,9 @@ struct HomeView: View {
                             ) {
                                 TopicCard(name: title, image: title, completed: topicProgress[title] as! Int)
                                     .frame(width: $app.screenWidth.wrappedValue)
+                                    .onAppear {
+                                        print("title= \(title) --> \(topicProgress[title] as! Int)")
+                                    }
                             }
                         }.padding(.top, 10)
                     }
@@ -144,13 +141,13 @@ struct HomeView: View {
                                                   choices: choices as! [String])
                     switch(docName) {
                     case "Poly":
-                        PolySet.append(problemData!)
+                        PolySet.append(problemData)
                         break
                     case "Trig":
-                        TrigSet.append(problemData!)
+                        TrigSet.append(problemData)
                         break
                     case "Derivative":
-                        DerivativeSet.append(problemData!)
+                        DerivativeSet.append(problemData)
                         break
                     default:
                         break
