@@ -19,6 +19,10 @@ struct HomeView: View {
     
     @State private var isLoading = true
     
+    @State private var countDown = TimeInterval()
+    @State private var timerRunning = true
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         Group {
             if(isLoading) {
@@ -69,18 +73,30 @@ struct HomeView: View {
                     NavigationLink(destination: ProblemOfDay().environmentObject(app),
                                         isActive: $disableBtn
                     ) {
-                        Text(($app.probOfDaySolved.wrappedValue) ? "\($app.timeLeft.wrappedValue)" : "Solve" )
-                                .font(.title2)
-                                .padding(12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .fill(($app.probOfDaySolved.wrappedValue) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
-                                        .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                                        .shadow(radius: 5)
-                                        .frame(width: 175, height: 50)
-                                )
-                                .foregroundColor(.black)
-                                .padding(.top, 24)
+                        Text($app.probOfDaySolved.wrappedValue ? formattedTime() : "Solve")     // difference available in seconds, format tthe value in HH:MM:SS
+                            .font(.title)
+                            .onReceive(timer) { _ in
+                                if countDown > 0  && timerRunning {
+                                    countDown -= 1
+                                } else {
+                                    // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
+                                    //                            timerRunning = false
+                                    timer.upstream.connect().cancel()     // relinquish thread process
+                                }
+                            }.onAppear {
+                                calculateTimeDifference()
+                            }
+                            .font(.title2)
+                            .padding(12)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(($app.probOfDaySolved.wrappedValue) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
+                                    .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                                    .shadow(radius: 5)
+                                    .frame(width: 175, height: 50)
+                            )
+                            .foregroundColor(.black)
+                            .padding(.top, 24)
                     }
                 }.background(
                     RoundedRectangle(cornerRadius: 12)
@@ -183,8 +199,74 @@ struct HomeView: View {
         }
         
     }
+    
+    func calculateTimeDifference() {
+        // today's date-time
+        let calendar = Calendar.current
+        // create specific date components for specific time
+        // This creates for 9AM the next day
+        let components = DateComponents(year: calendar.component(.year, from: .now),
+                                        month: calendar.component(.month, from: .now),
+                                        day: calendar.component(.day, from: .now)+1,  // current day+1 -> next day
+                                        hour: 9,    // 9AM
+                                        minute: 0,
+                                        second: 0)
+        print(calendar)
+        print(calendar.date(from: components)!)
+        // construct date-time from these components
+        let problemRefreshDate = calendar.date(from: components)!
+        // track difference between current date-time and this constructed date-time (in seconds)
+        print(problemRefreshDate)
+        countDown = problemRefreshDate.timeIntervalSince(.now)
+    }
+
+    func formattedTime() -> String {
+        let seconds = Int(countDown)
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let remainingSeconds = seconds % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, remainingSeconds)
+    }
 
 }
+
+//struct TimerView: View {
+//    
+//    @State private var countDown = TimeInterval()
+//    @State private var timerRunning = true
+//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+//    
+//    var test = true
+//    
+//    var body: some View {
+////        VStack {
+////            $app.probOfDaySolved.wrappedValue
+//            
+//            // if problem of the day is solved, show timer
+//            Text(test ? formattedTime() : "Solve")     // difference available in seconds, format tthe value in HH:MM:SS
+//                .font(.title)
+//                .onReceive(timer) { _ in
+//                    if countDown > 0  && timerRunning {
+//                        countDown -= 1
+//                    } else {
+//                        // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
+//                        //                            timerRunning = false
+//                        timer.upstream.connect().cancel()     // relinquish thread process
+//                    }
+//                }
+//            //
+//            //                if !timerRunning {
+//            //                    Text("display text when timer up!")
+//            //                        .font(.largeTitle)
+//            //                        .padding()
+//            //                }
+//            .onAppear {
+//                calculateTimeDifference()
+//            }
+//    }
+//    
+//   
+//}
 
 #Preview {
     HomeView()
