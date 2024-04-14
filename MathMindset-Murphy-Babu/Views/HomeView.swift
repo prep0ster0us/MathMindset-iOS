@@ -137,8 +137,8 @@ struct HomeView: View {
                     let choices = problemInfo["choices"]!
 
                     let problemData = ProblemData(id: probNum,
-                                                  question: question as! String,
-                                                  choices: choices as! [String])
+                                                  question: question as? String ?? "",
+                                                  choices: choices as? [String] ?? [])
                     switch(docName) {
                     case "Poly":
                         PolySet.append(problemData)
