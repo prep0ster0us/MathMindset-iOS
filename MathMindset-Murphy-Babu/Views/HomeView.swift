@@ -114,13 +114,18 @@ struct HomeView: View {
                         ForEach(titles, id: \.self) { title in
                             let problemSet = title == "Factoring" ? PolySet : (title == "Trig" ? TrigSet : DerivativeSet)
                             NavigationLink(destination:
-                                            ProblemView(
-                                                topic: title,
-                                                problemNum: topicProgress[title] as! Int+1,
-                                                question: problemSet[topicProgress[title] as! Int].question,
-                                                choices: problemSet[topicProgress[title] as! Int].choices,
-                                                problemSet: problemSet
-                                            )
+//                                            ProblemView(
+//                                                topic: title,
+//                                                problemNum: topicProgress[title] as! Int+1,
+//                                                question: problemSet[topicProgress[title] as! Int].question,
+//                                                choices: problemSet[topicProgress[title] as! Int].choices,
+//                                                problemSet: problemSet
+//                                            )
+                                           ProblemsView(
+                                               topic: title,
+                                               problemSet: problemSet,
+                                               problemNum: CGFloat(topicProgress[title] as! Int)
+                                           )
                             ) {
                                 TopicCard(name: title, image: title, completed: topicProgress[title] as! Int)
                                     .frame(width: $app.screenWidth.wrappedValue)

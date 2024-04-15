@@ -37,6 +37,7 @@
 		CE9DB6C62BC847D4002C5AE5 /* GoogleSignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DB6C52BC847D4002C5AE5 /* GoogleSignInModel.swift */; };
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
+		CEA810CA2BCCE71C00929735 /* ProblemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA810C92BCCE71C00929735 /* ProblemsView.swift */; };
 		CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */; };
 		CEBEDE3F2BB8C7B500E13BEF /* TheSerifHandRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEBEDE3A2BB8C7B500E13BEF /* TheSerifHandRegular.ttf */; };
 		CEBEDE402BB8C7B500E13BEF /* TheSerifHandBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEBEDE3B2BB8C7B500E13BEF /* TheSerifHandBold.ttf */; };
@@ -76,6 +77,7 @@
 		CE9DB6C52BC847D4002C5AE5 /* GoogleSignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInModel.swift; sourceTree = "<group>"; };
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
+		CEA810C92BCCE71C00929735 /* ProblemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemsView.swift; sourceTree = "<group>"; };
 		CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		CEBEDE3A2BB8C7B500E13BEF /* TheSerifHandRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheSerifHandRegular.ttf; sourceTree = "<group>"; };
 		CEBEDE3B2BB8C7B500E13BEF /* TheSerifHandBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheSerifHandBold.ttf; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */,
 				CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */,
 				CED47F652BCC91800085F051 /* QuizView.swift */,
+				CEA810C92BCCE71C00929735 /* ProblemsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				CE5A96882BAE896A009411D4 /* HelperView.swift in Sources */,
 				CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */,
 				CE5A968E2BAE89BB009411D4 /* FirebaseManager.swift in Sources */,
+				CEA810CA2BCCE71C00929735 /* ProblemsView.swift in Sources */,
 				CE5A96982BAE8E9F009411D4 /* ProblemOfDay.swift in Sources */,
 				CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */,
 				CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */,

@@ -213,13 +213,13 @@ struct SignInView: View {
                 ) {
                     Button(action: {
                         print("pressed")
-//                        dbManager.loginUser(
-//                            email: email,
-//                            pass: pass,
-//                            loginStatus: $loginStatus,
-//                            showAlert: $showAlert,
-//                            requestBiometricAlert: $requestBiometricAlert
-//                        )
+                        dbManager.loginUser(
+                            email: email,
+                            pass: pass,
+                            loginStatus: $loginStatus,
+                            showAlert: $showAlert,
+                            requestBiometricAlert: $requestBiometricAlert
+                        )
                     }, label: {
                         Text("LOGIN")
                             .padding(.vertical)
@@ -255,10 +255,10 @@ struct SignInView: View {
                                   }
                             )
                         }
+                        .offset(y: 20)
                 }
-                        .offset(y: 25)
             }
-//            .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
             
             // Biometrics
             // TODO: configure biometric login
