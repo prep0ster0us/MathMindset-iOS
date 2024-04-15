@@ -116,141 +116,149 @@ struct SignInView: View {
                 Color(.white).opacity(0.5).frame(width: UIScreen.main.bounds.width/4, height: 1)
             }
             
-            // Login Input
-            VStack {
-                // Username/Email
-                HStack {
-                    // Icon
-                    Image(systemName: "envelope")
-                        .foregroundColor(.iconTint)
-                        .frame(width: 24, height: 24, alignment: .center)
-                    // Input Field
-                    TextField("Username / Email Address", text: $email)
-                        .keyboardType(.emailAddress)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .padding()
-                        .padding(.leading, -12)
-                        .onChange(of: email, {
-                            if isValidEmail(email) {
-                                withAnimation(Animation.easeIn) {
-                                    usnEntered.toggle()
-                                }
-                            }
-                        })
-                }.padding(.horizontal, 12)          // internal padding
-                    .background(RoundedRectangle(cornerRadius:6)
-                        .stroke(Color("loginTextField"),lineWidth:2))
-                    .padding(.horizontal, 24)       // margin (external padding)
-                    .padding(.bottom, 32)
-                
-                // Password
-                HStack {
-                    // Icon
-                    Image(systemName: "key")
-                        .foregroundColor(.iconTint)
-                        .frame(width: 24, height: 24, alignment: .center)
-                    // Input Field
-                    if visible {
-                        TextField("Password", text: $pass)
-                            .autocapitalization(.none)
-                            .padding()
-                            .padding(.leading, -12)
-                        //                        .background(RoundedRectangle(cornerRadius:8)
-                        //                        .stroke(Color("loginTextField"),lineWidth:2))
-                        //                        .font(Font.custom("roboto", size: 16))      // TODO: addd custom font files for "Nexa"
-                    } else {
-                        SecureField("Password", text: $pass)
-                            .autocapitalization(.none)
+            ZStack (alignment: .bottom) {
+                // Login Input
+                VStack {
+                    // Username/Email
+                    HStack {
+                        // Icon
+                        Image(systemName: "envelope")
+                            .foregroundColor(.iconTint)
+                            .frame(width: 24, height: 24, alignment: .center)
+                        // Input Field
+                        TextField("Username / Email Address", text: $email)
+                            .keyboardType(.emailAddress)
                             .autocorrectionDisabled()
-                            .foregroundColor(Color(.textTint))
+                            .textInputAutocapitalization(.never)
                             .padding()
                             .padding(.leading, -12)
-                        
-                    }
-                    // Toggle visibility of password field
-                    Button(action: {
-                        visible.toggle()
-                    }) {
-                        Image(systemName: visible ? "eye.circle.fill" : "eye.slash.circle")
-                            .renderingMode(/*@START_MENU_TOKEN@*/.template/*@END_MENU_TOKEN@*/)
-                            .foregroundColor(Color("iconTint"))
-                            .opacity(0.8)
-                    }
-                }.padding(.horizontal, 12)      // internal padding
-                    .background(RoundedRectangle(cornerRadius:6)
-                        .stroke(Color("loginTextField"),lineWidth:2))
-                    .padding(.horizontal, 24)   // margin (external padding)
-                
-                // Forgot Password
-                HStack {
-                    Spacer()
-                    NavigationLink(destination: ForgotPwdView()) {
-                        Text("Forgot Password?")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color(.textTint))
-                            .italic()
-                    }
-                }.padding(.top, 12)
-                    .padding(.trailing, 25)
-            }.padding(.vertical, 36)
-                .padding(.bottom, 12)
-                .background(RoundedRectangle(cornerRadius: 12).fill(.bgTint).opacity(0.85))
-                .padding(.horizontal, 16)
-                .padding(.top, 12)
-            
-            // Login Button
-            
-            NavigationLink(
-                destination: BottomBar(
-                    AnyView(HomeView()),
-                    AnyView(Leaderboards()),
-                    AnyView(Profile())
-                )
-                .environmentObject(AppVariables()),
-                isActive: $loginStatus
-            ) {
-                Button(action: {
-                    dbManager.loginUser(
-                        email: email,
-                        pass: pass,
-                        loginStatus: $loginStatus,
-                        showAlert: $showAlert,
-                        requestBiometricAlert: $requestBiometricAlert
-                    )
-                }, label: {
-                    Text("LOGIN")
-                        .padding(.vertical)
-                        .foregroundColor(.textContrast)
-                        .fontWeight(.bold)
-                        .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
-                        .alert(isPresented: $showAlert) {
-                            Alert(title: Text("Login Error"),
-                                  message: Text("Wrong credentials! Try Again"),
-                                  dismissButton: .default(Text("Ok")) {
-                                pass=""     // clear password field
+                            .onChange(of: email, {
+                                if isValidEmail(email) {
+                                    withAnimation(Animation.easeIn) {
+                                        usnEntered.toggle()
+                                    }
+                                }
                             })
-                        }
+                    }.padding(.horizontal, 12)          // internal padding
+                        .background(RoundedRectangle(cornerRadius:6)
+                            .stroke(Color("loginTextField"),lineWidth:2))
+                        .padding(.horizontal, 24)       // margin (external padding)
+                        .padding(.bottom, 32)
                     
-                }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
-                    .cornerRadius(8)
-                    .offset(y: -40)
-                    .padding(.bottom, -40)
-                    .shadow(radius: 25)
-                    .alert(isPresented: $requestBiometricAlert) {
-                        Alert(title: Text("Biometric"),
-                              message: Text("Enable Biometric Login?"),
-                              primaryButton: .default(Text("Sure")) {
-                                UserDefaults.standard.set(email, forKey: "email")
-                                UserDefaults.standard.set(pass, forKey: "password")
-                                dbManager.setBiometric("true")
-                              },
-                              secondaryButton: .cancel(Text("Not now")) {
-                                dbManager.setBiometric("false")
-                              }
+                    // Password
+                    HStack {
+                        // Icon
+                        Image(systemName: "key")
+                            .foregroundColor(.iconTint)
+                            .frame(width: 24, height: 24, alignment: .center)
+                        // Input Field
+                        if visible {
+                            TextField("Password", text: $pass)
+                                .autocapitalization(.none)
+                                .padding()
+                                .padding(.leading, -12)
+                            //                        .background(RoundedRectangle(cornerRadius:8)
+                            //                        .stroke(Color("loginTextField"),lineWidth:2))
+                            //                        .font(Font.custom("roboto", size: 16))      // TODO: addd custom font files for "Nexa"
+                        } else {
+                            SecureField("Password", text: $pass)
+                                .autocapitalization(.none)
+                                .autocorrectionDisabled()
+                                .foregroundColor(Color(.textTint))
+                                .padding()
+                                .padding(.leading, -12)
+                            
+                        }
+                        // Toggle visibility of password field
+                        Button(action: {
+                            visible.toggle()
+                        }) {
+                            Image(systemName: visible ? "eye.circle.fill" : "eye.slash.circle")
+                                .renderingMode(/*@START_MENU_TOKEN@*/.template/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(Color("iconTint"))
+                                .opacity(0.8)
+                        }
+                    }.padding(.horizontal, 12)      // internal padding
+                        .background(RoundedRectangle(cornerRadius:6)
+                            .stroke(Color("loginTextField"),lineWidth:2))
+                        .padding(.horizontal, 24)   // margin (external padding)
+                    
+                    // Forgot Password
+                    HStack {
+                        Spacer()
+                        NavigationLink(destination: ForgotPwdView()) {
+                            Text("Forgot Password?")
+                                .font(.system(size: 12))
+                                .foregroundStyle(Color(.textTint))
+                                .italic()
+                        }
+                    }.padding(.top, 12)
+                        .padding(.trailing, 25)
+                }.padding(.vertical, 36)
+                    .padding(.bottom, 12)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(.bgTint).opacity(0.85))
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+                
+                // Login Button
+                
+                NavigationLink(
+                    destination: BottomBar(
+                        AnyView(HomeView()),
+                        AnyView(Leaderboards()),
+                        AnyView(Profile())
+                    )
+                    .environmentObject(AppVariables()),
+                    isActive: $loginStatus
+                ) {
+                    Button(action: {
+                        print("pressed")
+//                        dbManager.loginUser(
+//                            email: email,
+//                            pass: pass,
+//                            loginStatus: $loginStatus,
+//                            showAlert: $showAlert,
+//                            requestBiometricAlert: $requestBiometricAlert
+//                        )
+                    }, label: {
+                        Text("LOGIN")
+                            .padding(.vertical)
+                            .foregroundColor(.textContrast)
+                            .fontWeight(.heavy)
+                            .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Login Error"),
+                                      message: Text("Wrong credentials! Try Again"),
+                                      dismissButton: .default(Text("Ok")) {
+                                    pass=""     // clear password field
+                                })
+                            }
+                        
+                    }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8).stroke(.iconTint, lineWidth: 2.5)
                         )
-                    }
-            }.navigationBarBackButtonHidden()
+                        .offset(y: -40)
+                        .padding(.bottom, -40)
+                        .shadow(radius: 25)
+                        .alert(isPresented: $requestBiometricAlert) {
+                            Alert(title: Text("Biometric"),
+                                  message: Text("Enable Biometric Login?"),
+                                  primaryButton: .default(Text("Sure")) {
+                                    UserDefaults.standard.set(email, forKey: "email")
+                                    UserDefaults.standard.set(pass, forKey: "password")
+                                    dbManager.setBiometric("true")
+                                  },
+                                  secondaryButton: .cancel(Text("Not now")) {
+                                    dbManager.setBiometric("false")
+                                  }
+                            )
+                        }
+                }
+                        .offset(y: 25)
+            }
+//            .navigationBarBackButtonHidden()
             
             // Biometrics
             // TODO: configure biometric login
