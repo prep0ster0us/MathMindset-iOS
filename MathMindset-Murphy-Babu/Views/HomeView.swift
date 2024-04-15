@@ -131,7 +131,7 @@ struct HomeView: View {
                                     .frame(width: $app.screenWidth.wrappedValue)
                                     .onAppear {
                                         print("title= \(title) --> \(topicProgress[title] as! Int)")
-                                        print("after populating topic card: \(topicProgress)")
+//                                        print("after populating topic card: \(topicProgress)")
                                     }.onDisappear {
                                         isLoading = true
                                     }
@@ -201,7 +201,7 @@ struct HomeView: View {
                     case .success(let document):
 //                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
                     topicProgress = document.progress as [String: Int]
-                    print("fetched progress: \(topicProgress)")
+//                    print("fetched progress: \(topicProgress)")
                     userScore = document.score
                     userStreak = document.streak
                     
@@ -247,7 +247,6 @@ struct HomeView: View {
         // construct date-time from these components
         let problemRefreshDate = calendar.date(from: components)!
         // track difference between current date-time and this constructed date-time (in seconds)
-        print(problemRefreshDate)
         countDown = problemRefreshDate.timeIntervalSince(.now)
     }
 

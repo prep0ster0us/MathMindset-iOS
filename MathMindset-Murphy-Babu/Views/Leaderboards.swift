@@ -113,7 +113,6 @@ struct Leaderboards: View {
                     .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
                 }
                 .onAppear {
-                    print(users)
                     self.users.sort { index == 0
                         ? ($0.score > $1.score)
                         : ($0.streak > $1.streak)
@@ -129,16 +128,14 @@ struct Leaderboards: View {
     }
     
     func fetchTopUsers() {
-        var standing = 0
-        
-        let ref = db.collection("Leaderboard")
+//        let ref = db.collection("Leaderboard")
+        let ref = db.collection("Users")
+            .order(by: "\(index == 0 ? "score" : "streak")", descending: true) // Order by score/streak
+            .limit(to: 10) // Top 10
         ref.getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error getting leaderboard users: \(error.localizedDescription)")
                 } else {
-                    // fetch all users from Leaderboard
-                    // let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
-                    
                     self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
                         let data = document.data()
 //                        print(data)
@@ -148,7 +145,6 @@ struct Leaderboards: View {
                               let score = data["score"] as? Int else {
                             return nil
                         }
-                        standing += 1
                         return TopUser(
                             username    : username,
                             profileImage : profileImage,
@@ -156,12 +152,6 @@ struct Leaderboards: View {
                             score       : score
                         )
                     } ?? []
-                    self.users.sort { index == 0
-                        ? ($0.score > $1.score)
-                        : ($0.streak > $1.streak)
-                    }
-//                    print(self.users.count)
-//                    print(self.users)
                 }
             }
     }
@@ -180,29 +170,6 @@ struct Leaderboards: View {
                     print("Error fetching current user: \(error.localizedDescription)")
                 }
             }
-        //        let user = auth.currentUser!
-        //        let ref = db.collection("Users")
-        //        ref.document(user.uid)
-        //            .getDocument { (document, error) in
-        //                if let document = document, document.exists {
-        //                    let data: [String: Any] = document.data() ?? [:]
-        //                    guard let username = data["username"] as? String,
-        //                          let profileImage = data["profileImage"] as? String,
-        //                          let streak = data["streak"] as? Int,
-        //                          let score = data["score"] as? Int else {
-        //                        return
-        //                    }
-        //                    currentUser = TopUser(
-        //                        username: username,
-        //                        profileImage: profileImage,
-        //                        streak: streak,
-        //                        score: score
-        //                    )
-        //                    print(currentUser)
-        //                } else {
-        //                    print("User does not exist")
-        //                }
-        //            }
     }
 }
 
