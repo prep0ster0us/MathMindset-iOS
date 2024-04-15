@@ -1,4 +1,5 @@
 import SwiftUI
+import Firebase
 
 struct QuizView: View {
     //    @State private var topic       : String
@@ -117,6 +118,9 @@ struct QuizView: View {
                         // If new score is greater:
                         //      Display new score and confetti
                         //      Update db if necessary
+                        Task {
+                            await updateQuizScore()
+                        }
                         showScore.toggle()
                     } else {
                         problemNum += 1
@@ -199,6 +203,51 @@ struct QuizView: View {
         ])
         
         _question = State(initialValue: problem.printQuestion() + "\n\(problem.print())")
+    }
+    
+    func updateQuizScore() async {
+        let userID = Auth.auth().currentUser!.uid
+        let db = Firestore.firestore()
+        let ref = db.collection("Users").document(userID)
+        
+        // perform a transaction for running updates on database in batch
+        do {
+            let _ = try await db.runTransaction({ (transaction, errorPointer) -> Any? in
+                // 1. fetch doc
+                let document: DocumentSnapshot
+                do {
+                    try document = transaction.getDocument(ref)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                print("got user doc")
+                
+                // 2. get existing data
+                //                let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
+                let userScores = document.data()?["quiz_scores"] as? [String: Int]
+                let currScore = userScores!["\(topic)"]
+                print("current score: \(String(describing: currScore))")
+                print("got current scores")
+                
+                // 3. update data (based on criteria)
+                
+                // Compare the values and update if the condition is met
+                if score > currScore! {      // if current quiz score > existing score (in db)
+                    print("updating score, current --> \(String(describing: currScore)) to new --> \(score)")
+                    transaction.updateData([
+                        "quiz_scores.\(topic)": score
+                    ], forDocument: ref)
+                } else {
+                    print("existing score is greater than current quiz score")
+                }
+                print("updated scores")
+                return nil
+            })
+            print("Transaction successful!")
+        } catch {
+            print("Transaction failed! \(error)")
+        }
     }
 }
 

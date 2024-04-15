@@ -200,6 +200,7 @@ class FirebaseManager: ObservableObject {
                         "account_creation_date" : Date(),
                         "last_login"            : Date(),
                         "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
+                        "quiz_scores"           : ["Factoring": 0, "Trig": 0, "Derivative": 0],
                         "profileImage"          : gProfileImage, // save firestore storage downloadURL here
                         "biometricEnabled"      : "",
                         "score"                 : 0,
