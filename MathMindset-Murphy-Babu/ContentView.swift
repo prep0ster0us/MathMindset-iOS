@@ -20,6 +20,8 @@ class AppVariables: ObservableObject {
     func setStreak(newVal: Int) {
         streak = newVal
     }
+    // Used for quiz page
+    @Published var selectedButton: Int = -1
 }
 
 struct ContentView: View {

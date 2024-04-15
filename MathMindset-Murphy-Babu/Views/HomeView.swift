@@ -57,7 +57,7 @@ struct HomeView: View {
                 }
                 .padding()
                 .padding(.top, 50)
-                Text("\(String(describing: topicProgress["Trig"]))").font(.title)
+                
                 VStack {
                     Text("Problem of the Day")
                     // TODO: Find our own smallcaps font

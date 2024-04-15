@@ -23,52 +23,50 @@ struct TopicCard: View {
         self.starCount = Double(completed)
     }
     
-    let db = Firestore.firestore()
-//    
-//    func increaseCompleted() {
-//        if self.completed <= 9 {
-//            self.completed += 1
-//            //            self.starCount += 0.5
-//            self.starCount += 1
-//        }
-//    }
-    
     var body: some View {
-
-//        NavigationStack  {
-            HStack {
-                Spacer().overlay(
-                    Text(self.name)
-                        .font(.system(size: 16, weight: .bold))
-                        .padding(.trailing, 8)
-                )
-                // TODO: update to Image(self.image) if we find enough images
-                Spacer().overlay (
-                    VStack {
-                        HStack {
-                            ForEach(0..<5) { i in
-                                StarImage(count: i, completed: self.completed)
+        
+        HStack {
+            Spacer().overlay(
+                Text(self.name)
+                    .font(.system(size: 20, weight: .heavy))
+            )
+            Spacer().overlay(
+                Group{
+                    if self.completed == 10 {
+                        // in a VStack, since need both views in the if-condition to return same views
+                        VStack {
+                            QuizButton(true)
+                                .padding(.leading, 16)
+                        }
+                    } else {
+                        VStack {
+                            HStack {
+                                ForEach(0..<5) { i in
+                                    StarImage(count: i, completed: self.completed)
+                                }
+                            }
+                            HStack {
+                                ForEach(5..<10) { i in
+                                    StarImage(count: i, completed: self.completed)
+                                }
                             }
                         }
-                        HStack {
-                            ForEach(5..<10) { i in
-                                StarImage(count: i, completed: self.completed)
-                            }
-                        }
-                    }.padding(.trailing, 50)
-                )
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                    .shadow(radius: 5)
-                    .frame(width: 285, height: 80))
-            .padding(42)
-//        }
+                    }
+                }
+                , alignment: .leading
+            )
+        }.frame(width: UIScreen.main.bounds.width - 50, height: 90)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(getGradientColor().opacity(0.5))
+                .shadow(radius: 6)
+        )
     }
     
-    
-    
+    func getGradientColor() -> LinearGradient {
+        LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                       , startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
 }
 
 struct StarImage: View {
@@ -78,14 +76,53 @@ struct StarImage: View {
         VStack {
             Image(systemName: completed>count ? "star.fill" : "star")
                 .foregroundStyle(Color(.yellow))
-                .overlay(Image(systemName: "star")
-                    .foregroundStyle(.black))
+                .overlay(
+                    Image(systemName: "star")
+                        .foregroundStyle(.black)
+                )
         }
     }
 }
 
+struct QuizButton: View {
+    var isEnabled: Bool
+    
+    init(_ isEnabled: Bool) {
+        self.isEnabled = isEnabled
+    }
+    
+    var body: some View {
+        // Quiz
+        Text("Take Quiz")
+            .font(.title2)
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(
+                        self.isEnabled
+                        ? Color(red: 0, green: 0.8, blue: 1)
+                        : Color(red: 0.7, green: 0.7, blue: 0.7)
+                    )
+                    .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                    .shadow(radius: 4)
+                    .frame(width: 150)
+            )
+            .foregroundColor(.textTint)
+    }
+}
+
+
 #Preview {
-    TopicCard(name: "Factoring",
-              image: "Factoring",
-              completed: 7)
+    VStack(spacing: 15) {
+        TopicCard(name: "Factoring",
+                  image: "Factoring",
+                  completed: 8)
+        Spacer().frame(height: 50)
+        TopicCard(name: "Factoring",
+                  image: "Factoring",
+                  completed: 10)
+        TopicCard(name: "Trig",
+                  image: "Trig",
+                  completed: 7)
+    }
 }
