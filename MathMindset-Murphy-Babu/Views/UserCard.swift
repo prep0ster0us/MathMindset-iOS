@@ -11,7 +11,7 @@ import FirebaseStorage
 struct UserCard: View {
     
     let username    : String
-    let pfpImageUrl : String
+    @State var pfpImageUrl : String
     let metric      : CGFloat
     let metricType  : String
     let standing    : Int
@@ -41,7 +41,7 @@ struct UserCard: View {
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(isTap ? focusColor : Color(.bgContrast).opacity(0.1))
+                .fill(standing == -1 ? Color(.bgTint).opacity(0.8) : Color(.bgContrast).opacity(0.1))
                 .shadow(radius: shadowRadius, x: 12, y: 16)
                 .overlay(
                     RoundedRectangle(cornerRadius: cornerRadius)
@@ -53,32 +53,38 @@ struct UserCard: View {
             
             VStack {
                 HStack {
-                    // Top3 badge
-//                    Image(systemName: "trophy")
-//                        .foregroundStyle(standing == 0 ? 
-//                                         Color(.red) : (standing == 1 ? 
-//                                                        Color(.teal) : (standing == 2 ?
-//                                                                        Color(.blue)
-//                                                                        : Color(.black)
-//                                                                       )
-//                                                       )
-//                        )
-//                        .opacity(standing < 3 ? 1 : 0)    // TODO: update top3 badge image
                     ZStack {
-                        
                         // Profile Image
-                        AsyncImage(url: URL(string: pfpImageUrl)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            ProgressView()
-                        }.frame(width: height-25, height: height-25)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            .overlay(
-                                Circle()
-                                    .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                            )
+                        if pfpImageUrl.isEmpty {
+                            VStack {
+                                Image(systemName: "person.crop.circle.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: height-25, height: height-25)
+                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                        .overlay(
+                                            Circle()
+                                                .stroke(.iconTint, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                                        )
+                                        .foregroundStyle(.iconTint).opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                            }
+                        } else {
+                            VStack {
+                                AsyncImage(url: URL(string: pfpImageUrl)) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: height-25, height: height-25)
+                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                                    )
+                            }
+                        }
                         Group {
                             switch(standing) {
                             case 0: Image("rank1")
@@ -109,6 +115,13 @@ struct UserCard: View {
             }
             .frame(maxWidth: width, maxHeight: height)
         }
+        .onAppear {
+            // processing profile image for google signed-in users
+            if pfpImageUrl.contains("Optional") {
+                pfpImageUrl = pfpImageUrl.replacingOccurrences(of: "Optional(", with: "")
+                pfpImageUrl = pfpImageUrl.replacingOccurrences(of: ")", with: "")
+            }
+        }
 //        .onTapGesture {
 //            click()
 //        }
@@ -120,5 +133,11 @@ struct UserCard: View {
 }
 
 #Preview {
-    UserCard("UsernameVeryLong", "https://firebasestorage.googleapis.com:443/v0/b/mathmindset.appspot.com/o/Users%2FJbMMFqWltOhHk27cLgJ1CWCykzm1%2FprofileImage.jpg?alt=media&token=9562e9db-1589-4a4d-8746-a3080448ef5f", 9, "primes", 2)
+    VStack(spacing: 30) {
+        UserCard("UsernameVeryLong", "https://firebasestorage.googleapis.com:443/v0/b/mathmindset.appspot.com/o/Users%2FJbMMFqWltOhHk27cLgJ1CWCykzm1%2FprofileImage.jpg?alt=media&token=9562e9db-1589-4a4d-8746-a3080448ef5f", 9, "primes", 2)
+        UserCard("standard google image",
+        "Optional(https://lh3.googleusercontent.com/a/ACg8ocIoeHII-ObQlY-sif96lDVjiDf-Dn_mWY3YOEtp2CaktBhMGg=s96-c)", 15, "primes", 4)
+        UserCard("empty user",
+        "", 15, "primes", 4)
+    }
 }

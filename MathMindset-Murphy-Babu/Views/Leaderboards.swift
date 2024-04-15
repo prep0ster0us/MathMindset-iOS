@@ -32,7 +32,7 @@ struct Leaderboards: View {
                                 .clipShape(Capsule())
                                 .offset(y: -12)
                         }.padding(.top, 24)
-                        Spacer()
+                    
                         // show current user's card
                         if auth.currentUser != nil {
                             UserCard(
@@ -42,7 +42,7 @@ struct Leaderboards: View {
                                 self.index == 0 ? "primes" : "days",
                                 -1
                             ).padding(4)
-                                .padding(.vertical, 12)
+                                .padding(.bottom, 12)
                         }
                     }
                 }
@@ -59,10 +59,6 @@ struct Leaderboards: View {
                 withAnimation(Animation.smooth()) {
                     self.index = 0
                 }
-                self.users.sort { index == 0
-                    ? ($0.score > $1.score)
-                    : ($0.streak > $1.streak)
-                }
             }, label: {
                 Text("Score")
                     .foregroundStyle(self.index == 0 ? Color(.textTint) : Color(.textContrast))
@@ -77,10 +73,6 @@ struct Leaderboards: View {
             Button(action: {
                 withAnimation(Animation.linear(duration: 0.2)) {
                     self.index = 1
-                }
-                self.users.sort { index == 0
-                    ? ($0.score > $1.score)
-                    : ($0.streak > $1.streak)
                 }
             }, label: {
                 Text("Streak")
@@ -112,12 +104,6 @@ struct Leaderboards: View {
                     .padding(.top, standing == 0 ? 36 : 0)
                     .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
                 }
-                .onAppear {
-                    self.users.sort { index == 0
-                        ? ($0.score > $1.score)
-                        : ($0.streak > $1.streak)
-                    }
-                }
             }
         }.background(
             RoundedRectangle(cornerRadius: 16)
@@ -139,17 +125,18 @@ struct Leaderboards: View {
                     self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
                         let data = document.data()
 //                        print(data)
-                        guard let username = data["username"] as? String,
+                        guard let username     = data["username"] as? String,
                               let profileImage = data["profileImage"] as? String,
-                              let streak = data["streak"] as? Int,
-                              let score = data["score"] as? Int else {
+                              let streak       = data["streak"] as? Int,
+                              let score        = data["score"] as? Int else {
                             return nil
                         }
+                        print("\(username) ==> \(profileImage)")
                         return TopUser(
-                            username    : username,
+                            username     : username,
                             profileImage : profileImage,
-                            streak      : streak,
-                            score       : score
+                            streak       : streak,
+                            score        : score
                         )
                     } ?? []
                 }
