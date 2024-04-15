@@ -19,21 +19,30 @@ struct ProblemsView: View {
     @State private var isCorrect = false
     @State private var showAlert = false
     @State private var showConfetti = 0
+    // CHECK FOR ALL 10 PROBLEMS SOLVED
+    @State private var goToQuiz = false
     
-    // FOR RESETTING THE PAGE TO SHOW NEXT QUESTION
-//    @State private var resetToNext = false
+    
     
     var body: some View {
-        if setQuestionData {
-            content
-        } else {
-            ShapeProgressView()
-                .onAppear {
-                    print("on problem page of \(question)")
-                    question = problemSet[Int(problemNum)].question
-                    choices = problemSet[Int(problemNum)].choices
-                    setQuestionData = true
-                }
+        // all problems solved, go to quiz
+        if goToQuiz || problemNum >= 10 {
+            // QuizView(topic: topic)
+            ShapeProgressView()         // placeholder
+        }
+        // problems remaining, show respective problem page
+        else {
+            if setQuestionData {        // fetching question data
+                content
+            } else {
+                ShapeProgressView()     // show progress view till problem page data ready
+                    .onAppear {
+                        print("on problem page of \(question)")
+                        question = problemSet[Int(problemNum)].question
+                        choices = problemSet[Int(problemNum)].choices
+                        setQuestionData = true
+                    }
+            }
         }
     }
     
@@ -112,7 +121,6 @@ struct ProblemsView: View {
                                 Task {
                                     await updateProgress(topic, Int(problemNum))
                                 }
-                                showConfetti = 0
                             }
                             
                         })
@@ -124,6 +132,11 @@ struct ProblemsView: View {
                 .foregroundStyle(.ultraThinMaterial)
                 .ignoresSafeArea()                  // to cover the entire screen
         )
+        // TODO: figure out navigation to page (instead of changing view content) - low priority
+//        .navigationDestination(isPresented: $goToQuiz) {
+////            QuizView(topic: topic)
+//            ShapeProgressView()
+//        }
     }
     
     func updateProgress(
@@ -161,12 +174,12 @@ struct ProblemsView: View {
                     transaction.updateData([
                         "streak": currStreak + 1,
                         "streak_update_timestamp" : Date(),
-                        "progress.\(topic)": problemNum
+                        "progress.\(topic)": problemNum+1
                     ], forDocument: ref)
                 } else {
                     print("only streak updated")
                     transaction.updateData([
-                        "progress.\(topic)": problemNum
+                        "progress.\(topic)": problemNum+1
                     ], forDocument: ref)
                 }
                 print("updated data")
@@ -198,19 +211,28 @@ struct ProblemsView: View {
         )!
     }
     
+    // FOR RESETTING THE PAGE TO SHOW NEXT QUESTION
     // reset all variables used; and update the view to display the 'next' question
     func resetToNext() {
         isCorrect = false
         showAlert = false
         showConfetti = 0
         isPressed = -1
-//        setQuestionData = false
         
-        // populate the next questions
-        withAnimation(Animation.easeInOut) {
-            problemNum += 1
-            question = problemSet[Int(problemNum)].question
-            choices = problemSet[Int(problemNum)].choices
+        if problemNum == 9 {        // 9 because coming from 0-indexed 'problemSet'
+            // proceed to Quiz
+            withAnimation(Animation.smooth) {
+                goToQuiz = true
+            }
+        } else {
+            // populate the next questions
+            withAnimation(Animation.linear) {
+                problemNum += 1
+            }
+            withAnimation(Animation.easeInOut) {
+                question = problemSet[Int(problemNum)].question
+                choices = problemSet[Int(problemNum)].choices
+            }
         }
     }
 }
