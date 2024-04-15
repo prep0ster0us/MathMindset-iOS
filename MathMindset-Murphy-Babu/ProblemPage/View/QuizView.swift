@@ -23,6 +23,10 @@ struct QuizView: View {
     @State var choices: [String]!
     //    @State var isPressed: Int = -1
     
+    // After solving all questions, show score and dismiss back to home view
+    @State var showScore: Bool = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var width: CGFloat = UIScreen.main.bounds.width-60
     var height: CGFloat = 58
     var radius: CGFloat = 24
@@ -106,24 +110,26 @@ struct QuizView: View {
                         print("Wrong answer")
                     }
                     app.selectedButton = -1
-                    problemNum += 1
-                    if (self.problemNum > 10) { // not zero indexed
+                    if (self.problemNum >= 10) { // not zero indexed
                         // TODO:
                         // Return to home page
                         // Compare score to old score
                         // If new score is greater:
                         //      Display new score and confetti
                         //      Update db if necessary
+                        showScore.toggle()
+                    } else {
+                        problemNum += 1
+                        problem = addQuizProblem(problemTopic: self.topic)
+                        choices = [
+                            problem.printFakeSol(choice: 1),// this is the correct choice
+                            problem.printFakeSol(choice: 2),
+                            problem.printFakeSol(choice: 3),
+                            problem.printFakeSol(choice: 4)
+                        ]
+                        selections = [1, 2, 3, 4].shuffled()
+                        question = problem.printQuestion() + "\n\(problem.print())"
                     }
-                    problem = addQuizProblem(problemTopic: self.topic)
-                    choices = [
-                        problem.printFakeSol(choice: 1),// this is the correct choice
-                        problem.printFakeSol(choice: 2),
-                        problem.printFakeSol(choice: 3),
-                        problem.printFakeSol(choice: 4)
-                    ]
-                    selections = [1, 2, 3, 4].shuffled()
-                    question = problem.printQuestion() + "\n\(problem.print())"
                 }
             }, label: {
                 Text("Submit")
@@ -148,6 +154,13 @@ struct QuizView: View {
                     .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
                     .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
             }).buttonStyle(SubmitButtonStyle())
+                .alert(isPresented: $showScore) {
+                    Alert(title: Text("Quiz Results"),
+                          message: Text("Final Score : \(score)"),
+                          dismissButton: .default(Text("Back to Home")) {
+                        self.presentationMode.wrappedValue.dismiss()
+                    })
+                }
         }
         .background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
