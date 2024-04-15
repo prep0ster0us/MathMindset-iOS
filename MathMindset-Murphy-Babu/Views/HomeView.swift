@@ -175,9 +175,13 @@ struct HomeView: View {
                         break
                     }
                 }
-//                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
-//                    isLoading = false
-//                }
+                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+                    // sort fetched question set (in order Problem1 - Problem10)
+                    PolySet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+                    DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+                    TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+                }
+                
             } else {
                 print("Document does not exist")
             }
