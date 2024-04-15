@@ -115,19 +115,6 @@ struct UserCard: View {
             }
             .frame(maxWidth: width, maxHeight: height)
         }
-        .onAppear {
-            // processing profile image for google signed-in users
-            if pfpImageUrl.contains("Optional") {
-                pfpImageUrl = pfpImageUrl.replacingOccurrences(of: "Optional(", with: "")
-                pfpImageUrl = pfpImageUrl.replacingOccurrences(of: ")", with: "")
-            }
-        }
-//        .onTapGesture {
-//            click()
-//        }
-//        .onLongPressGesture(minimumDuration: 0.3, pressing: {
-//            pressing in isTap = pressing}, perform: { longClick()
-//        })
     }
     
 }

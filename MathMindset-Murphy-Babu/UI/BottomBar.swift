@@ -34,19 +34,25 @@ struct BottomBar: View {
                 Home
                     .tabItem{
                          Image($app.selectedTab.wrappedValue == 0 ? "homeActive" : "homeInactive")
+                            .foregroundStyle(.iconTint)
                          Text("Home")
+                            .foregroundStyle(.textTint)
                     }
                     .tag(0)
                 Leaderboards
                     .tabItem{
-                        Image($app.selectedTab.wrappedValue == 1 ? "Leaderboards" : "Leaderboards2")
+                        Image($app.selectedTab.wrappedValue == 1 ? "LeaderboardActive" : "LeaderboardInactive")
+                            .foregroundStyle(.iconTint)
                         Text("Leaderboard")
+                            .foregroundStyle(.textTint)
                     }
                     .tag(1)
                 Profile
                     .tabItem {
                          Image($app.selectedTab.wrappedValue == 2 ? "profileActive" : "profileInactive")
+                            .foregroundStyle(.iconTint)
                         Text("Profile")
+                            .foregroundStyle(.textTint)
                         
                     }
                     .tag(2)

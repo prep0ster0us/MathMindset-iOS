@@ -185,9 +185,11 @@ class FirebaseManager: ObservableObject {
                     let gName: String = user?.displayName ?? ""
                     let gDOB: Date = Calendar(identifier: .gregorian).date(from: DateComponents(year: 1900, month: 1, day: 1))!
                     var gProfileImage: String = String(describing: user?.photoURL)
+                    print(gProfileImage)
                     gProfileImage = gProfileImage.contains("Optional")
                     ? gProfileImage.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
                     : gProfileImage
+                    print(gProfileImage)
 //                        .contains("Optional") ? user?.photoURL[3..<(user?.photoURL.count) : ""]
                     // NOTE that this DOB is explicitly made to be a placeholder
                     // so it can be verified that the user does not have a DOB in place
