@@ -101,6 +101,9 @@ struct ProblemsView: View {
                 if isPressed == selections[1] {
                     isCorrect = true
                     showConfetti = 1        // trigger confetti animation
+                    Task {
+                        await updateProgress(topic, Int(problemNum))
+                    }
                 } else {
                     isCorrect = false
                 }
@@ -116,9 +119,7 @@ struct ProblemsView: View {
                               message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
                               dismissButton: .default(Text(isCorrect ? "Next Problem" : "Ok")) {
                             if isCorrect {
-                                Task {
-                                    await updateProgress(topic, Int(problemNum))
-                                }
+                                resetToNext()
                             }
                             
                         })
@@ -190,7 +191,6 @@ struct ProblemsView: View {
         } catch {
             print("Transaction failed! \(error)")
         }
-        resetToNext()
     }
 
     func dateYesterday() -> Date {
@@ -227,7 +227,7 @@ struct ProblemsView: View {
             }
         } else {
             // populate the next questions
-            withAnimation(Animation.linear) {
+            withAnimation(Animation.smooth(duration: 1.2)) {
                 problemNum += 1
             }
 //            withAnimation(Animation.easeInOut) {
