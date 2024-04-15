@@ -162,6 +162,7 @@ struct ProblemsView: View {
 //                let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
                 let lastStreakUpdate = document.data()?["streak_update_timestamp"] as? Timestamp
                 let currStreak = document.data()?["streak"] as? Int ?? -1
+                let currScore = document.data()?["score"] as? Int ?? -1
                 print("got data")
                 
                 // 3. update data (based on criteria)
@@ -172,12 +173,14 @@ struct ProblemsView: View {
                     transaction.updateData([
                         "streak": currStreak + 1,
                         "streak_update_timestamp" : Date(),
-                        "progress.\(topic)": problemNum+1
+                        "progress.\(topic)": problemNum+1,
+                        "score" : currScore+5
                     ], forDocument: ref)
                 } else {
                     print("only streak updated")
                     transaction.updateData([
-                        "progress.\(topic)": problemNum+1
+                        "progress.\(topic)": problemNum+1,
+                        "score" : currScore+5
                     ], forDocument: ref)
                 }
                 print("updated data")
@@ -227,10 +230,10 @@ struct ProblemsView: View {
             withAnimation(Animation.linear) {
                 problemNum += 1
             }
-            withAnimation(Animation.easeInOut) {
+//            withAnimation(Animation.easeInOut) {
                 question = problemSet[Int(problemNum)].question
                 choices = problemSet[Int(problemNum)].choices
-            }
+//            }
         }
     }
 }
