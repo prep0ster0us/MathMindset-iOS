@@ -14,6 +14,7 @@ struct UserData: Codable, Identifiable {
     var biometricEnabled        : String
     var profileImage            : String
     var streak_update_timestamp : Date
+    var potd_timestamp          : Date
     
     init(
         _ id                        : String?,
@@ -27,7 +28,8 @@ struct UserData: Codable, Identifiable {
         _ streak                    : Int,
         _ biometricEnabled          : String,
         _ profileImage              : String,
-        _ streak_update_timestamp   : Date
+        _ streak_update_timestamp   : Date,
+        _ potd_timestamp            : Date
     ) {
         self.id = id
         self.email = email
@@ -41,6 +43,7 @@ struct UserData: Codable, Identifiable {
         self.biometricEnabled = biometricEnabled
         self.profileImage = profileImage
         self.streak_update_timestamp = streak_update_timestamp
+        self.potd_timestamp = potd_timestamp
     }
     
 //    enum CodingKeys: String, CodingKey {

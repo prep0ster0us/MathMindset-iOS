@@ -10,7 +10,9 @@ struct HomeView: View {
     
     // TODO: static question for now, make this dynamic by fetching from db
     let problem = Poly()
-    @State var disableBtn: Bool = false
+    // For Problem of the day Button
+    @State private var potdActive : Bool = false
+    @State private var navToPOTD  : Bool = false
     
     // fetch user-stats
     @State var topicProgress: [String: Any?] = [:]
@@ -71,9 +73,9 @@ struct HomeView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 80)
                     NavigationLink(destination: ProblemOfDay().environmentObject(app),
-                                        isActive: $disableBtn
+                                        isActive: $potdActive
                     ) {
-                        Text($app.probOfDaySolved.wrappedValue ? formattedTime() : "Solve")     // difference available in seconds, format tthe value in HH:MM:SS
+                        Text(potdActive ? formattedTime() : "Solve")     // difference available in seconds, format tthe value in HH:MM:SS
                             .font(.title)
                             .onReceive(timer) { _ in
                                 if countDown > 0  && timerRunning {
@@ -90,7 +92,7 @@ struct HomeView: View {
                             .padding(12)
                             .background(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .fill(($app.probOfDaySolved.wrappedValue) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
+                                    .fill((potdActive) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
                                     .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
                                     .shadow(radius: 5)
                                     .frame(width: 175, height: 50)
@@ -194,6 +196,13 @@ struct HomeView: View {
                     userScore = document.score
                     userStreak = document.streak
                     
+                    // check if problem of the day has been solved already
+                    // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
+                    potdActive = false           // reset before checking
+                    if document.potd_timestamp > potdRefreshTimestamp() {
+                        potdActive = true        // potd page should be made available
+                    }
+                    
                     // set flag to indicate all necessary data has been loaded in
                     isLoading = false
 
@@ -202,6 +211,17 @@ struct HomeView: View {
                 }
         }
         
+    }
+    
+    func potdRefreshTimestamp() -> Date {
+        let calendar = Calendar.current
+        let components = DateComponents(year: calendar.component(.year, from: .now),
+                                        month: calendar.component(.month, from: .now),
+                                        day: calendar.component(.day, from: .now),  // current day
+                                        hour: 9,    // 9AM
+                                        minute: 0,
+                                        second: 0)
+        return calendar.date(from: components)!
     }
     
     func calculateTimeDifference() {
@@ -215,8 +235,6 @@ struct HomeView: View {
                                         hour: 9,    // 9AM
                                         minute: 0,
                                         second: 0)
-        print(calendar)
-        print(calendar.date(from: components)!)
         // construct date-time from these components
         let problemRefreshDate = calendar.date(from: components)!
         // track difference between current date-time and this constructed date-time (in seconds)

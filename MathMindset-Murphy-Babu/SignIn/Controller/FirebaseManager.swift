@@ -208,7 +208,12 @@ class FirebaseManager: ObservableObject {
                             year: calendar.component(.year, from: .now)-1,
                             month: calendar.component(.month, from: .now),
                             day: calendar.component(.day, from: .now))
-                        )!      // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                        )!,      // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                        "potd_timestamp"          : calendar.date(from: DateComponents(
+                            year: calendar.component(.year, from: .now)-1,
+                            month: calendar.component(.month, from: .now),
+                            day: calendar.component(.day, from: .now))
+                        )!       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
                     ]
                 
                     // save user details (after sign-in) to database
