@@ -59,6 +59,10 @@ struct Leaderboards: View {
                 withAnimation(Animation.smooth()) {
                     self.index = 0
                 }
+                self.users.sort { index == 0
+                    ? ($0.score > $1.score)
+                    : ($0.streak > $1.streak)
+                }
             }, label: {
                 Text("Score")
                     .foregroundStyle(self.index == 0 ? Color(.textTint) : Color(.textContrast))
@@ -74,6 +78,11 @@ struct Leaderboards: View {
                 withAnimation(Animation.linear(duration: 0.2)) {
                     self.index = 1
                 }
+                self.users.sort { index == 0
+                    ? ($0.score > $1.score)
+                    : ($0.streak > $1.streak)
+                }
+                // TODO: sort on fetch
             }, label: {
                 Text("Streak")
                     .foregroundStyle(self.index == 1 ? Color(.textTint) : Color(.textContrast).opacity(0.8))
@@ -139,6 +148,10 @@ struct Leaderboards: View {
                             score        : score
                         )
                     } ?? []
+                    self.users.sort { index == 0
+                        ? ($0.score > $1.score)
+                        : ($0.streak > $1.streak)
+                    }
                 }
             }
     }

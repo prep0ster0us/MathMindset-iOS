@@ -69,14 +69,15 @@ struct HomeView: View {
                         .foregroundStyle(Color(.textTint))
                         .underline()
                         .padding(.bottom, 12)
-                    Image(app.probOfDaySolved ? "potdInactive" : "potdActive")
+                    Image(potdActive ? "potdActive" : "potdInactive")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 80)
+                    // TODO: can still navigate to potd page; even when timer shows
                     NavigationLink(destination: ProblemOfDay().environmentObject(app),
                                         isActive: $potdActive
                     ) {
-                        Text(potdActive ? formattedTime() : "Solve")     // difference available in seconds, format tthe value in HH:MM:SS
+                        Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
                             .font(.title)
                             .onReceive(timer) { _ in
                                 if countDown > 0  && timerRunning {
@@ -93,7 +94,7 @@ struct HomeView: View {
                             .padding(12)
                             .background(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .fill((potdActive) ? Color(red: 0.7, green: 0.7, blue: 0.7) : Color(red: 0, green: 0.8, blue: 1))
+                                    .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
                                     .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
                                     .shadow(radius: 5)
                                     .frame(width: 175, height: 50)
@@ -210,7 +211,7 @@ struct HomeView: View {
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
                     potdActive = false           // reset before checking
-                    if document.potd_timestamp > potdRefreshTimestamp() {
+                    if document.potd_timestamp < potdRefreshTimestamp() {
                         potdActive = true        // potd page should be made available
                     }
                     
