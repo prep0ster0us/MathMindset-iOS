@@ -21,7 +21,9 @@ struct ProblemsView: View {
     @State private var showConfetti = 0
     // CHECK FOR ALL 10 PROBLEMS SOLVED
     @State private var goToQuiz = false
+    @State private var backToHome = false
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         // all problems solved, go to quiz
@@ -98,9 +100,10 @@ struct ProblemsView: View {
             // Submit button
             Button(action: {
                 // check if selected option is correct
-                if isPressed == selections[1] {
+                if isPressed == 1 {
+                    if problemNum >= 9 { backToHome.toggle() }
                     isCorrect = true
-                    showConfetti = 1        // trigger confetti animation
+                    showConfetti += 1        // trigger confetti animation
                     Task {
                         await updateProgress(topic, Int(problemNum))
                     }
@@ -115,14 +118,22 @@ struct ProblemsView: View {
                     .confettiCannon(counter: $showConfetti, num: 150, confettiSize: 10, rainHeight: 400)
                 // TODO: add red hue to the background if answer is incorrect
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Problem Submission"),
-                              message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
-                              dismissButton: .default(Text(isCorrect ? "Next Problem" : "Ok")) {
-                            if isCorrect {
-                                resetToNext()
-                            }
-                            
-                        })
+                        if backToHome {
+                            Alert(title: Text("All problems solved!"),
+                                  message: Text("You can now take the quiz"),
+                                  dismissButton: .default(Text("Back to Home")) {
+                                self.presentationMode.wrappedValue.dismiss()
+                            })
+                        } else {
+                            Alert(title: Text("Problem Submission"),
+                                  message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
+                                  dismissButton: .default(Text(isCorrect ? "Next Problem" : "Ok")) {
+                                if isCorrect {
+                                    resetToNext()
+                                }
+                                
+                            })
+                        }
                     }
             })
         }.background(
@@ -217,8 +228,9 @@ struct ProblemsView: View {
     func resetToNext() {
         isCorrect = false
         showAlert = false
-        showConfetti = 0
+//        showConfetti = 0
         isPressed = -1
+        selections = selections.shuffled()
         
         if problemNum == 9 {        // 9 because coming from 0-indexed 'problemSet'
             // proceed to Quiz
