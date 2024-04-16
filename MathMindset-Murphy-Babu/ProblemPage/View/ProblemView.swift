@@ -404,6 +404,10 @@ struct SubmitButton: View {
                 if isPressed == 1 {
                     isCorrect = true
                     showConfetti = 1
+                    Task {
+                        await createNotification()
+                        await updateProgress()
+                    }
                 } else {
                     isCorrect = false
                 }
@@ -455,6 +459,68 @@ struct SubmitButton: View {
                 }
         }
     }
+    
+    func updateProgress() async {
+        let userID = Auth.auth().currentUser!.uid
+        let db = Firestore.firestore()
+        let ref = db.collection("Users").document(userID)
+        
+        // perform a transaction for running updates on database in batch
+        do {
+            let _ = try await db.runTransaction({ (transaction, errorPointer) -> Any? in
+                // 1. fetch doc
+                let document: DocumentSnapshot
+                do {
+                    try document = transaction.getDocument(ref)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                print("got doc")
+                
+                // 2. get existing data
+//                let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
+                let lastStreakUpdate = document.data()?["streak_update_timestamp"] as? Timestamp
+                let currStreak = document.data()?["streak"] as? Int ?? -1
+                let currScore = document.data()?["score"] as? Int ?? -1
+                print("got data")
+                
+                // 3. update data (based on criteria)
+                
+                // Compare the values and update if the condition is met
+                if (lastStreakUpdate?.dateValue())! < dayStart() {      // if last streak update was before 12AM today (start of new day); update streak & timestamp
+                    print("updating streak, timestamp and progress --> \(currStreak) , \(lastStreakUpdate?.dateValue() ?? Date())")
+                    transaction.updateData([
+                        "streak": currStreak + 1,
+                        "streak_update_timestamp" : Date(),
+                        "score" : currScore+10
+                    ], forDocument: ref)
+                } else {
+                    print("only streak updated")
+                    transaction.updateData([
+                        "score" : currScore+10
+                    ], forDocument: ref)
+                }
+                print("updated data")
+                return nil
+            })
+            print("Transaction successful!")
+        } catch {
+            print("Transaction failed! \(error)")
+        }
+    }
+    func dayStart() -> Date {
+        let calendar = Calendar.current
+        return Calendar(identifier: .gregorian).date(from: DateComponents(
+            year   : calendar.component(.year, from: Date.now),
+            month  : calendar.component(.month, from: Date.now),
+            day    : calendar.component(.day, from: Date.now),
+            hour   : 0,
+            minute : 0,
+            second : 0)
+        )!
+    }
+    
 }
 
 struct SubmitButtonStyle: ButtonStyle {

@@ -38,6 +38,7 @@
 		CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5172BAE9B370068A0D3 /* HomeView.swift */; };
 		CEA1B51A2BAF666F0068A0D3 /* ProblemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */; };
 		CEA810CA2BCCE71C00929735 /* ProblemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA810C92BCCE71C00929735 /* ProblemsView.swift */; };
+		CEA810CC2BCDFC1700929735 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA810CB2BCDFC1700929735 /* Notifications.swift */; };
 		CEBEDE2A2BB8BE6200E13BEF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */; };
 		CEBEDE3F2BB8C7B500E13BEF /* TheSerifHandRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEBEDE3A2BB8C7B500E13BEF /* TheSerifHandRegular.ttf */; };
 		CEBEDE402BB8C7B500E13BEF /* TheSerifHandBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEBEDE3B2BB8C7B500E13BEF /* TheSerifHandBold.ttf */; };
@@ -78,6 +79,7 @@
 		CEA1B5172BAE9B370068A0D3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemData.swift; sourceTree = "<group>"; };
 		CEA810C92BCCE71C00929735 /* ProblemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemsView.swift; sourceTree = "<group>"; };
+		CEA810CB2BCDFC1700929735 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		CEBEDE3A2BB8C7B500E13BEF /* TheSerifHandRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheSerifHandRegular.ttf; sourceTree = "<group>"; };
 		CEBEDE3B2BB8C7B500E13BEF /* TheSerifHandBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheSerifHandBold.ttf; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 		CE1000692BA7506900B9D7B1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEA810CB2BCDFC1700929735 /* Notifications.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 			files = (
 				CE5A96822BAE87FD009411D4 /* ProblemView.swift in Sources */,
 				CE5A968A2BAE896A009411D4 /* SignUpView.swift in Sources */,
+				CEA810CC2BCDFC1700929735 /* Notifications.swift in Sources */,
 				CED47F662BCC91800085F051 /* QuizView.swift in Sources */,
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
