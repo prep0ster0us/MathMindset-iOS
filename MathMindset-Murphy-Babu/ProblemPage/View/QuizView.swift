@@ -54,7 +54,7 @@ struct QuizView: View {
     var body: some View {
         VStack {
             // Problem Number header
-            Text("Problem \(problemNum)")
+            Text("Quiz Problem \(problemNum)")
                 .font(.system(size: 32))
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .underline()
@@ -160,7 +160,7 @@ struct QuizView: View {
             }).buttonStyle(SubmitButtonStyle())
                 .alert(isPresented: $showScore) {
                     Alert(title: Text("Quiz Results"),
-                          message: Text("Final Score : \(score)"),
+                          message: Text("Final Score : \(score)/10"),
                           dismissButton: .default(Text("Back to Home")) {
                         self.presentationMode.wrappedValue.dismiss()
                     })

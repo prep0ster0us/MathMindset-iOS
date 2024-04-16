@@ -18,6 +18,7 @@ struct HomeView: View {
     @State var topicProgress: [String: Any?] = [:]
     @State var userStreak   : Int = 0
     @State var userScore    : Int = 0
+    @State var quizScores   : [String: Any?] = [:]
     
     @State private var isLoading = true
     
@@ -127,7 +128,7 @@ struct HomeView: View {
                                                problemNum: CGFloat(topicProgress[title] as! Int)
                                            )
                             ) {
-                                TopicCard(name: title, image: title, completed: topicProgress[title] as! Int)
+                                TopicCard(name: title, image: title, completed: topicProgress[title] as! Int, quizScore: quizScores[title] as! Int)
                                     .frame(width: $app.screenWidth.wrappedValue)
                                     .onAppear {
                                         print("title= \(title) --> \(topicProgress[title] as! Int)")
@@ -204,6 +205,7 @@ struct HomeView: View {
 //                    print("fetched progress: \(topicProgress)")
                     userScore = document.score
                     userStreak = document.streak
+                    quizScores = document.quiz_scores
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)

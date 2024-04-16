@@ -14,13 +14,15 @@ struct TopicCard: View {
     let image: String
     @State var completed: Int
     @State var starCount: Double
+    @State var quizScore : Int
     
-    init(name: String, image: String, completed: Int) {
+    init(name: String, image: String, completed: Int, quizScore: Int) {
         self.name = name
         self.image = image
         self.completed = completed
         //        self.starCount = Double(completed) / 2.0
         self.starCount = Double(completed)
+        self.quizScore = quizScore
     }
     
     var body: some View {
@@ -37,6 +39,11 @@ struct TopicCard: View {
                         VStack {
                             QuizButton(true)
                                 .padding(.leading, 16)
+                            if quizScore != -1 {
+                                Text("Best Score: \(quizScore)/10")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .padding(.leading, 16)
+                            }
                         }
                     } else {
                         VStack {
@@ -55,7 +62,7 @@ struct TopicCard: View {
                 }
                 , alignment: .leading
             )
-        }.frame(width: UIScreen.main.bounds.width - 50, height: 90)
+        }.frame(width: UIScreen.main.bounds.width - 50, height: 100)
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(getGradientColor().opacity(0.5))
@@ -116,13 +123,13 @@ struct QuizButton: View {
     VStack(spacing: 15) {
         TopicCard(name: "Factoring",
                   image: "Factoring",
-                  completed: 8)
-        Spacer().frame(height: 50)
-        TopicCard(name: "Factoring",
-                  image: "Factoring",
-                  completed: 10)
-        TopicCard(name: "Trig",
-                  image: "Trig",
-                  completed: 7)
+                  completed: 10, quizScore: 4)
+//        Spacer().frame(height: 50)
+//        TopicCard(name: "Factoring",
+//                  image: "Factoring",
+//                  completed: 10)
+//        TopicCard(name: "Trig",
+//                  image: "Trig",
+//                  completed: 7)
     }
 }

@@ -83,7 +83,7 @@ class FirebaseManager: ObservableObject {
                     print("Display name updated successfully")
                 }
             }
-            
+            let calendar = Calendar.current
             let data: [String: Any] = [
                 "email"                 : email,
                 "username"              : username,
@@ -91,10 +91,21 @@ class FirebaseManager: ObservableObject {
                 "account_creation_date" : Date(),
                 "last_login"            : Date(),
                 "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
+                "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1],
                 "profileImage"          : "", // save firestore storage downloadURL here
                 "biometricEnabled"      : "",
                 "score"                 : 0,
-                "streak"                : 0
+                "streak"                : 0,
+                "streak_update_timestamp" : calendar.date(from: DateComponents(
+                    year: calendar.component(.year, from: .now)-1,
+                    month: calendar.component(.month, from: .now),
+                    day: calendar.component(.day, from: .now))
+                )!,      // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                "potd_timestamp"          : calendar.date(from: DateComponents(
+                    year: calendar.component(.year, from: .now)-1,
+                    month: calendar.component(.month, from: .now),
+                    day: calendar.component(.day, from: .now))
+                )!       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
             ]
         
             // save user details (after sign-in) to database
@@ -202,7 +213,8 @@ class FirebaseManager: ObservableObject {
                         "account_creation_date" : Date(),
                         "last_login"            : Date(),
                         "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
-                        "quiz_scores"           : ["Factoring": 0, "Trig": 0, "Derivative": 0],
+                        "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1],
+                        // TODO: update to be not hard coded; change with a for loop
                         "profileImage"          : gProfileImage, // save firestore storage downloadURL here
                         "biometricEnabled"      : "",
                         "score"                 : 0,
