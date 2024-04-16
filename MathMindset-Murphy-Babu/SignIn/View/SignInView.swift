@@ -236,9 +236,9 @@ struct SignInView: View {
                         
                     }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
                         .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8).stroke(.iconTint, lineWidth: 2.5)
-                        )
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 8).stroke(.iconTint, lineWidth: 2.5)
+//                        )
                         .offset(y: -40)
                         .padding(.bottom, -40)
                         .shadow(radius: 25)
@@ -273,7 +273,7 @@ struct SignInView: View {
                         .padding(.bottom, 25)
                 })
             }.padding(.horizontal, 24)
-                .padding(.top, 16)
+                .padding(.top, 42)
                 .opacity(usnEntered ? 1 : 0)
             
 
@@ -294,7 +294,7 @@ struct SignInView: View {
                 }
                 if UserDefaults.standard.string(forKey: "email") != nil {
                     print(UserDefaults.standard.string(forKey: "email") as Any)
-                    email = UserDefaults.standard.string(forKey: "email")!
+//                    email = UserDefaults.standard.string(forKey: "email")!
                 }
             }
         }
