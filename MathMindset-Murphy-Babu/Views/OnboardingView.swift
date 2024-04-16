@@ -8,11 +8,11 @@ struct OnboardingView: View {
     private var dotAppearance = UIPageControl.appearance()
     
     var body: some View {
-        if !UserDefaults.standard.bool(forKey: "firstRun") {
+//        if !UserDefaults.standard.bool(forKey: "firstRun") {
             content
-        } else {
-            SignInView()
-        }
+//        } else {
+//            SignInView()
+//        }
     }
     
     var content: some View {
@@ -21,9 +21,10 @@ struct OnboardingView: View {
                 HStack {
                     if activeTab == 0 {
                         Text("Hello Solvers!")
-                            .font(.custom("TheSerifHandBlack", size: 24))
+                            .font(.title)
+//                            .font(.custom("TheSerifHandBlack", size: 24))
 //                            .fontWeight(.bold)
-                            .kerning(2.0)       // character spacing
+//                            .kerning(2.0)       // character spacing
                     }
                     Spacer()
                     NavigationLink (destination: SignInView().navigationBarBackButtonHidden(true)) {
@@ -39,9 +40,10 @@ struct OnboardingView: View {
                 
                 Text(slideTitle)
 //                    .font(.title)
-                    .font(.custom("TheSerifHandExtraBlack", size: 48))
+//                    .font(.custom("TheSerifHandExtraBlack", size: 48))
 //                    .fontWeight(.bold)
-                    .kerning(1.5)
+//                    .kerning(1.5)
+                    .font(.title)
                     .padding(.top, 36)
                 
                 TabView(selection: $activeTab) {
