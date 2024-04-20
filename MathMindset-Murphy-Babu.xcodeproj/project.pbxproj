@@ -31,6 +31,8 @@
 		CE5A96952BAE8BC4009411D4 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96942BAE8BC4009411D4 /* BottomBar.swift */; };
 		CE5A96982BAE8E9F009411D4 /* ProblemOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */; };
 		CE5A96992BAE8E9F009411D4 /* TopicCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96972BAE8E9F009411D4 /* TopicCard.swift */; };
+		CE724AA42BD4341C005E75B8 /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE724AA32BD4341C005E75B8 /* StatsCard.swift */; };
+		CE724AA62BD44784005E75B8 /* BadgeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE724AA52BD44784005E75B8 /* BadgeCard.swift */; };
 		CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98FFD82BB257160035F720 /* SplashScreenView.swift */; };
 		CE9C8E542BC0C75A00E60A93 /* UserCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C8E532BC0C75A00E60A93 /* UserCard.swift */; };
 		CE9DB6C22BC794F1002C5AE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9DB6C12BC794F1002C5AE5 /* GoogleService-Info.plist */; };
@@ -72,6 +74,8 @@
 		CE5A96942BAE8BC4009411D4 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemOfDay.swift; sourceTree = "<group>"; };
 		CE5A96972BAE8E9F009411D4 /* TopicCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCard.swift; sourceTree = "<group>"; };
+		CE724AA32BD4341C005E75B8 /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		CE724AA52BD44784005E75B8 /* BadgeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeCard.swift; sourceTree = "<group>"; };
 		CE98FFD82BB257160035F720 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CE9C8E532BC0C75A00E60A93 /* UserCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCard.swift; sourceTree = "<group>"; };
 		CE9DB6C12BC794F1002C5AE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -292,6 +296,8 @@
 				CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */,
 				CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */,
 				CE9C8E532BC0C75A00E60A93 /* UserCard.swift */,
+				CE724AA32BD4341C005E75B8 /* StatsCard.swift */,
+				CE724AA52BD44784005E75B8 /* BadgeCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -396,6 +402,7 @@
 				CEA810CC2BCDFC1700929735 /* Notifications.swift in Sources */,
 				CED47F662BCC91800085F051 /* QuizView.swift in Sources */,
 				FA566ED32B69B11500F0FF20 /* MathQuestion.swift in Sources */,
+				CE724AA42BD4341C005E75B8 /* StatsCard.swift in Sources */,
 				FA566EAB2B69AFCD00F0FF20 /* ContentView.swift in Sources */,
 				CE5A968B2BAE896A009411D4 /* ForgotPwdView.swift in Sources */,
 				FA7FAEAC2BA8F1430056EF19 /* Profile.swift in Sources */,
@@ -404,6 +411,7 @@
 				FA566EA92B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift in Sources */,
 				CE9C8E542BC0C75A00E60A93 /* UserCard.swift in Sources */,
 				CE5A96892BAE896A009411D4 /* SignInView.swift in Sources */,
+				CE724AA62BD44784005E75B8 /* BadgeCard.swift in Sources */,
 				FA78F7052B71B455006BF7C3 /* MultipleChoice.swift in Sources */,
 				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */,

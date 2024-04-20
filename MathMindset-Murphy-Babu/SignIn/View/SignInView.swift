@@ -294,9 +294,11 @@ struct SignInView: View {
                 }
                 if UserDefaults.standard.string(forKey: "email") != nil {
                     print(UserDefaults.standard.string(forKey: "email") as Any)
-//                    email = UserDefaults.standard.string(forKey: "email")!
+                    email = UserDefaults.standard.string(forKey: "email")!
                 }
             }
+        }.onDisappear {
+            loginStatus.toggle()
         }
     }
     

@@ -1,15 +1,225 @@
-//
-//  Profile.swift
-//  MathMindset-Murphy-Babu
-//
-//  Created by Alex Murphy on 3/18/24.
-//
-
 import SwiftUI
+import Firebase
 
 struct Profile: View {
+    @State private var pfpImageUrl =
+    "https://static.vecteezy.com/system/resources/previews/010/966/743/original/avatar-nerd-man-free-vector.jpg"
+//    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoQ2C2f7eqsQvU6_T183x8ASGJv7mqJ2xy_KLDIZOJsA&s"
+    @State private var username = "Guest User"
+    @State private var joinDate = ""
+    @State private var userStats : [String: Any] = [:]
+    @State private var badges : [String: Any] = [:]
+    //
+    let screenWidth = UIScreen.main.bounds.width
+    
+    @State private var isLoading = true
+    @State private var isSignedOut = false
+    @State private var isShowingLogoutConfirmation = false
+    
+    
+    @StateObject var googleAuthManager = GoogleSignInModel()
+    @StateObject var firebaseManager = FirebaseManager()
+    
+    
     var body: some View {
-        Text("Profile")
+        Group {
+            if isLoading {
+                ShapeProgressView()
+            } else {
+                content
+            }
+        }
+//        if Auth.auth().currentUser == nil {
+//            SignInView()
+//        } else {
+//            content
+//        }
+            .onAppear {
+                fetchUserProfile()
+            }
+    }
+    
+    var content: some View {
+        VStack {
+            HStack {
+                Image("EditProfile")
+                    .resizable()
+                    .frame(width: 36, height: 36)
+                    .padding(.leading, 16)
+                Spacer()
+                Image("Settings")
+                    .resizable()
+                    .frame(width: 36, height: 36)
+                    .padding(.trailing, 16)
+            }
+            
+            // Profile Section
+            AsyncImage(url: URL(string: pfpImageUrl)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
+            .frame(width: screenWidth-250, height: screenWidth-250)
+            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            .overlay(
+                Circle()
+                    .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            )
+            Text(username)
+                .font(.system(size: 24, weight: .heavy))
+                .foregroundStyle(.textTint)
+            
+            HStack (spacing: 12) {
+                Image(systemName: "clock.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundStyle(.iconTint).opacity(0.3)
+                    .padding(.trailing, -4)
+                Text(joinDate)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.textTint).opacity(0.3)
+                    .opacity(joinDate.isEmpty ? 0 : 1)
+            }
+            .padding(.top, -8)
+            
+            // Statistics Section
+            VStack (alignment: .leading) {
+                Text("Statistics")
+                    .font(.title)
+                    .foregroundStyle(.textTint)
+                    .fontWeight(.heavy)
+                    .padding(.leading, 16)
+                VStack {
+                    HStack (spacing: 12) {
+                        StatsCard(icon: "streakActive",
+                                  stat: "4",
+                                  description: "days streak")
+                        StatsCard(icon: "primes",
+                                  stat: "80",
+                                  description: "primes earned")
+                    }.padding(.horizontal, 16)
+                }
+            }.padding(.top, 24)
+            
+            // Badges Section
+            VStack (alignment: .leading) {
+                HStack {
+                    Text("Badges")
+                        .font(.title)
+                        .foregroundStyle(.textTint)
+                        .fontWeight(.heavy)
+                        .padding(.leading, 16)
+                    Spacer()
+                }
+                HStack (spacing: 12) {
+                    ForEach(Array(badges.keys), id: \.self) { badge in
+                        BadgeCard(topic: badge,
+                                  isActive: (badges[badge] as!Int == 10) ? true : false
+                        )
+                    }
+                }.padding(.leading, 16)
+            }.padding(.top, 24)
+            
+            Spacer()
+            NavigationLink(destination: SignInView(), isActive: $isSignedOut) {
+                Button(action: {
+                    isShowingLogoutConfirmation.toggle()
+                }, label: {
+                    HStack {
+                        Image("logoutIcon")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .padding(.leading, 20)
+                        Spacer()
+                        Text("Log Out")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.red)
+                            .offset(x: -10)
+                        Spacer()
+                    }
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 24, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+                            .fill(.bgTint)
+                    )
+                }).overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(.bgContrast, lineWidth: 3)
+                        .shadow(color: .bgContrast, radius: 16, x: 6, y: 4)
+                )
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 24)
+            .sheet(isPresented: $isShowingLogoutConfirmation) {
+                logoutConfirmation
+                    .presentationDetents([.fraction(0.2), .medium]) // handles the size of the bottom sheet
+            }
+        }
+    }
+    
+    var logoutConfirmation: some View {
+        VStack {
+            Text("Are you sure you want to sign out?")
+                .font(.headline)
+                .fontWeight(.heavy)
+                .padding(.top, 16)
+            HStack {
+                Button("Cancel") {
+                    isShowingLogoutConfirmation.toggle()
+                }.buttonStyle(BorderedButtonStyle())
+                Spacer()
+                Button("Logout") {
+                    isShowingLogoutConfirmation.toggle()
+                    let firebaseAuth = Auth.auth()
+                    do {
+                        try firebaseAuth.signOut()
+                    } catch let signOutError as NSError {
+                        print("Error signing out: %@", signOutError)
+                    }
+                    googleAuthManager.isSignedIn = false
+                    firebaseManager.isSignedIn = false
+                    isSignedOut.toggle()
+                }.buttonStyle(BorderedProminentButtonStyle())
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 24)
+        }
+    }
+    
+    func fetchUserProfile() {
+        let currentUser = Auth.auth().currentUser!
+        let db = Firestore.firestore()
+        let ref = db.collection("Users").document(currentUser.uid)
+        
+        ref.getDocument(as: UserData.self) { result in
+            switch result {
+            case .success(let document):
+                let dateJoined = document.account_creation_date as Date
+                joinDate = "Joined \(dateFormatter(dateJoined))"
+                username = document.username
+                userStats = [
+                    "streak" : document.streak,
+                    "score"  : document.score,
+                ]
+                badges = document.progress
+                
+                isLoading = false
+                
+            case .failure(let error):
+                print("Error fetching document: \(error)")
+            }
+        }
+    }
+    
+    func dateFormatter(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: date)
+        
     }
 }
 
