@@ -11,6 +11,7 @@ struct HomeView: View {
     // TODO: static question for now, make this dynamic by fetching from db
     let problem = Factoring()
     // For Problem of the day Button
+    // TODO: Make these 2 into AppVariables so they persist across different views?
     @State private var potdActive : Bool = false
     @State private var navToPOTD  : Bool = false
     

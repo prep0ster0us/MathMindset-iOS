@@ -35,8 +35,8 @@ func createNotification() async {
     // (1:00pm)
     var dateComponents = DateComponents()
     dateComponents.timeZone = TimeZone.autoupdatingCurrent
-    dateComponents.hour = 22    // this is in a 24 hour format i.e. 21 hours = 9pm
-    dateComponents.minute = 13
+    dateComponents.hour = 9 // this is in a 24 hour format i.e. 21 hours = 9pm
+    dateComponents.minute = 0
 //    print(dateComponents.description) // debug trigger time
     
     // Create the trigger as a repeating event.

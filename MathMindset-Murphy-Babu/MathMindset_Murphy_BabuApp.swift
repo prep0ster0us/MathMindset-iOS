@@ -9,8 +9,6 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 
-//class AppDelegate: NSObject, UIApplicationDelegate {
-// Below is changed for notifications
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -25,8 +23,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         withCompletionHandler completionHandler:
         @escaping (UNNotificationPresentationOptions) -> Void) {
         if notification.request.content.categoryIdentifier == "POTD" {
-            print("Foreground notification!")
-            // Play a sound to let the user know about the invitation.
+            print("Foreground POTD notification!")
+            // Play a sound and make a banner to let the user know about the invitation.
             completionHandler([.alert, .sound])
             return
         }
