@@ -150,9 +150,9 @@ struct HomeView: View {
     }
     
     func fetchProblemSet(_ name: String) {
-        let docName = (name == "Factoring") ? "factoring" : name
+        let docName = (name == "Factoring") ? "Factoring" : name
 //        print(docName)
-        let problemSet = (docName == "factoring") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+        let problemSet = (docName == "Factoring") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
         if !problemSet.isEmpty { return }
         
         db.collection("Problems").document(docName).getDocument { (document, error) in
