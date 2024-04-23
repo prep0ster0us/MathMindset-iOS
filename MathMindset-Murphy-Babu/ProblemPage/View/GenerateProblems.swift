@@ -90,7 +90,7 @@ struct GenerateProblems: View {
         case "Trig":
             problem = Trig()
             num = trigNum
-        case "factoring":
+        case "Factoring":
             problem = Factoring()
             num = factoringNum
         default:

@@ -24,8 +24,7 @@ struct MultipleChoice: View { // TODO: Rename this to ProblemPage
     
     // required state variable for the confetti package
     @State private var confettiCounter: Int = 0
-    // TODO: Rename thisfactoring() to MathQuestion() with parameter for problem type
-//    var thisfactoring = factoring()
+
     private var thisProblem: Problem
     
     init(problemType: String) {

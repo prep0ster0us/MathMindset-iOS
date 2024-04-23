@@ -169,7 +169,7 @@ struct HomeView: View {
                                                   question: question as? String ?? "",
                                                   choices: choices as? [String] ?? [])
                     switch(docName) {
-                    case "factoring":
+                    case "Factoring":
                         FactoringSet.append(problemData)
                         break
                     case "Trig":
