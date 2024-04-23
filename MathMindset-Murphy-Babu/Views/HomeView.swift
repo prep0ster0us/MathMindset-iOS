@@ -132,7 +132,7 @@ struct HomeView: View {
                                 TopicCard(name: title, image: title, completed: topicProgress[title] as! Int, quizScore: quizScores[title] as! Int)
                                     .frame(width: $app.screenWidth.wrappedValue)
                                     .onAppear {
-                                        print("title= \(title) --> \(topicProgress[title] as! Int)")
+//                                        print("title= \(title) --> \(topicProgress[title] as! Int)")
 //                                        print("after populating topic card: \(topicProgress)")
                                     }.onDisappear {
                                         isLoading = true
