@@ -622,7 +622,7 @@ struct ProblemProgressBar1: View {
         problemNum: 0,
         question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
         choices: ["Triangle", "Circle", "Square", "Rectangle"],
-        problemSet: PolySet
+        problemSet: factoringSet
     )
 //    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
 }

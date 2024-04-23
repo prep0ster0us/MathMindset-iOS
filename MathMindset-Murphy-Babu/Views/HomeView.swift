@@ -9,7 +9,7 @@ struct HomeView: View {
                             "Trig"]
     
     // TODO: static question for now, make this dynamic by fetching from db
-    let problem = Poly()
+    let problem = Factoring()
     // For Problem of the day Button
     @State private var potdActive : Bool = false
     @State private var navToPOTD  : Bool = false
@@ -114,7 +114,7 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            let problemSet = title == "Factoring" ? PolySet : (title == "Trig" ? TrigSet : DerivativeSet)
+                            let problemSet = title == "Factoring" ? FactoringSet : (title == "Trig" ? TrigSet : DerivativeSet)
                             NavigationLink(destination:
 //                                            ProblemView(
 //                                                topic: title,
@@ -150,9 +150,9 @@ struct HomeView: View {
     }
     
     func fetchProblemSet(_ name: String) {
-        let docName = (name == "Factoring") ? "Poly" : name
+        let docName = (name == "Factoring") ? "factoring" : name
 //        print(docName)
-        let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+        let problemSet = (docName == "factoring") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
         if !problemSet.isEmpty { return }
         
         db.collection("Problems").document(docName).getDocument { (document, error) in
@@ -169,8 +169,8 @@ struct HomeView: View {
                                                   question: question as? String ?? "",
                                                   choices: choices as? [String] ?? [])
                     switch(docName) {
-                    case "Poly":
-                        PolySet.append(problemData)
+                    case "factoring":
+                        FactoringSet.append(problemData)
                         break
                     case "Trig":
                         TrigSet.append(problemData)
@@ -182,9 +182,9 @@ struct HomeView: View {
                         break
                     }
                 }
-                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+                if(FactoringSet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
                     // sort fetched question set (in order Problem1 - Problem10)
-                    PolySet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+                    FactoringSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                     DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                     TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                 }

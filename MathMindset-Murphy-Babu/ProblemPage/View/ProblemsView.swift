@@ -290,7 +290,7 @@ struct SubmitText: View {
 #Preview {
     ProblemsView(
         topic: "Trig",
-        problemSet: PolySet,
+        problemSet: FactoringSet,
         problemNum: 0
     )
 //    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())

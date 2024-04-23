@@ -50,7 +50,7 @@ let supers: [String] = [
 // Carefully prints a univariate polynomial
 // of arbitrary size
 // Entirely written by Alex Murphy
-func printPoly(numbers: [Int]) -> String {
+func printTHING(numbers: [Int]) -> String {
     var theString: String = ""
     var theDegree: Int = 0 // equal to the highest order term
     
@@ -116,7 +116,7 @@ func printPoly(numbers: [Int]) -> String {
     return theString
 }
 
-class Poly: Problem {
+class Factoring: Problem {
     // These are the coefficients of two
     // first order polynomials that are multiplied
     // to obtain the non-factored solution
@@ -177,8 +177,8 @@ class Poly: Problem {
     func printSol() -> String {
         var theString = ""
         
-        theString += "(\(printPoly(numbers: [self.c1, self.b1])))"
-        theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
+        theString += "(\(printTHING(numbers: [self.c1, self.b1])))"
+        theString += "(\(printTHING(numbers: [self.c2, self.b2])))"
         return theString
     }
     
@@ -191,17 +191,17 @@ class Poly: Problem {
         
         switch choice {
         case 1: // correct answer
-            theString += "(\(printPoly(numbers: [self.c1, self.b1])))"
-            theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
+            theString += "(\(printTHING(numbers: [self.c1, self.b1])))"
+            theString += "(\(printTHING(numbers: [self.c2, self.b2])))"
         case 2:
-            theString += "(\(printPoly(numbers: [-self.c1, self.b1])))"
-            theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
+            theString += "(\(printTHING(numbers: [-self.c1, self.b1])))"
+            theString += "(\(printTHING(numbers: [self.c2, self.b2])))"
         case 3:
-            theString += "(\(printPoly(numbers: [self.c1 + [-1, 1].randomElement()! * Int.random(in: 1..<3), self.b1])))"
-            theString += "(\(printPoly(numbers: [self.c2, self.b2])))"
+            theString += "(\(printTHING(numbers: [self.c1 + [-1, 1].randomElement()! * Int.random(in: 1..<3), self.b1])))"
+            theString += "(\(printTHING(numbers: [self.c2, self.b2])))"
         case 4:
-            theString += "(\(printPoly(numbers: [self.c1, self.b1])))"
-            theString += "(\(printPoly(numbers: [-self.c2, self.b2])))"
+            theString += "(\(printTHING(numbers: [self.c1, self.b1])))"
+            theString += "(\(printTHING(numbers: [-self.c2, self.b2])))"
         default:
             theString = self.printSol()
         }
@@ -218,8 +218,8 @@ class Poly: Problem {
     }
     
     override func print() -> String {
-        return printPoly(numbers: self.getCoefficients())
-        //        return printPoly(numbers: [5, 5, -5, 5, 5, 0, 5, 5, 5, 55, 0, 0, 1, 5, 6 , 7, 8, 9,0 , 225, 6 , 2, 1, 5,6,7 , 8])
+        return printTHING(numbers: self.getCoefficients())
+        //        return printTHING(numbers: [5, 5, -5, 5, 5, 0, 5, 5, 5, 55, 0, 0, 1, 5, 6 , 7, 8, 9,0 , 225, 6 , 2, 1, 5,6,7 , 8])
     }
 }
 
@@ -244,11 +244,11 @@ class Derivative: Problem {
     }
     
     override func print() -> String {
-        return printPoly(numbers: coeffNumerator)
+        return printTHING(numbers: coeffNumerator)
     }
     
     func printSol() -> String {
-        return printPoly(numbers: coeffSol)
+        return printTHING(numbers: coeffSol)
     }
     
     override func printQuestion() -> String {
@@ -260,7 +260,7 @@ class Derivative: Problem {
         
         switch choice {
         case 1: // correct answer
-            return printPoly(numbers: coeffSol)
+            return printTHING(numbers: coeffSol)
         case 2:
             // this is a deep copy
             var fakeCoeffSol: [Int] = coeffSol
@@ -268,22 +268,22 @@ class Derivative: Problem {
             let randomInt = indexList.randomElement()!
             indexList.remove(at: indexList.firstIndex(of: randomInt)!)
             fakeCoeffSol.insert(randomInt, at: 0)
-            theString = printPoly(numbers: fakeCoeffSol)
+            theString = printTHING(numbers: fakeCoeffSol)
         case 3:
             var fakeCoeffSol: [Int] = coeffSol
             let randomInt = indexList.randomElement()!
             indexList.remove(at: indexList.firstIndex(of: randomInt)!)
             fakeCoeffSol.append(randomInt)
-            theString = printPoly(numbers: fakeCoeffSol)
+            theString = printTHING(numbers: fakeCoeffSol)
         case 4:
             var fakeCoeffSol: [Int] = coeffSol
             let randomInt = indexList.randomElement()!
             indexList.remove(at: indexList.firstIndex(of: randomInt)!)
             fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += randomInt
 //            fakeCoeffSol[Int.random(in: 0..<fakeCoeffSol.count)] += Int.random(in: -3..<4)
-            theString = printPoly(numbers: fakeCoeffSol)
+            theString = printTHING(numbers: fakeCoeffSol)
         default:
-            theString = printPoly(numbers: coeffSol)
+            theString = printTHING(numbers: coeffSol)
         }
         
         return theString
@@ -450,9 +450,9 @@ class Trig: Problem {
 
 
 struct MathQuestion: View {
-//    var newQuestion = poly()
+//    var newQuestion = factoring()
 //    var newQuestion = Derivative()
-    var newQuestion = Derivative() // can be poly(), derivative(), or trig()
+    var newQuestion = Derivative() // can be factoring(), derivative(), or trig()
     var body: some View {
         Text(newQuestion.print())
             .monospaced()

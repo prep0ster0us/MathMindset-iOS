@@ -183,8 +183,8 @@ struct QuizView: View {
             problem = Derivative()
         case "Trig":
             problem = Trig()
-        case "Poly":
-            problem = Poly()
+        case "factoring":
+            problem = Factoring()
         default:
             // Default to avoid errors
             problem = Derivative()

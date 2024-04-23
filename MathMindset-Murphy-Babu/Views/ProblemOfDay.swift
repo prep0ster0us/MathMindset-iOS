@@ -133,6 +133,6 @@ struct ProblemOfDay: View {
         .environmentObject(AppVariables())
 //    ProblemOfDay(
 //        question: "This is a sample question\nThis is sample equation",
-//        choices : ["Circle", "Triangle", "Square", "Polygon"]
+//        choices : ["Circle", "Triangle", "Square", "factoringgon"]
 //    ).environmentObject(AppVariables())
 }

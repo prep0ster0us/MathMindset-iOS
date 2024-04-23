@@ -6,7 +6,7 @@ struct GenerateProblems: View {
     let db = Firestore.firestore()
     
     let probNum = [2,3,4,5,6,7,8,9,10]
-    @State private var polyNum = 1
+    @State private var factoringNum = 1
     @State private var derivNum = 1
     @State private var trigNum = 1
     @State private var num: Int = 1
@@ -53,10 +53,10 @@ struct GenerateProblems: View {
                 .padding()
             
             Button(action: {
-                addProblem("Poly")
-                polyNum += 1
+                addProblem("Factoring")
+                factoringNum += 1
             }, label: {
-                Text("Add Poly questions")
+                Text("Add factoring questions")
                     .foregroundStyle(Color(.white))
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 200)
@@ -90,9 +90,9 @@ struct GenerateProblems: View {
         case "Trig":
             problem = Trig()
             num = trigNum
-        case "Poly":
-            problem = Poly()
-            num = polyNum
+        case "factoring":
+            problem = Factoring()
+            num = factoringNum
         default:
             print("Invalid problem topic")
             return
@@ -139,7 +139,7 @@ struct GenerateProblems: View {
     private func addPOTD() {
         // create problem
         var problem: Problem
-        let problemTopic = ["Derivative", "Trig", "Poly"].randomElement()
+        let problemTopic = ["Derivative", "Trig", "Factoring"].randomElement()
         
         switch(problemTopic) {
         case "Derivative":
@@ -148,9 +148,9 @@ struct GenerateProblems: View {
         case "Trig":
             problem = Trig()
             num = trigNum
-        case "Poly":
-            problem = Poly()
-            num = polyNum
+        case "Factoring":
+            problem = Factoring()
+            num = factoringNum
         default:
             print("Invalid problem topic")
             return
