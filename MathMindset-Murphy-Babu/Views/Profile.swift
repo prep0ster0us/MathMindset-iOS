@@ -47,10 +47,12 @@ struct Profile: View {
                     .frame(width: 36, height: 36)
                     .padding(.leading, 16)
                 Spacer()
-                Image("Settings")
-                    .resizable()
-                    .frame(width: 36, height: 36)
-                    .padding(.trailing, 16)
+                NavigationLink(destination: SettingsView()) {
+                    Image("Settings")
+                        .resizable()
+                        .frame(width: 36, height: 36)
+                        .padding(.trailing, 16)
+                }
             }
             
             // Profile Section

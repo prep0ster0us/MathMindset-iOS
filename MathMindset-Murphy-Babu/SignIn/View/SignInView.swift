@@ -26,6 +26,7 @@ struct SignInView: View {
     
     @State private var loginStatus = false
     @State private var showAlert = false
+    @State private var emptyFields = false
     @State private var requestBiometricAlert = false
     @State private var usnEntered = false
     
@@ -213,26 +214,24 @@ struct SignInView: View {
                 ) {
                     Button(action: {
                         print("pressed")
-                        dbManager.loginUser(
-                            email: email,
-                            pass: pass,
-                            loginStatus: $loginStatus,
-                            showAlert: $showAlert,
-                            requestBiometricAlert: $requestBiometricAlert
-                        )
+                        if email.isEmpty && pass.isEmpty {
+                            emptyFields = true
+                            showAlert = true
+                        } else {
+                            dbManager.loginUser(
+                                email: email,
+                                pass: pass,
+                                loginStatus: $loginStatus,
+                                showAlert: $showAlert,
+                                requestBiometricAlert: $requestBiometricAlert
+                            )
+                        }
                     }, label: {
                         Text("LOGIN")
                             .padding(.vertical)
                             .foregroundColor(.textContrast)
                             .fontWeight(.heavy)
                             .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Login Error"),
-                                      message: Text("Wrong credentials! Try Again"),
-                                      dismissButton: .default(Text("Ok")) {
-                                    pass=""     // clear password field
-                                })
-                            }
                         
                     }).background(LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/))
                         .cornerRadius(8)
@@ -242,18 +241,34 @@ struct SignInView: View {
                         .offset(y: -40)
                         .padding(.bottom, -40)
                         .shadow(radius: 25)
-                        .alert(isPresented: $requestBiometricAlert) {
-                            Alert(title: Text("Biometric"),
-                                  message: Text("Enable Biometric Login?"),
-                                  primaryButton: .default(Text("Sure")) {
-                                    UserDefaults.standard.set(email, forKey: "email")
-                                    UserDefaults.standard.set(pass, forKey: "password")
-                                    dbManager.setBiometric("true")
-                                  },
-                                  secondaryButton: .cancel(Text("Not now")) {
-                                    dbManager.setBiometric("false")
-                                  }
-                            )
+                        .alert(isPresented: $showAlert) {
+                            if requestBiometricAlert {
+                                return Alert(title: Text("Biometric"),
+                                      message: Text("Enable Biometric Login?"),
+                                      primaryButton: .default(Text("Sure")) {
+                                        UserDefaults.standard.set(email, forKey: "email")
+                                        UserDefaults.standard.set(pass, forKey: "password")
+                                        dbManager.setBiometric("true")
+                                      },
+                                      secondaryButton: .cancel(Text("Not now")) {
+                                        dbManager.setBiometric("false")
+                                      }
+                                )
+                            } else if emptyFields {
+                                return Alert(title: Text("Login Error"),
+                                      message: Text("No credentials entered!"),
+                                      dismissButton: .default(Text("Ok")) {
+                                    emptyFields = false     // reset alert trigger
+                                    showAlert = false
+                                })
+                            } else {
+                                return Alert(title: Text("Login Error"),
+                                      message: Text("Wrong credentials! Try Again.."),
+                                      dismissButton: .default(Text("Ok")) {
+                                    pass=""     // clear password field
+                                    showAlert = false
+                                })
+                            }
                         }
                         .offset(y: 20)
                 }
