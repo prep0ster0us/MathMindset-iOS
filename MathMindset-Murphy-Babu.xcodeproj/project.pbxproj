@@ -565,7 +565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = 3MR74X8CA9;
+				DEVELOPMENT_TEAM = MKFL94JB3V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
@@ -597,7 +597,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = 3MR74X8CA9;
+				DEVELOPMENT_TEAM = MKFL94JB3V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
