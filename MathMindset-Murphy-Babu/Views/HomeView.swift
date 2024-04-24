@@ -87,7 +87,7 @@ struct HomeView: View {
                                     // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
                                     //                            timerRunning = false
                                     timer.upstream.connect().cancel()     // relinquish thread process
-                                    potdActive = true // new
+//                                    potdActive = true
                                 }
                             }.onAppear {
                                 calculateTimeDifference()
@@ -232,8 +232,8 @@ struct HomeView: View {
         let components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
                                         day: calendar.component(.day, from: .now),  // current day
-                                        hour: 9,    // 9AM
-                                        minute: 0,
+                                        hour: 20,    // 9AM
+                                        minute: 20,
                                         second: 0)
         return calendar.date(from: components)!
     }
@@ -245,10 +245,10 @@ struct HomeView: View {
         // This creates for 9AM the next day
         let components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
-                                        day: calendar.component(.day, from: .now)+1,  // current day+1 -> next day
-                                        hour: 9,    // 9AM
-                                        minute: 0,
-                                        second: 0)
+                                        day: calendar.component(.day, from: .now),  // current day+1 -> next day
+                                        hour: 20,    // 9AM
+                                        minute: 22,
+                                        second: 10)
         // construct date-time from these components
         let problemRefreshDate = calendar.date(from: components)!
         // track difference between current date-time and this constructed date-time (in seconds)
