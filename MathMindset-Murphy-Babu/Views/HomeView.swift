@@ -76,7 +76,7 @@ struct HomeView: View {
                         .frame(width: 80)
                     // TODO: can still navigate to potd page; even when timer shows
                     NavigationLink(destination: ProblemOfDay().environmentObject(app),
-                                        isActive: $potdActive
+                                        isActive: $navToPOTD
                     ) {
                         Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
                             .font(.title)
@@ -87,6 +87,7 @@ struct HomeView: View {
                                     // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
                                     //                            timerRunning = false
                                     timer.upstream.connect().cancel()     // relinquish thread process
+                                    potdActive = true // new
                                 }
                             }.onAppear {
                                 calculateTimeDifference()
@@ -212,7 +213,7 @@ struct HomeView: View {
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
                     potdActive = false           // reset before checking
-                    if document.potd_timestamp < potdRefreshTimestamp() {
+                    if document.potd_timestamp > potdRefreshTimestamp() {
                         potdActive = true        // potd page should be made available
                     }
                     
