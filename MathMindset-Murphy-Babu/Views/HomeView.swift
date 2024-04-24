@@ -88,6 +88,8 @@ struct HomeView: View {
                                     //                            timerRunning = false
                                     timer.upstream.connect().cancel()     // relinquish thread process
 //                                    potdActive = true
+                                    potdActive = true
+                                    
                                 }
                             }.onAppear {
                                 calculateTimeDifference()
@@ -213,8 +215,11 @@ struct HomeView: View {
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
                     potdActive = false           // reset before checking
+                    navToPOTD = false
+                    
                     if document.potd_timestamp > potdRefreshTimestamp() {
                         potdActive = true        // potd page should be made available
+                        navToPOTD = true
                     }
                     
                     // set flag to indicate all necessary data has been loaded in
@@ -247,8 +252,8 @@ struct HomeView: View {
                                         month: calendar.component(.month, from: .now),
                                         day: calendar.component(.day, from: .now),  // current day+1 -> next day
                                         hour: 20,    // 9AM
-                                        minute: 22,
-                                        second: 10)
+                                        minute: 41,
+                                        second: 30)
         // construct date-time from these components
         let problemRefreshDate = calendar.date(from: components)!
         // track difference between current date-time and this constructed date-time (in seconds)
