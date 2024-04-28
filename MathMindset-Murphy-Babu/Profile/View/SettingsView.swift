@@ -7,9 +7,10 @@ struct SettingsView: View {
 
     var body: some View {
         VStack {
-            Image("Settings")
+            Image("SettingsPage")
                 .resizable()
-                .frame(width: 200, height: 200)
+                .frame(width: 150, height: 150)
+                .padding(.bottom, 36)
             VStack (spacing: 12) {
                 SettingItem(text: "Enable Notifications", settingEnabled: $notificationsEnabled)
                 SettingItem(text: "Enable Biometric Login", settingEnabled: $biometricEnabled)
@@ -27,8 +28,9 @@ struct SettingItem: View {
     var body: some View {
         HStack {
             Toggle(isOn: $settingEnabled, label: {
-                Text("Enable Notifications")
+                Text(text)
                     .font(.title3)
+                    .fontWeight(.bold)
                     .foregroundStyle(.textTint)
             })
             .padding()

@@ -30,7 +30,7 @@ struct TopicCard: View {
         HStack {
             Spacer().overlay(
                 Text(self.name)
-                    .font(.system(size: 20, weight: .heavy))
+                    .font(.system(size: 22, weight: .heavy))
             )
             Spacer().overlay(
                 Group{
@@ -101,7 +101,7 @@ struct QuizButton: View {
     var body: some View {
         // Quiz
         Text("Take Quiz")
-            .font(.title2)
+            .font(.system(size: 18))
             .padding(12)
             .background(
                 RoundedRectangle(cornerRadius: 25)
@@ -110,7 +110,7 @@ struct QuizButton: View {
                         ? Color(red: 0, green: 0.8, blue: 1)
                         : Color(red: 0.7, green: 0.7, blue: 0.7)
                     )
-                    .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                    .strokeBorder(.iconTint)
                     .shadow(radius: 4)
                     .frame(width: 150)
             )

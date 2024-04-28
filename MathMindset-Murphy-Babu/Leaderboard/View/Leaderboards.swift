@@ -106,12 +106,12 @@ struct Leaderboards: View {
                         user.username,
                         user.profileImage,
                         index == 0 ? CGFloat(user.score) : CGFloat(user.streak),
-                        index == 0 ? "primes" : "days",
+                        index == 0 ? "primes" : (user.streak > 1 ? "days" : "day"),
                         standing
                     )
                     .padding(4)
-                    .padding(.top, standing == 0 ? 36 : 0)
-                    .padding(.bottom, standing == self.users.count-1 ? 36 : 0)
+                    .padding(.top, standing == 0 ? 28 : 0)
+                    .padding(.bottom, standing == self.users.count-1 ? 24 : 0)
                 }
             }
         }.background(
@@ -119,7 +119,7 @@ struct Leaderboards: View {
                 .shadow(radius: 16, x: 8, y: 12)
                 .foregroundStyle(.bgTint)
         )
-        .padding()
+        .padding(10)
     }
     
     func fetchTopUsers() {

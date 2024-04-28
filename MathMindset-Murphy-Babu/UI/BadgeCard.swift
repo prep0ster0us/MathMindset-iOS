@@ -9,11 +9,11 @@ struct BadgeCard: View {
             VStack {
                 Image("\(topic)Badge")
                     .resizable()
-                    .frame(width: 24, height: 24)
+                    .frame(width: 32, height: 32)
                     .saturation(isActive ? 1 : 0)
-                    .padding()
+                    .padding(8)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12)
+                        RoundedRectangle(cornerRadius: 8)
                             .stroke(.bgContrast.opacity(isActive ? 1 : 0.3), lineWidth: 2)
                     )
             }
@@ -28,7 +28,7 @@ struct BadgeCard: View {
             Image("badgeSparkle")
                 .resizable()
                 .frame(width: 20, height: 20)
-                .offset(x: 24, y: -24)
+                .offset(x: 17, y: -25)
                 .opacity(isActive ? 1 : 0)
         }
     }

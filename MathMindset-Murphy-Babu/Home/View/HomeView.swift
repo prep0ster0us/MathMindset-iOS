@@ -45,26 +45,26 @@ struct HomeView: View {
     var content: some View {
         NavigationStack {
             VStack {
-                HStack {
+                HStack(alignment: .center) {
                     Image(userStreak>0 ? "streakActive" : "streakInactive")
                         .resizable()
                         .frame(width: 32, height: 32)
                     Text("\(userStreak)")
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.system(size: 18, weight: .heavy))
                     Spacer()
+                    Text("\(userScore)")
+                        .font(.system(size: 18, weight: .heavy))
                     Image(userScore>0 ? "primes" : "primesEmpty")
                         .resizable()
                         .frame(width: 32, height: 32)
-                    Text("\(userScore)")
-                        .font(.system(size: 20, weight: .bold))
                 }
                 .padding()
-                .padding(.top, 50)
+                .padding(.top, 40)
                 
                 VStack {
                     Text("Problem of the Day")
                     // TODO: Find our own smallcaps font
-                        .font(Font.system(.title).smallCaps())
+                        .font(.title.smallCaps())
                         .fontWeight(.bold)
                         .foregroundStyle(Color(.textTint))
                         .underline()
@@ -101,15 +101,15 @@ struct HomeView: View {
                                     .frame(width: 175, height: 50)
                             )
                             .foregroundColor(.black)
-                            .padding(.top, 24)
+                            .padding(.top, 12)
                     }
                 }.background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(red: 0.85, green: 0.95, blue: 1))
                         .shadow(radius: 5)
-                        .frame(width: 285, height: 275)
+                        .frame(width: 285, height: 265)
                 )
-                .padding(.top, 36)
+                .padding(.top, 24)
                 .padding(.bottom, 20)
                 
                 ScrollView{
@@ -141,9 +141,7 @@ struct HomeView: View {
                             }
                         }.padding(.top, 10)
                     }
-                }.padding(.top, 30)
-                
-
+                }.padding(.top, 20)
                 Spacer()
                 
             }.ignoresSafeArea(.all)
