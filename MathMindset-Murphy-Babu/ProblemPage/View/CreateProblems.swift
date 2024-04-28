@@ -22,15 +22,12 @@ var choices: [String] = [
 ]
 
 // add questions
-
-
 let data: [String: Any] = [
     "question"  : question,
     "choices"   : choices
 //    "answer"    : answer
 ]
-//addProblem(problemSet: "Derivative", problemData: data)
-//
+
 private func addProblem(
     problemSet  : String,
     problemData : [String: Any]

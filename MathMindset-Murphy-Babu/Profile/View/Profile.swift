@@ -15,6 +15,7 @@ struct Profile: View {
     @State private var isLoading = true
     @State private var isSignedOut = false
     @State private var isShowingLogoutConfirmation = false
+    @State private var hasTimeElapsed = false
     
     
     @StateObject var googleAuthManager = GoogleSignInModel()
@@ -175,6 +176,7 @@ struct Profile: View {
                 }.buttonStyle(BorderedButtonStyle())
                 Spacer()
                 Button("Logout") {
+//                    Task { delayLogout() }
                     isShowingLogoutConfirmation.toggle()
                     let firebaseAuth = Auth.auth()
                     do {
@@ -190,6 +192,12 @@ struct Profile: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
         }
+    }
+    
+    private func delayLogout() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        try? await Task.sleep(nanoseconds: 3_000_000_000)
+        hasTimeElapsed = true
     }
     
     func fetchUserProfile() {

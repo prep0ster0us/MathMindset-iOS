@@ -63,7 +63,7 @@
 
 /* Begin PBXFileReference section */
 		CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateProblems.swift; sourceTree = "<group>"; };
-		CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProblemViewModel.swift; path = "MathMindset-Murphy-Babu/Model/ProblemViewModel.swift"; sourceTree = SOURCE_ROOT; };
+		CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProblemViewModel.swift; path = "MathMindset-Murphy-Babu/ProblemPage/Model/ProblemViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		CE38642F2BB13ED50001DB55 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProblems.swift; sourceTree = "<group>"; };
 		CE5A96812BAE87FD009411D4 /* ProblemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
@@ -142,6 +142,7 @@
 		CE1000672BA7505D00B9D7B1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CEA810CB2BCDFC1700929735 /* Notifications.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -150,10 +151,11 @@
 			isa = PBXGroup;
 			children = (
 				CE5A96812BAE87FD009411D4 /* ProblemView.swift */,
+				CEA810C92BCCE71C00929735 /* ProblemsView.swift */,
+				CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */,
+				CED47F652BCC91800085F051 /* QuizView.swift */,
 				CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */,
 				CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */,
-				CED47F652BCC91800085F051 /* QuizView.swift */,
-				CEA810C92BCCE71C00929735 /* ProblemsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -161,7 +163,140 @@
 		CE1000692BA7506900B9D7B1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CEA810CB2BCDFC1700929735 /* Notifications.swift */,
+				CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */,
+				CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE353F962BDEDF3F00919E0A /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CE353F992BDEDF5900919E0A /* Model */,
+				CE353F982BDEDF5400919E0A /* View */,
+				CE353F972BDEDF4C00919E0A /* Controller */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		CE353F972BDEDF4C00919E0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE353F982BDEDF5400919E0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FA7FAEAB2BA8F1430056EF19 /* Profile.swift */,
+				CEBA8BC02BD6CBD700CA4CEC /* SettingsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE353F992BDEDF5900919E0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE353F9A2BDEDF7700919E0A /* Leaderboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE353F9D2BDEDF8900919E0A /* Model */,
+				CE353F9C2BDEDF8500919E0A /* View */,
+				CE353F9B2BDEDF7E00919E0A /* Controller */,
+			);
+			path = Leaderboard;
+			sourceTree = "<group>";
+		};
+		CE353F9B2BDEDF7E00919E0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE353F9C2BDEDF8500919E0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE353F9D2BDEDF8900919E0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CEDAF3792BC4C120002EA5C7 /* TopUser.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE353F9E2BDEDFA100919E0A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CE353FA12BDEDFB000919E0A /* Model */,
+				CE353FA02BDEDFAD00919E0A /* View */,
+				CE353F9F2BDEDFA600919E0A /* Controller */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CE353F9F2BDEDFA600919E0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE353FA02BDEDFAD00919E0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEA1B5172BAE9B370068A0D3 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE353FA12BDEDFB000919E0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE38642F2BB13ED50001DB55 /* UserData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE353FA22BDEDFC600919E0A /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				CE353FA52BDEDFDB00919E0A /* Model */,
+				CE353FA42BDEDFD500919E0A /* View */,
+				CE353FA32BDEDFCF00919E0A /* Controller */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		CE353FA32BDEDFCF00919E0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE353FA42BDEDFD500919E0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE98FFD82BB257160035F720 /* SplashScreenView.swift */,
+				CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE353FA52BDEDFDB00919E0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -196,6 +331,10 @@
 			isa = PBXGroup;
 			children = (
 				CE5A96942BAE8BC4009411D4 /* BottomBar.swift */,
+				CE5A96972BAE8E9F009411D4 /* TopicCard.swift */,
+				CE9C8E532BC0C75A00E60A93 /* UserCard.swift */,
+				CE724AA32BD4341C005E75B8 /* StatsCard.swift */,
+				CE724AA52BD44784005E75B8 /* BadgeCard.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -251,15 +390,18 @@
 		FA566EA72B69AFCD00F0FF20 /* MathMindset-Murphy-Babu */ = {
 			isa = PBXGroup;
 			children = (
-				CEBEDE442BB8C7CB00E13BEF /* Info.plist */,
-				CEBEDE392BB8C7A300E13BEF /* Fonts */,
 				CE5A96932BAE8BB1009411D4 /* UI */,
+				CE353FA22BDEDFC600919E0A /* Splash */,
+				CE353F9E2BDEDFA100919E0A /* Home */,
+				CE353F9A2BDEDF7700919E0A /* Leaderboard */,
+				CE353F962BDEDF3F00919E0A /* Profile */,
 				CE1000662BA7505200B9D7B1 /* ProblemPage */,
 				CE7312AB2B979FE1002F11DD /* SignIn */,
-				FA78F7022B71B419006BF7C3 /* Model */,
-				FA78F7032B71B436006BF7C3 /* Views */,
+				FA78F7022B71B419006BF7C3 /* Misc */,
+				CEBEDE392BB8C7A300E13BEF /* Fonts */,
 				FA566EA82B69AFCD00F0FF20 /* MathMindset_Murphy_BabuApp.swift */,
 				FA566EAA2B69AFCD00F0FF20 /* ContentView.swift */,
+				CEBEDE442BB8C7CB00E13BEF /* Info.plist */,
 				FA566EAC2B69AFCE00F0FF20 /* Assets.xcassets */,
 				FA566EAE2B69AFCE00F0FF20 /* Preview Content */,
 			);
@@ -274,35 +416,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		FA78F7022B71B419006BF7C3 /* Model */ = {
+		FA78F7022B71B419006BF7C3 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
-				CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */,
-				CE38642F2BB13ED50001DB55 /* UserData.swift */,
-				CEDAF3792BC4C120002EA5C7 /* TopUser.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		FA78F7032B71B436006BF7C3 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				CE5A96962BAE8E9F009411D4 /* ProblemOfDay.swift */,
-				CE5A96972BAE8E9F009411D4 /* TopicCard.swift */,
 				FA78F7042B71B455006BF7C3 /* MultipleChoice.swift */,
-				FA7FAEAB2BA8F1430056EF19 /* Profile.swift */,
-				FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */,
-				CEA1B5172BAE9B370068A0D3 /* HomeView.swift */,
-				CE98FFD82BB257160035F720 /* SplashScreenView.swift */,
-				CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */,
-				CEBEDE292BB8BE6200E13BEF /* OnboardingView.swift */,
-				CE9C8E532BC0C75A00E60A93 /* UserCard.swift */,
-				CE724AA32BD4341C005E75B8 /* StatsCard.swift */,
-				CE724AA52BD44784005E75B8 /* BadgeCard.swift */,
-				CEBA8BC02BD6CBD700CA4CEC /* SettingsView.swift */,
+				FA566ED22B69B11500F0FF20 /* MathQuestion.swift */,
 			);
-			path = Views;
+			path = Misc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

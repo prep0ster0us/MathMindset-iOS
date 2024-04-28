@@ -1,10 +1,3 @@
-//
-//  ProblemOfDay.swift
-//  MathMindset-Murphy-Babu
-//
-//  Created by Alex Murphy on 3/18/24.
-//
-
 import SwiftUI
 import Firebase
 
@@ -63,21 +56,7 @@ struct ProblemOfDay: View {
                 .animation(.easeIn, value: 0.8)
                 .padding(.bottom, 16)
             
-            // VERTICAL Layout for choices
-            //            VStack(spacing: 30) {
-            //                HStack {
-            //                    ProblemOption(choice: choices[0])
-            //                    Spacer()
-            //                    ProblemOption(choice: choices[1])
-            //                }.padding(.horizontal, 40)
-            //                HStack {
-            //                    ProblemOption(choice: choices[2])
-            //                    Spacer()
-            //                    ProblemOption(choice: choices[3])
-            //                }.padding(.horizontal, 40)
-            //            }
-            
-            // Horizontal Layout for choices
+            // Layout for choices
             VStack(spacing: 28) {
                 ProblemOption(choices, $isPressed, 1)
                 ProblemOption(choices, $isPressed, 2)
@@ -106,7 +85,6 @@ struct ProblemOfDay: View {
                 } else {
                     // fetch all documents
                     let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
-//                    let shuffledIDs = documentIDs.shuffled()
                     
                     if let firstID = documentIDs.randomElement() {
                         ref.document(firstID)
