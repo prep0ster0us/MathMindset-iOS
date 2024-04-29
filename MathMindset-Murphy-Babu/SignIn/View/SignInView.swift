@@ -95,20 +95,17 @@ struct SignInView: View {
             Button(action: {
                 googleAuthManager.signIn()
             }, label: {
-                Image(systemName: "key.viewfinder")
-                    .foregroundStyle(Color(.iconTint))
+                Image("google-logo")
+                    .resizable()
                     .frame(width: 24, height: 24, alignment: .center)
                 Text("Sign in with Google")
-                    .font(.system(size: 14))
+                    .font(.system(size: 18))
                     .foregroundStyle(Color(.textTint))
                 
             }).padding(.vertical, 12)
                 .frame(width: UIScreen.main.bounds.width-50)
-                .background(RoundedRectangle(cornerRadius: 24).stroke(Color(.black), lineWidth: 2).fill(.bgTint).opacity(0.85))
+                .background(RoundedRectangle(cornerRadius: 24).stroke(Color(.bgTint), lineWidth: 2).fill(.bgTint).opacity(0.85))
                 .padding(.bottom, 12)
-//            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal), action: {
-//                handleGoogleSignIn()
-//            })
             
             // divider
             HStack {
@@ -283,7 +280,7 @@ struct SignInView: View {
                 }, label: {
                     Text("Use Biometrics")
                         .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(Color(.textContrast))
+                        .foregroundStyle(.white)
                         .underline()
                         .padding(.bottom, 25)
                 })
@@ -291,7 +288,6 @@ struct SignInView: View {
                 .padding(.top, 42)
                 .opacity(usnEntered ? 1 : 0)
             
-
             Spacer()
             HStack {
                 NavigationLink(destination: SignUpView()) {
