@@ -16,16 +16,27 @@ class Problem: Identifiable {
         self.type = problemType
     }
     
+    // Prints the numerical component to the math question
+    // as a string.
+    // For example:
+    // Sin(pi/6)
+    // Used primarily for debugging. Better to call
+    // self.printQuestion()
     func print() -> String {
 //        return self.thisProblem.print()
         return ""
     }
     
+    // Prints possible choices, where choice: 1
+    // represents the correct solution. Choices 2, 3, and 4
+    // may use whatever methods available to try
+    // to produce a "feasible" yet incorrect solution
     func printFakeSol(choice: Int) -> String {
 //        return self.thisProblem.printFakeSol(choice: choice)
         return ""
     }
     
+    // Prints a string that contains the math question
     func printQuestion() -> String {
         return ""
     }
@@ -448,15 +459,143 @@ class Trig: Problem {
     }
 }
 
+class Intersection: Problem {
+    // Two polynomials, 1 and 2, of the form:
+    // bx + c
+//    let b1: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+    let c1: Int = Int.random(in: -20..<21)
+    
+
+//    let b2: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+    let b1: Int = 7
+    let b2: Int = 7
+    let c2: Int = Int.random(in: -20..<21)
+    
+    
+    // Step 1:
+    // Set y values equal to each other
+    func getXSolution() -> Double? {
+        let bsol: Int = b1 - b2
+        let csol: Int = c2 - c1
+        Swift.print("BSOL: " + String(bsol) + ", CSOL: " + String(csol))
+        if bsol != 0 {
+            let x: Double = Double(csol) / Double(bsol)
+            Swift.print("X: " + String(x))
+            return x
+        } else {
+            return nil // The functions are linearly independent
+            // Make sure to print out "no solution" as a choice
+        }
+    }
+    
+    func getCoords() -> [Double]? {
+        if (self.getXSolution() != nil) {
+            return [self.getXSolution()!, Double(b2) * self.getXSolution()! + Double(c2)]
+        } else {
+            return nil // The functions are linearly independent
+        }
+    }
+    
+    // Prints the problem statement without the functions
+    override func print() -> String {
+        return "Find the coordinates at which these equations intersect.\n"
+    }
+    
+    override func printQuestion() -> String {
+        return self.print() + "y = " + printPoly(numbers: [self.c1, self.b1]) + "\n" + "y = " + printPoly(numbers: [self.c2, self.b2])
+    }
+
+    // Prints the string that represents the correct seleciton
+    func printSol() -> String {
+        if (self.getCoords() != nil) {
+            let coords: [Double] = self.getCoords()!
+            let part1 = String(format: "%.2f", coords[0])
+            let part2 = String(format: "%.2f", coords[1])
+            return "(" + part1 + ", " + part2 + ")"
+        } else {
+            return "No solution"
+        }
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var theString = ""
+        
+        switch choice {
+        case 1: // correct answer
+            return self.printSol()
+        case 2:
+            // Flip the coordinates, x becomes y
+            if (self.getCoords() != nil) {
+                let coords: [Double] = self.getCoords()!
+                let part1 = String(format: "%.2f", coords[0])
+                let part2 = String(format: "%.2f", coords[1])
+                // Flipped part is below
+                return "(" + part2 + ", " + part1 + ")"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(self.b1) + ".00"
+                let part2 = String(self.c1) + ".00"
+                return "(" + part1 + ", " + part2 + ")"
+            }
+        case 3:
+            if (self.getCoords() != nil) {
+                // This effectively always keeps
+                // "No solution" as an option
+                // I think we still need to check for nil
+                // So that the other cases know when to generate
+                // lower quality results
+                return "No solution"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(self.b2) + ".00"
+                let part2 = String(self.c2) + ".00"
+                // Flipped part is below
+                return "(" + part2 + ", " + part1 + ")"
+            }
+        case 4:
+            // Flip signs, keeping x and y the same
+            if (self.getCoords() != nil) {
+                let coords: [Double] = self.getCoords()!
+                let part1 = String(format: "%.2f", -coords[0])
+                let part2 = String(format: "%.2f", -coords[1])
+                return "(" + part1 + ", " + part2 + ")"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(-self.b1) + ".00"
+                let part2 = String(-self.c2) + ".00"
+                return "(" + part1 + ", " + part2 + ")"
+            }
+        default:
+            // Kind of a cop-out if you ask me
+            theString = "None of these are correct"
+        }
+        
+        return theString
+    }
+}
+
 
 struct MathQuestion: View {
 //    var newQuestion = Factoring()
 //    var newQuestion = Derivative()
-    var newQuestion = Derivative() // can be Factoring(), Derivative(), or Trig()
+//    var newQuestion = Derivative()
+    var newQuestion = Intersection(problemType: "Intersection") // can be Factoring(), Derivative(), Trig(), or Intersection()
+    
     var body: some View {
-        Text(newQuestion.print())
+        Text(newQuestion.printQuestion())
             .monospaced()
-        Text(newQuestion.printSol())
+//        Text(newQuestion.printSol())
+//            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 1))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 2))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 3))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 4))
             .monospaced()
     }
 }
