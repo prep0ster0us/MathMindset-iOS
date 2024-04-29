@@ -17,6 +17,7 @@ struct ProblemOfDay: View {
     
     @State private var question : String = ""
     @State private var choices  : [String] = []
+    @State private var selections: [CGFloat] = [1, 2, 3, 4].shuffled()
     
     let db = Firestore.firestore()
     
@@ -79,10 +80,10 @@ struct ProblemOfDay: View {
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                ProblemOption(choices, $isPressed, 1)
-                ProblemOption(choices, $isPressed, 2)
-                ProblemOption(choices, $isPressed, 3)
-                ProblemOption(choices, $isPressed, 4)
+                ProblemOption(choices, $isPressed, selections[0])
+                ProblemOption(choices, $isPressed, selections[1])
+                ProblemOption(choices, $isPressed, selections[2])
+                ProblemOption(choices, $isPressed, selections[3])
             }.padding(.horizontal, 40)
             
             Spacer()
@@ -116,6 +117,7 @@ struct ProblemOfDay: View {
                                 print(data)
                                 question = data["question"] as! String
                                 choices = data["choices"] as! [String]
+                                selections = selections.shuffled()
                                 isLoading = false
                             } else {
                                 print("Document does not exist")
