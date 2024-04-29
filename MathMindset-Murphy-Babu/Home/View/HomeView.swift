@@ -3,16 +3,16 @@ import Firebase
 
 struct HomeView: View {
     @EnvironmentObject private var app: AppVariables
-    
     var titles: [String] = ["Factoring",
                             "Derivative",
                             "Trig"]
     
-    // TODO: static question for now, make this dynamic by fetching from db
-    let problem = Poly()
     // For Problem of the day Button
-    @State private var potdActive : Bool = false
-    @State private var navToPOTD  : Bool = false
+    @State private var potdActive : Bool = true
+    // timer afer solving Problem of the Day
+    @State private var countDown = TimeInterval()
+    @State private var timerRunning = true
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     // fetch user-stats
     @State var topicProgress: [String: Any?] = [:]
@@ -20,16 +20,12 @@ struct HomeView: View {
     @State var userScore    : Int = 0
     @State var quizScores   : [String: Any?] = [:]
     
+    // show loading screenl, while data is being fetched from database
     @State private var isLoading = true
-    
-    @State private var countDown = TimeInterval()
-    @State private var timerRunning = true
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         Group {
             if(isLoading) {
-//                ProgressView()
                 ShapeProgressView()
             } else {
                 content
@@ -74,34 +70,35 @@ struct HomeView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 80)
                     // TODO: can still navigate to potd page; even when timer shows
-                    NavigationLink(destination: ProblemOfDay().environmentObject(app),
-                                        isActive: $potdActive
+                    NavigationLink(destination: ProblemOfDay().environmentObject(app)
                     ) {
-                        Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
-                            .font(.title)
-                            .onReceive(timer) { _ in
-                                if countDown > 0  && timerRunning {
-                                    countDown -= 1
-                                } else {
-                                    // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
-                                    //                            timerRunning = false
-                                    timer.upstream.connect().cancel()     // relinquish thread process
-//                                    potdActive = true
+                        Button(action: {}, label: {
+                            Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
+                                .font(.title)
+                                .onReceive(timer) { _ in
+                                    if countDown > 0  && timerRunning {
+                                        countDown -= 1
+                                    } else {
+                                        // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
+                                        // timerRunning = false
+                                        timer.upstream.connect().cancel()     // relinquish thread process
+                                        potdActive = true
+                                    }
+                                }.onAppear {
+                                    countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                                 }
-                            }.onAppear {
-                                calculateTimeDifference()
-                            }
-                            .font(.title2)
-                            .padding(12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
-                                    .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                                    .shadow(radius: 5)
-                                    .frame(width: 175, height: 50)
-                            )
-                            .foregroundColor(.black)
-                            .padding(.top, 12)
+                                .font(.title2)
+                                .padding(12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
+                                        .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                                        .shadow(radius: 5)
+                                        .frame(width: 175, height: 50)
+                                )
+                                .foregroundColor(.black)
+                                .padding(.top, 12)
+                        }).disabled(potdActive)
                     }
                 }.background(
                     RoundedRectangle(cornerRadius: 12)
@@ -132,10 +129,7 @@ struct HomeView: View {
                             ) {
                                 TopicCard(name: title, image: title, completed: topicProgress[title] as! Int, quizScore: quizScores[title] as! Int)
                                     .frame(width: $app.screenWidth.wrappedValue)
-                                    .onAppear {
-                                        print("title= \(title) --> \(topicProgress[title] as! Int)")
-//                                        print("after populating topic card: \(topicProgress)")
-                                    }.onDisappear {
+                                    .onDisappear {
                                         isLoading = true
                                     }
                             }
@@ -202,16 +196,15 @@ struct HomeView: View {
                     case .success(let document):
 //                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
                     topicProgress = document.progress as [String: Int]
-//                    print("fetched progress: \(topicProgress)")
                     userScore = document.score
                     userStreak = document.streak
                     quizScores = document.quiz_scores
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
-                    potdActive = false           // reset before checking
-                    if document.potd_timestamp > potdRefreshTimestamp() {
-                        potdActive = true        // potd page should be made available
+//                    potdActive = false           // reset before checking
+                    if document.potd_timestamp < potdRefreshTimestamp() {
+                        potdActive = false        // potd page should be made available
                     }
                     
                     // set flag to indicate all necessary data has been loaded in
@@ -221,35 +214,17 @@ struct HomeView: View {
                         print("Error fetching document: \(error)")
                 }
         }
-        
     }
     
     func potdRefreshTimestamp() -> Date {
         let calendar = Calendar.current
         let components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
-                                        day: calendar.component(.day, from: .now),  // current day
-                                        hour: 20,    // 9AM
-                                        minute: 20,
+                                        day: calendar.component(.day, from: .now)+1,  // current day
+                                        hour: 9,    // 9AM
+                                        minute: 0,
                                         second: 0)
         return calendar.date(from: components)!
-    }
-    
-    func calculateTimeDifference() {
-        // today's date-time
-        let calendar = Calendar.current
-        // create specific date components for specific time
-        // This creates for 9AM the next day
-        let components = DateComponents(year: calendar.component(.year, from: .now),
-                                        month: calendar.component(.month, from: .now),
-                                        day: calendar.component(.day, from: .now),  // current day+1 -> next day
-                                        hour: 20,    // 9AM
-                                        minute: 22,
-                                        second: 10)
-        // construct date-time from these components
-        let problemRefreshDate = calendar.date(from: components)!
-        // track difference between current date-time and this constructed date-time (in seconds)
-        countDown = problemRefreshDate.timeIntervalSince(.now)
     }
 
     func formattedTime() -> String {
