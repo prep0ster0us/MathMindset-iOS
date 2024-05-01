@@ -24,7 +24,7 @@ struct SignInView: View {
     @State private var animLogin   = false
     @State private var animLoading = false
     
-    @State private var loginStatus = false
+    @State var loginStatus = false
     @State private var showAlert   = false
     // bool variables for triggering alert, based on conditions
     @State private var emptyFields = false
@@ -94,7 +94,7 @@ struct SignInView: View {
             // Google-Sign in
             // Placeholder, TODO: update to actual sign-in button
             Button(action: {
-                googleAuthManager.signIn()
+                googleAuthManager.signIn(loginStatus: $loginStatus)
             }, label: {
                 Image("google-logo")
                     .resizable()
@@ -293,7 +293,7 @@ struct SignInView: View {
             
             Spacer()
             HStack {
-                NavigationLink(destination: SignUpView()) {
+                NavigationLink(destination: SignUpView(loginStatus: $loginStatus)) {
                     Text("New User? \(Text("Create an account!").underline())")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)

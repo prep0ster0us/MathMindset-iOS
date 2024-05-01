@@ -105,7 +105,8 @@ class FirebaseManager: ObservableObject {
                     year: calendar.component(.year, from: .now)-1,
                     month: calendar.component(.month, from: .now),
                     day: calendar.component(.day, from: .now))
-                )!       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                )!,       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                "POTD_count"            : 0
             ]
         
             // save user details (after sign-in) to database
@@ -141,11 +142,17 @@ class FirebaseManager: ObservableObject {
     }
     
     func logOut() {
+//        do {
+//            try Auth.auth().signOut()
+//        }
+//        catch {
+//            print("Error while trying to sign out: \(error.localizedDescription)")
+//        }
+        let firebaseAuth = Auth.auth()
         do {
-            try Auth.auth().signOut()
-        }
-        catch {
-            print("Error while trying to sign out: \(error.localizedDescription)")
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
         }
     }
     
@@ -171,7 +178,8 @@ class FirebaseManager: ObservableObject {
     
     func checkIfGoogleUserExists(
         userID : String,
-        user   : User?
+        user   : User?,
+        loginStatus : Binding<Bool>
     ) {
         db.collection("Users")
             .document(userID)
@@ -224,15 +232,19 @@ class FirebaseManager: ObservableObject {
                             month: calendar.component(.month, from: .now),
                             day: calendar.component(.day, from: .now))
                         )!,      // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
-                        "potd_timestamp"          : calendar.date(from: DateComponents(
+                        "potd_timestamp"        : calendar.date(from: DateComponents(
                             year: calendar.component(.year, from: .now)-1,
                             month: calendar.component(.month, from: .now),
                             day: calendar.component(.day, from: .now))
-                        )!       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                        )!,       // deliberately setting date as an year in the past (so the first problem solve leads to proper update)
+                        "POTD_count"            : 0
                     ]
                 
                     // save user details (after sign-in) to database
                     self.saveUserDetails(uid: userID, data: data)
+                    
+                    // set status to logged in
+                    loginStatus.wrappedValue = true
                 }
             }
     }

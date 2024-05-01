@@ -164,9 +164,10 @@ struct StrokeText: View {
                 Text(text).font(.system(size: 36))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).offset(x: width, y: -width)
             }
-            .foregroundColor(color)
+            .foregroundColor(.textTint)
             Text(text).font(.system(size: 36))
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                .foregroundStyle(color)
         }
     }
 }

@@ -14,7 +14,13 @@ private var isRegistered = false
 
 struct SignUpView: View {
     
+    @Binding var loginStatus: Bool
+    init(loginStatus: Binding<Bool>) {
+        self._loginStatus = loginStatus
+    }
+    
     @StateObject var dbManager = FirebaseManager()
+    @StateObject var googleAuthManager = GoogleSignInModel()
     // TODO: delegate these state variables to have the values from the TextFields
     
     @Environment(\.dismiss) var dismiss
@@ -93,29 +99,37 @@ struct SignUpView: View {
                     .shadow(radius: 25, x: 12, y: 16)
                     .padding(.bottom, 24)
                 
-                // Google-Sign in
-                // Placeholder, TODO: update to actual sign-in button
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    Image(systemName: "key.viewfinder")
-                        .foregroundStyle(Color(.iconTint))
+                Button(action: {
+                    googleAuthManager.signIn(loginStatus: $loginStatus)
+                }, label: {
+                    Image("google-logo")
+                        .resizable()
                         .frame(width: 24, height: 24, alignment: .center)
                     Text("Sign in with Google")
-                        .font(.system(size: 14))
+                        .font(.system(size: 18))
                         .foregroundStyle(Color(.textTint))
                     
                 }).padding(.vertical, 12)
                     .frame(width: UIScreen.main.bounds.width-50)
-                    .background(RoundedRectangle(cornerRadius: 24).stroke(Color(.black), lineWidth: 2).fill(.bgTint).opacity(0.85))
+                    .background(RoundedRectangle(cornerRadius: 24).stroke(Color(.bgTint), lineWidth: 2).fill(.bgTint).opacity(0.85))
                     .padding(.bottom, 12)
                 
                 // divider
                 HStack {
-                    Color(.white).opacity(0.5).frame(width: UIScreen.main.bounds.width/4, height: 1)
-                    Text("OR").font(.system(size: 16)).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).opacity(0.7).padding(.horizontal, 8)
-                    Color(.white).opacity(0.5).frame(width: UIScreen.main.bounds.width/4, height: 1)
+                    Color(.white)
+                        .opacity(0.5)
+                        .frame(width: UIScreen.main.bounds.width/4, height: 1)
+                    Text("OR")
+                        .font(.system(size: 16, weight: /*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/))
+                        .foregroundStyle(.white)
+                        .opacity(0.8)
+                        .padding(.horizontal, 8)
+                    Color(.white)
+                        .opacity(0.5)
+                        .frame(width: UIScreen.main.bounds.width/4, height: 1)
                 }
                 // Header
-                StrokeText(text: "Sign Up", width: 0.5, color: Color(.textTint))
+                StrokeText(text: "Sign Up", width: 0.5, color: Color(.black))
                 
                 // Register Input
                 VStack {
@@ -126,7 +140,7 @@ struct SignUpView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 150, height: 150)
-                                .foregroundStyle(Color(red: 100/255, green: 100/255, blue: 100/255))
+                                .foregroundStyle(.iconTint)
                                 .clipShape(Circle())
                                 .shadow(radius: 20, x: 8, y: 8)
                             
@@ -135,7 +149,7 @@ struct SignUpView: View {
                             .resizable()
                             .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                             .offset(y: -25)
                             .padding(.leading, 120)
                     }.onChange(of: photoPickerItem) { _, _ in
@@ -325,7 +339,7 @@ struct SignUpView: View {
                 }, label: {
                     Text("REGISTER")
                         .padding(.vertical)
-                        .foregroundColor(.textTint)
+                        .foregroundColor(.white)
                         .fontWeight(.bold)
                         .frame(width: UIScreen.main.bounds.width - 100)     // dynamic width, based on device's max screen width
                     
@@ -347,8 +361,9 @@ struct SignUpView: View {
                 HStack {
                     Button(action: {dismiss()}, label: {
                         Text("Already registered? \(Text("Sign In").underline())")
-                            .font(.system(size: 14))
-                            .foregroundStyle(Color(.textContrast))
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(.bottom, 12)
                     })
                 }.padding(.horizontal, 24)
                     .padding(.top, 16)
@@ -412,5 +427,5 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView()
+    SignUpView(loginStatus: .constant(true))
 }

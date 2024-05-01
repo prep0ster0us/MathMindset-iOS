@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import GoogleSignIn
+import SwiftUI
 
 class GoogleSignInModel: ObservableObject {
     
@@ -22,7 +23,9 @@ class GoogleSignInModel: ObservableObject {
     var dbManager = FirebaseManager()
 
     
-    func signIn() {
+    func signIn(
+        loginStatus : Binding<Bool>
+    ) {
         // If user already logged in, restore session
 //        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
 //            GIDSignIn.sharedInstance.restorePreviousSignIn()
@@ -71,7 +74,7 @@ class GoogleSignInModel: ObservableObject {
                     self.isSignedIn = true // signify successful login
                     
                     // check if the user already exists
-                    self.dbManager.checkIfGoogleUserExists(userID: uid, user: user)
+                    self.dbManager.checkIfGoogleUserExists(userID: uid, user: user, loginStatus : loginStatus)
                 }
             }
 //        }

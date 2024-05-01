@@ -36,7 +36,7 @@ struct ForgotPwdView: View {
             
             // Sub-Header - description
             Text("We'll send you a verification email to reset your password")
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 18, weight: .bold))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 8)          // internal padding
@@ -80,12 +80,11 @@ struct ForgotPwdView: View {
                     .padding(.vertical)
                     .foregroundColor(.black)
                     .fontWeight(.bold)
-                    .frame(width: UIScreen.main.bounds.width - 120)     // dynamic width, based on device's max screen width
+                    .frame(width: UIScreen.main.bounds.width - 140)     // dynamic width, based on device's max screen width
                     .overlay(
                         RoundedRectangle(cornerRadius: 50)
                             .stroke(.black, lineWidth: 8)
                     )
-                
             }).background(
                 LinearGradient(gradient: Gradient(colors: [Color(.systemBlue), Color(.systemTeal), Color(.systemMint)]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/)
             ).cornerRadius(50)
@@ -97,8 +96,6 @@ struct ForgotPwdView: View {
                 } message: {
                     Text("You will receive an email to reset your password.")
                 }
-            
-            
             Spacer()
         }
     }
