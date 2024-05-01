@@ -2,13 +2,12 @@ import SwiftUI
 import Firebase
 
 struct Profile: View {
-    @State private var pfpImageUrl = ""
-//   "https://static.vecteezy.com/system/resources/previews/010/966/743/original/avatar-nerd-man-free-vector.jpg"
-//    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoQ2C2f7eqsQvU6_T183x8ASGJv7mqJ2xy_KLDIZOJsA&s"
+
     @State private var username = "Guest User"
     @State private var joinDate = ""
     @State private var userStats : [String: Any] = [:]
     @State private var badges : [String: Any] = [:]
+    @State private var profileData: [String: Any] = [:]
     //
     let screenWidth = UIScreen.main.bounds.width
     
@@ -51,10 +50,11 @@ struct Profile: View {
         VStack {
             ZStack (alignment: .top) {
                 HStack {
-                    Image("EditProfile")
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                        .padding(.leading, 16)
+                    NavigationLink(destination: EditProfileView(profileData: profileData)) { Image("EditProfile")
+                            .resizable()
+                            .frame(width: 48, height: 48)
+                            .padding(.leading, 16)
+                    }
                     Spacer()
                     NavigationLink(destination: SettingsView()) {
                         Image("Settings")
@@ -65,7 +65,7 @@ struct Profile: View {
                 }
                 
                 // User's Profile Image
-                AsyncImage(url: URL(string: pfpImageUrl)) { image in
+                AsyncImage(url: URL(string: profileData["pfpImageUrl"] as! String)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -78,7 +78,7 @@ struct Profile: View {
                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 .overlay(
                     Circle()
-                        .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                        .stroke(.iconTint, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                 )
                 .padding(.top, 12)
             }
@@ -244,6 +244,13 @@ struct Profile: View {
                     problemCount += count as! Int
                 }
                 userStats["problemCount"] = problemCount
+                
+                profileData = [
+                    "pfpImageUrl" : document.profileImage,
+                    "username"    : document.username,
+                    "email"       : document.email,
+                    "dateOfBirth" : document.dateOfBirth
+                ]
                 
                 isLoading = false
                 
