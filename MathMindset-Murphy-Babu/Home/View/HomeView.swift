@@ -144,7 +144,7 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            let problemSet = title == "Factoring" ? PolySet : (title == "Trig" ? TrigSet : DerivativeSet)
+                            let problemSet = title == "Factoring" ? FactoringSet : (title == "Trig" ? TrigSet : DerivativeSet)
                             NavigationLink(destination:
                                             ProblemsView(
                                                 topic: title,
@@ -170,7 +170,7 @@ struct HomeView: View {
     func fetchProblemSet(_ name: String) {
         let docName = (name == "Factoring") ? "Poly" : name
         //        print(docName)
-        let problemSet = (docName == "Poly") ? PolySet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+        let problemSet = (docName == "Poly") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
         if !problemSet.isEmpty { return }
         
         db.collection("Problems").document(docName).getDocument { (document, error) in
@@ -188,7 +188,7 @@ struct HomeView: View {
                                                   choices: choices as? [String] ?? [])
                     switch(docName) {
                     case "Poly":
-                        PolySet.append(problemData)
+                        FactoringSet.append(problemData)
                         break
                     case "Trig":
                         TrigSet.append(problemData)
@@ -200,9 +200,9 @@ struct HomeView: View {
                         break
                     }
                 }
-                if(PolySet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+                if(FactoringSet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
                     // sort fetched question set (in order Problem1 - Problem10)
-                    PolySet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+                    FactoringSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                     DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                     TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
                 }
