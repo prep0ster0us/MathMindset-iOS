@@ -13,9 +13,8 @@ struct SplashScreenView: View {
     var body: some View {
         
         if isActive {
-            OnboardingView()
-//            SignInView()
-            // TODO: **** redirect to onboarding slides
+            SignInView()
+            // TODO: **** redirect to onboarding slides (going direct to sign in for faster debugging)
             // (commented out since it once runs for first launch)
             // OnboardingView()
         } else {
@@ -48,7 +47,7 @@ struct SplashScreenView: View {
                     }
                 }
         }.onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {     // TODO: change back to 2.5 (changed for faster debugging)
                 withAnimation(Animation.easeOut(duration: 0.8)) {
                     self.isActive = true
                 }
