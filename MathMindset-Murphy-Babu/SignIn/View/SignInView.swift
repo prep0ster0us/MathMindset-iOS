@@ -20,20 +20,22 @@ struct SignInView: View {
     
     @State private var visible = false
     
-    @State private var loginText = "LOGIN"
-    @State private var animLogin = false
+    @State private var loginText   = "LOGIN"
+    @State private var animLogin   = false
     @State private var animLoading = false
     
     @State private var loginStatus = false
-    @State private var showAlert = false
+    @State private var showAlert   = false
+    // bool variables for triggering alert, based on conditions
     @State private var emptyFields = false
     @State private var requestBiometricAlert = false
+    @AppStorage("isBiometricLoginEnabled") private var biometricEnabled: Bool = false
+
     @State private var usnEntered = false
     
 //    @StateObject private var googleSignInModel = GoogleSignInModel()
     
     private var width = 0.5;
-    
     private var auth = Auth.auth()
     
     //    @State private var visible = false
@@ -60,7 +62,6 @@ struct SignInView: View {
         } else {
             content
         }
-//        content
     }
     
     var content: some View {
@@ -73,7 +74,7 @@ struct SignInView: View {
                 
                 showLogin
             }
-        }.tint(.black)
+        }.tint(.textTint)
     }
     
     var showLogin: some View {
@@ -246,9 +247,11 @@ struct SignInView: View {
                                         UserDefaults.standard.set(email, forKey: "email")
                                         UserDefaults.standard.set(pass, forKey: "password")
                                         dbManager.setBiometric("true")
+                                        biometricEnabled = true
                                       },
                                       secondaryButton: .cancel(Text("Not now")) {
                                         dbManager.setBiometric("false")
+                                        biometricEnabled = false
                                       }
                                 )
                             } else if emptyFields {
@@ -286,7 +289,7 @@ struct SignInView: View {
                 })
             }.padding(.horizontal, 24)
                 .padding(.top, 42)
-                .opacity(usnEntered ? 1 : 0)
+                .opacity(usnEntered ? (biometricEnabled ? 1 : 0) : 0)
             
             Spacer()
             HStack {

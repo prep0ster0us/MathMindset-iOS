@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State var biometricEnabled     = true
-    @State var darkModeEnabled      = true
-    @State var notificationsEnabled = true
+    @AppStorage("isNotificationsEnabled") private var notificationsEnabled: Bool = true
+    @AppStorage("isBiometricLoginEnabled") private var biometricEnabled: Bool = false
+    @AppStorage("isDarkMode") private var darkModeEnabled: Bool = false
 
     var body: some View {
         VStack {
@@ -24,6 +24,8 @@ struct SettingsView: View {
 struct SettingItem: View {
     let text : String
     @Binding var settingEnabled: Bool
+    
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
     
     var body: some View {
         HStack {

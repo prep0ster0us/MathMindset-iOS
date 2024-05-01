@@ -2,8 +2,8 @@ import SwiftUI
 import Firebase
 
 struct Profile: View {
-    @State private var pfpImageUrl =
-    "https://static.vecteezy.com/system/resources/previews/010/966/743/original/avatar-nerd-man-free-vector.jpg"
+    @State private var pfpImageUrl = ""
+//   "https://static.vecteezy.com/system/resources/previews/010/966/743/original/avatar-nerd-man-free-vector.jpg"
 //    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoQ2C2f7eqsQvU6_T183x8ASGJv7mqJ2xy_KLDIZOJsA&s"
     @State private var username = "Guest User"
     @State private var joinDate = ""
@@ -23,7 +23,13 @@ struct Profile: View {
     
     
     var body: some View {
-        Group {
+        ZStack {
+            // TODO: consult with Alex if it looks better with background
+//            LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+//                           , startPoint: .top, endPoint: .bottom)
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .edgesIgnoringSafeArea(.all)
+            
             if isLoading {
                 ShapeProgressView()
             } else {
@@ -53,7 +59,7 @@ struct Profile: View {
                         .resizable()
                         .frame(width: 36, height: 36)
                         .padding(.trailing, 16)
-                }
+                }.tint(.textTint)
             }
             
             // Profile Section
