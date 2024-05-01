@@ -49,38 +49,45 @@ struct Profile: View {
     
     var content: some View {
         VStack {
-            HStack {
-                Image("EditProfile")
-                    .resizable()
-                    .frame(width: 48, height: 48)
-                    .padding(.leading, 16)
-                Spacer()
-                NavigationLink(destination: SettingsView()) {
-                    Image("Settings")
+            ZStack (alignment: .top) {
+                HStack {
+                    Image("EditProfile")
                         .resizable()
                         .frame(width: 48, height: 48)
-                        .padding(.trailing, 16)
+                        .padding(.leading, 16)
+                    Spacer()
+                    NavigationLink(destination: SettingsView()) {
+                        Image("Settings")
+                            .resizable()
+                            .frame(width: 48, height: 48)
+                            .padding(.trailing, 16)
+                    }
                 }
+                
+                // User's Profile Image
+                AsyncImage(url: URL(string: pfpImageUrl)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+                .frame(width: screenWidth-250, height: screenWidth-250)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                .overlay(
+                    Circle()
+                        .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                )
+                .padding(.top, 12)
             }
             
+            
             // Profile Section
-            AsyncImage(url: URL(string: pfpImageUrl)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            }
-            .frame(width: screenWidth-250, height: screenWidth-250)
-            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-            .overlay(
-                Circle()
-                    .stroke(.iconTint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-            )
+           
             Text(username)
-                .font(.system(size: 24, weight: .heavy))
+                .font(.system(size: 28, weight: .heavy))
                 .foregroundStyle(.textTint)
             
             HStack (spacing: 12) {
@@ -94,7 +101,7 @@ struct Profile: View {
                     .foregroundStyle(.textTint).opacity(colorScheme == .dark ? 0.8 : 0.4)
                     .opacity(joinDate.isEmpty ? 0 : 1)
             }
-            .padding(.top, -8)
+            .padding(.top, -12)
             
             // Statistics Section
             VStack (alignment: .leading) {
@@ -106,14 +113,22 @@ struct Profile: View {
                 VStack {
                     HStack (spacing: 12) {
                         StatsCard(icon: "streakActive",
-                                  stat: "4",
+                                  stat: "\(userStats["streak"] ?? "-")",
                                   description: "days streak")
                         StatsCard(icon: "primes",
-                                  stat: "80",
+                                  stat: "\(userStats["score"] ?? "-")",
                                   description: "primes earned")
                     }.padding(.horizontal, 16)
+                    HStack (spacing: 12) {
+                        StatsCard(icon: "potdSolved",
+                                  stat: "\(userStats["potdCount"] ?? "-")",
+                                  description: "daily solves")
+                        StatsCard(icon: "problemSolved",
+                                  stat: "\(userStats["problemCount"] ?? "-")",
+                                  description: "problems solved")
+                    }.padding(.horizontal, 16)
                 }
-            }.padding(.top, 24)
+            }.padding(.top, 12)
             
             // Badges Section
             VStack (alignment: .leading) {
@@ -132,7 +147,7 @@ struct Profile: View {
                         )
                     }
                 }.padding(.leading, 16)
-            }.padding(.top, 24)
+            }.padding(.top, 16)
             
             Spacer()
             NavigationLink(destination: SignInView(), isActive: $isSignedOut) {
@@ -219,10 +234,16 @@ struct Profile: View {
                 joinDate = "Joined \(dateFormatter(dateJoined))"
                 username = document.username
                 userStats = [
-                    "streak" : document.streak,
-                    "score"  : document.score,
+                    "streak"    : document.streak,
+                    "score"     : document.score,
+                    "potdCount" : document.POTD_count
                 ]
                 badges = document.progress
+                var problemCount = 0
+                for count in badges.values {
+                    problemCount += count as! Int
+                }
+                userStats["problemCount"] = problemCount
                 
                 isLoading = false
                 

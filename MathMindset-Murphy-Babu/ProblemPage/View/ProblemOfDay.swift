@@ -106,6 +106,167 @@ struct ProblemOfDay: View {
     
 }
 
+struct SubmitButton: View {
+    
+    var isPressed: CGFloat
+    var isPOTD   : Bool
+    init(
+        _ isPressed: CGFloat,
+        isPOTD  : Bool
+    ) {
+        self.isPressed = isPressed
+        self.isPOTD = isPOTD
+    }
+    
+    @EnvironmentObject private var app: AppVariables
+    
+    @Environment(\.dismiss) var dismiss
+    @State private var isCorrect = false
+    @State private var showAlert = false
+    @State private var showConfetti = 0
+    
+    var width: CGFloat = UIScreen.main.bounds.width-60
+    var height: CGFloat = 58
+    var radius: CGFloat = 24
+    var offset: CGFloat = 6
+    
+    var color1: Color = Color(.systemTeal).opacity(0.6)
+    var color2: Color = Color(.systemTeal)
+    var color3: Color = Color(.systemBlue).opacity(0.5)
+    var color4: Color = Color(.green).opacity(0.5)
+    
+    var body: some View {
+        // Shadow Rectangle Button
+        VStack {
+            Button(action: {
+                if isPressed == 1 {
+                    isCorrect = true
+                    showConfetti = 1
+                    Task {
+                        await createNotification()
+                        await updateProgress()
+                    }
+                } else {
+                    isCorrect = false
+                }
+                showAlert = true
+            }, label: {
+                Text("Check")
+                    .font(.system(size: 24))
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    .foregroundStyle(Color(.textContrast))
+                    .frame(width: width, height: height)
+                    .background(
+                        ZStack {
+                            LinearGradient(colors: [color1, color2, color3, color4], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            RoundedRectangle(cornerRadius: radius, style: .continuous)
+                            //                            .stroke(Color(.black), lineWidth: 3)
+                                .fill(color1)
+                                .blur(radius: 4)
+                                .offset(x: -4, y: -4)
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            //                            .stroke(Color(.black), lineWidth: 3)
+                                .fill(LinearGradient(colors: [color2.opacity(0.1), color2], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .padding(2)
+                                .blur(radius: 2)
+                        }
+                    ).clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+                    .shadow(color: Color(.bgContrast).opacity(0.15), radius: 6, x: offset, y: offset)
+                    .shadow(color: color1.opacity(0.1), radius: 12, x: -offset, y: -offset)
+            }).buttonStyle(SubmitButtonStyle())
+                .confettiCannon(counter: $showConfetti, num: 150, confettiSize: 10, rainHeight: 400)
+            // TODO: add red hue to the background if answer is incorrect
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Problem Submission"),
+                          message: Text(isCorrect ? "Correct Answer!" : "Try Again!"),
+                          dismissButton: .default(Text(isCorrect ? (isPOTD ? "Back to Home" : "Next Problem") : "Ok")) {
+                        if isCorrect {
+                            if isPOTD {
+                                app.setStreak(newVal: $app.streak.wrappedValue+1)
+                                self.app.primes += 5
+                                self.app.probOfDaySolved = true
+                                print(self.app.streak)
+                                dismiss()
+                            } else {
+                                // TODO: go to next question
+                                
+                            }
+                        }
+                        
+                    })
+                }
+        }
+    }
+    
+    func updateProgress() async {
+        let userID = Auth.auth().currentUser!.uid
+        let db = Firestore.firestore()
+        let ref = db.collection("Users").document(userID)
+        
+        // perform a transaction for running updates on database in batch
+        do {
+            let _ = try await db.runTransaction({ (transaction, errorPointer) -> Any? in
+                // 1. fetch doc
+                let document: DocumentSnapshot
+                do {
+                    try document = transaction.getDocument(ref)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                print("got doc")
+                
+                // 2. get existing data
+//                let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
+                let lastStreakUpdate = document.data()?["streak_update_timestamp"] as? Timestamp
+                let currStreak = document.data()?["streak"] as? Int ?? -1
+                let currScore = document.data()?["score"] as? Int ?? -1
+                print("got data")
+                
+                // 3. update data (based on criteria)
+                
+                // Compare the values and update if the condition is met
+                if (lastStreakUpdate?.dateValue())! < dayStart() {      // if last streak update was before 12AM today (start of new day); update streak & timestamp
+                    print("updating streak, timestamp and progress --> \(currStreak) , \(lastStreakUpdate?.dateValue() ?? Date())")
+                    transaction.updateData([
+                        "streak": currStreak + 1,
+                        "streak_update_timestamp" : Date(),
+                        "score" : currScore+10
+                    ], forDocument: ref)
+                } else {
+                    print("only streak updated")
+                    transaction.updateData([
+                        "score" : currScore+10
+                    ], forDocument: ref)
+                }
+                // metric for keeping track of ProblemsOfTheDay solved by a user (account lifetime)
+                let potdCount = document.data()?["POTD_count"] as? Int ?? -1
+                transaction.updateData([
+                    "POTD_count" : potdCount+1
+                    ], forDocument: ref
+                )
+                print("updated data")
+                return nil
+            })
+            print("Transaction successful!")
+        } catch {
+            print("Transaction failed! \(error)")
+        }
+    }
+    func dayStart() -> Date {
+        let calendar = Calendar.current
+        return Calendar(identifier: .gregorian).date(from: DateComponents(
+            year   : calendar.component(.year, from: Date.now),
+            month  : calendar.component(.month, from: Date.now),
+            day    : calendar.component(.day, from: Date.now),
+            hour   : 0,
+            minute : 0,
+            second : 0)
+        )!
+    }
+    
+}
+
 #Preview {
     ProblemOfDay()
         .environmentObject(AppVariables())

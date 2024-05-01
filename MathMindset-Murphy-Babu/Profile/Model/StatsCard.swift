@@ -12,12 +12,12 @@ struct StatsCard: View {
             Image(icon)
                 .resizable()
                 .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                .frame(width: 20, height: 20)
+                .frame(width: 24, height: 24)
                 .padding(.leading, 12)
-                .padding(.trailing, 8)
+                .padding(.trailing, 6)
             
             VStack (alignment: .leading, spacing: 0) {
-                Text(stat)
+                Text(stat != "0" ? stat : "—")
                         .font(.system(size: 20, weight: .heavy))
                     .fontWeight(.heavy)
                     .foregroundStyle(.textTint)
@@ -25,6 +25,7 @@ struct StatsCard: View {
                         .font(.system(size: 14, weight: .medium))
                     .fontWeight(.light)
                     .foregroundStyle(.textTint).opacity(colorScheme == .dark ? 0.9 : 0.4)
+                    .padding(.top, 4)
             }.padding(.vertical, 12)
             Spacer()
         }
