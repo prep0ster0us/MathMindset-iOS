@@ -10,11 +10,29 @@ import Firebase
 import GoogleSignIn
 import Combine
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
         return true
+    }
+    
+    // foreground notifications
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void) {
+        if notification.request.content.categoryIdentifier == "POTD" {
+            print("Foreground POTD notification!")
+            // Play a sound and make a banner to let the user know about the invitation.
+            completionHandler([.alert, .sound])
+            return
+        }
+
+
+        // Don't alert the user for other types.
+        completionHandler(UNNotificationPresentationOptions(rawValue: 0))
     }
 }
 

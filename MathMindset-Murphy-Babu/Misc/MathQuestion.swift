@@ -16,16 +16,27 @@ class Problem: Identifiable {
         self.type = problemType
     }
     
+    // Prints the numerical component to the math question
+    // as a string.
+    // For example:
+    // Sin(pi/6)
+    // Used primarily for debugging. Better to call
+    // self.printQuestion()
     func print() -> String {
 //        return self.thisProblem.print()
         return ""
     }
     
+    // Prints possible choices, where choice: 1
+    // represents the correct solution. Choices 2, 3, and 4
+    // may use whatever methods available to try
+    // to produce a "feasible" yet incorrect solution
     func printFakeSol(choice: Int) -> String {
 //        return self.thisProblem.printFakeSol(choice: choice)
         return ""
     }
     
+    // Prints a string that contains the math question
     func printQuestion() -> String {
         return ""
     }
@@ -112,11 +123,12 @@ func printPoly(numbers: [Int]) -> String {
     } else if theString.starts(with: " +") {
         theString = "" + theString.suffix(theString.count - 3)
     }
-    
+    theString.replace("  ", with: " ") // catch-all
+    theString.replace("  ", with: " ") // catch-all
     return theString
 }
 
-class Poly: Problem {
+class Factoring: Problem {
     // These are the coefficients of two
     // first order polynomials that are multiplied
     // to obtain the non-factored solution
@@ -448,15 +460,200 @@ class Trig: Problem {
     }
 }
 
+class Intersection: Problem {
+    // Two polynomials, 1 and 2, of the form:
+    // bx + c
+    let b1: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+    let c1: Int = Int.random(in: -20..<21)
+    
+
+    let b2: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+//    let b1: Int = 7
+//    let b2: Int = 7
+    let c2: Int = Int.random(in: -20..<21)
+    
+    init() {
+        // To avoid confusing people with the same function
+        super.init(problemType: "Intersection")
+    }
+    
+    // Step 1:
+    // Set y values equal to each other
+    func getXSolution() -> Double? {
+        let bsol: Int = b1 - b2
+        let csol: Int = c2 - c1
+        Swift.print("BSOL: " + String(bsol) + ", CSOL: " + String(csol))
+        if bsol != 0 {
+            let x: Double = Double(csol) / Double(bsol)
+            Swift.print("X: " + String(x))
+            return x
+        } else {
+            return nil // The functions are linearly independent
+            // Make sure to print out "no solution" as a choice
+        }
+    }
+    
+    func getCoords() -> [Double]? {
+        if (self.getXSolution() != nil) {
+            return [self.getXSolution()!, Double(b2) * self.getXSolution()! + Double(c2)]
+        } else {
+            return nil // The functions are linearly independent
+        }
+    }
+    
+    // Prints the question mathematical part
+    override func print() -> String {
+        return "y = " + printPoly(numbers: [self.c1, self.b1]) + "\n" + "y = " + printPoly(numbers: [self.c2, self.b2])
+    }
+    
+     // Print only the text part of the question
+     override func printQuestion() -> String {
+         return "Find the coordinates at which these equations intersect."
+     }
+
+    // Prints the string that represents the correct seleciton
+    func printSol() -> String {
+        if (self.getCoords() != nil) {
+            let coords: [Double] = self.getCoords()!
+            let part1 = String(format: "%.2f", coords[0])
+            let part2 = String(format: "%.2f", coords[1])
+            return "(" + part1 + ", " + part2 + ")"
+        } else {
+            return "No solution"
+        }
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var theString = ""
+        
+        switch choice {
+        case 1: // correct answer
+            return self.printSol()
+        case 2:
+            // Flip the coordinates, x becomes y
+            if (self.getCoords() != nil) {
+                let coords: [Double] = self.getCoords()!
+                let part1 = String(format: "%.2f", coords[0])
+                let part2 = String(format: "%.2f", coords[1])
+                // Flipped part is below
+                return "(" + part2 + ", " + part1 + ")"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(self.b1) + ".00"
+                let part2 = String(self.c1) + ".00"
+                return "(" + part1 + ", " + part2 + ")"
+            }
+        case 3:
+            if (self.getCoords() != nil) {
+                // This effectively always keeps
+                // "No solution" as an option
+                // I think we still need to check for nil
+                // So that the other cases know when to generate
+                // lower quality results
+                return "No solution"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(self.b2) + ".00"
+                let part2 = String(self.c2) + ".00"
+                // Flipped part is below
+                return "(" + part2 + ", " + part1 + ")"
+            }
+        case 4:
+            // Flip signs, keeping x and y the same
+            if (self.getCoords() != nil) {
+                let coords: [Double] = self.getCoords()!
+                let part1 = String(format: "%.2f", -coords[0])
+                let part2 = String(format: "%.2f", -coords[1])
+                return "(" + part1 + ", " + part2 + ")"
+            } else {
+                // Generate garbage as we are running out of
+                // options with there being no solution
+                let part1 = String(-self.b1) + ".00"
+                let part2 = String(-self.c2) + ".00"
+                return "(" + part1 + ", " + part2 + ")"
+            }
+        default:
+            // Kind of a cop-out if you ask me
+            theString = "None of these are correct"
+        }
+        
+        return theString
+    }
+}
+
+class Integral: Problem {
+    var coeffNumerator: [Int] = []
+    var coeffSol: [Int] = []
+    var indexList = [-5,-4,-3,-2,-1,1,2,3,4,5]
+    
+    init() {
+        for _ in (0..<3) {
+            coeffNumerator.append(Int.random(in: -13..<13))
+        }
+        
+        for i in (0..<coeffNumerator.count - 1) {
+            coeffSol.append(
+                coeffNumerator[i + 1] * (i + 1))
+        }
+        coeffNumerator[0] = 0
+        super.init(problemType: "Integral")
+    }
+    
+    override func print() -> String {
+        return printPoly(numbers: coeffSol)
+    }
+    
+    func printSol() -> String {
+        return printPoly(numbers: coeffNumerator) + " + C"
+    }
+    
+    override func printQuestion() -> String {
+        return "Find the integral of this polynomial with respect to x.\n" + self.print()
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var returnString: String = ""
+        
+        switch(choice) {
+        case 1:
+            // Correct answer
+            return printSol()
+        case 2:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] += [-1, 1].randomElement()!
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        case 3:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] += [-2, 2].randomElement()!
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        case 4:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] *= -1
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        default:
+            return returnString
+        }
+    }
+}
 
 struct MathQuestion: View {
-//    var newQuestion = poly()
-//    var newQuestion = Derivative()
-    var newQuestion = Derivative() // can be poly(), derivative(), or trig()
+    var newQuestion = Intersection() // can be Factoring(), Derivative(), Trig(), Intersection(), or Integral()
+    
     var body: some View {
-        Text(newQuestion.print())
+//        Text("hello world!")
+        Text(newQuestion.printQuestion())
             .monospaced()
-        Text(newQuestion.printSol())
+//        Text(newQuestion.printSol())
+//            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 1))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 2))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 3))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 4))
             .monospaced()
     }
 }

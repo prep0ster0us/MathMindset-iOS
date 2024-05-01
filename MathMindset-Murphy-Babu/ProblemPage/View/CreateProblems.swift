@@ -6,7 +6,7 @@ let problemMap = [
     // TODO: complete this map based on the available problem sets
     // for which the question generation logic has been developed
     "Trig" : "Trigometry",
-    "Poly" : "Polynomial",
+    "Derivative" : "Derivative",
     "Factoring" : "Factoring"
 ]
 

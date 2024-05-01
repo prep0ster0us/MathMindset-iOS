@@ -6,7 +6,7 @@ struct GenerateProblems: View {
     let db = Firestore.firestore()
     
     let probNum = [2,3,4,5,6,7,8,9,10]
-    @State private var polyNum = 1
+    @State private var factoringNum = 1
     @State private var derivNum = 1
     @State private var trigNum = 1
     @State private var num: Int = 1
@@ -54,9 +54,9 @@ struct GenerateProblems: View {
             
             Button(action: {
                 addProblem("Factoring")
-                polyNum += 1
+                factoringNum += 1
             }, label: {
-                Text("Add Factoring questions")
+                Text("Add factoring questions")
                     .foregroundStyle(Color(.white))
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 200)
@@ -91,8 +91,8 @@ struct GenerateProblems: View {
             problem = Trig()
             num = trigNum
         case "Factoring":
-            problem = Poly()
-            num = polyNum
+            problem = Factoring()
+            num = factoringNum
         default:
             print("Invalid problem topic")
             return
@@ -149,8 +149,8 @@ struct GenerateProblems: View {
             problem = Trig()
             num = trigNum
         case "Factoring":
-            problem = Poly()
-            num = polyNum
+            problem = Factoring()
+            num = factoringNum
         default:
             print("Invalid problem topic")
             return

@@ -61,6 +61,7 @@
 		FA7FAEA42B9268510056EF19 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FA7FAEA32B9268510056EF19 /* ConfettiSwiftUI */; };
 		FA7FAEAC2BA8F1430056EF19 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FAEAB2BA8F1430056EF19 /* Profile.swift */; };
 		FA7FAEB12BA8F2C30056EF19 /* Leaderboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */; };
+		FADCED402BE2BDE000C76F58 /* TopicTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADCED3F2BE2BDE000C76F58 /* TopicTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		FA78F7042B71B455006BF7C3 /* MultipleChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoice.swift; sourceTree = "<group>"; };
 		FA7FAEAB2BA8F1430056EF19 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		FA7FAEB02BA8F2C30056EF19 /* Leaderboards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaderboards.swift; sourceTree = "<group>"; };
+		FADCED3F2BE2BDE000C76F58 /* TopicTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -549,6 +551,7 @@
 				CEF705B32BE1DF17006AB996 /* ProfileEditField.swift in Sources */,
 				CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */,
 				CE98FFD92BB257160035F720 /* SplashScreenView.swift in Sources */,
+				FADCED402BE2BDE000C76F58 /* TopicTest.swift in Sources */,
 				CE3864302BB13ED50001DB55 /* UserData.swift in Sources */,
 				CEDAF37A2BC4C120002EA5C7 /* TopUser.swift in Sources */,
 				CE9DB6C62BC847D4002C5AE5 /* GoogleSignInModel.swift in Sources */,
@@ -693,7 +696,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = 3MR74X8CA9;
+				DEVELOPMENT_TEAM = MKFL94JB3V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
@@ -725,7 +728,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MathMindset-Murphy-Babu/Preview Content\"";
-				DEVELOPMENT_TEAM = 3MR74X8CA9;
+				DEVELOPMENT_TEAM = MKFL94JB3V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
