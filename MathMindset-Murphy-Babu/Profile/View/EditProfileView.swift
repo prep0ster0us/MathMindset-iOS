@@ -114,7 +114,7 @@ struct EditProfileView: View {
                     .background(Color(.systemBlue))
                     .labelsHidden()
                     .onChange(of: dob) { _, selectedDate in
-                        if selectedDate != Date() {
+                        if selectedDate != Date() && Calendar.current.component(.year, from: selectedDate) != 1900 {
                             let formatter = DateFormatter()
                             formatter.dateStyle = .medium
                             dateSelected = formatter.string(from: selectedDate)

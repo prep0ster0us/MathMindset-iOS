@@ -53,14 +53,14 @@ struct Profile: View {
                     NavigationLink(destination: EditProfileView(profileData: profileData)) { Image("EditProfile")
                             .resizable()
                             .frame(width: 48, height: 48)
-                            .padding(.leading, 16)
+                            .padding(.leading, 20)
                     }
                     Spacer()
                     NavigationLink(destination: SettingsView()) {
                         Image("Settings")
                             .resizable()
                             .frame(width: 48, height: 48)
-                            .padding(.trailing, 16)
+                            .padding(.trailing, 20)
                     }
                 }
                 
@@ -80,7 +80,7 @@ struct Profile: View {
                     Circle()
                         .stroke(.iconTint, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                 )
-                .padding(.top, 12)
+                .padding(.top, 16)
             }
             
             
@@ -89,6 +89,7 @@ struct Profile: View {
             Text(username)
                 .font(.system(size: 28, weight: .heavy))
                 .foregroundStyle(.textTint)
+                .padding(.top, 12)
             
             HStack (spacing: 12) {
                 Image(systemName: "clock.fill")
@@ -139,7 +140,7 @@ struct Profile: View {
                         .fontWeight(.heavy)
                         .padding(.leading, 16)
                     Spacer()
-                }
+                }.padding(.bottom, 8)
                 HStack (spacing: 12) {
                     ForEach(Array(badges.keys), id: \.self) { badge in
                         BadgeCard(topic: badge,
