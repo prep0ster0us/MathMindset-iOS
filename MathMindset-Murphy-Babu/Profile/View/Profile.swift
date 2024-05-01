@@ -21,6 +21,7 @@ struct Profile: View {
     @StateObject var googleAuthManager = GoogleSignInModel()
     @StateObject var firebaseManager = FirebaseManager()
     
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
@@ -51,15 +52,15 @@ struct Profile: View {
             HStack {
                 Image("EditProfile")
                     .resizable()
-                    .frame(width: 36, height: 36)
+                    .frame(width: 48, height: 48)
                     .padding(.leading, 16)
                 Spacer()
                 NavigationLink(destination: SettingsView()) {
                     Image("Settings")
                         .resizable()
-                        .frame(width: 36, height: 36)
+                        .frame(width: 48, height: 48)
                         .padding(.trailing, 16)
-                }.tint(.textTint)
+                }
             }
             
             // Profile Section
@@ -86,11 +87,11 @@ struct Profile: View {
                 Image(systemName: "clock.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundStyle(.iconTint).opacity(0.3)
+                    .foregroundStyle(.textTint).opacity(colorScheme == .dark ? 0.8 : 0.4)
                     .padding(.trailing, -4)
                 Text(joinDate)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.textTint).opacity(0.3)
+                    .foregroundStyle(.textTint).opacity(colorScheme == .dark ? 0.8 : 0.4)
                     .opacity(joinDate.isEmpty ? 0 : 1)
             }
             .padding(.top, -8)

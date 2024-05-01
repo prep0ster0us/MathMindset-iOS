@@ -78,6 +78,8 @@ struct FloatingBottomBar: View {
         ("Profile", "profileActive", "profileInactive")
     ]
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ZStack {
             Capsule()
@@ -92,12 +94,19 @@ struct FloatingBottomBar: View {
                             if index == selectedTab {
                                 Image(tabBarItems[index].activeImg)
                             } else {
-                                Image(tabBarItems[index].inactiveImg)
-                                    .renderingMode(.template)   // to render 'inactive' mode image in white, for dark mode
-                                    .foregroundStyle(.iconTint)
+                                if colorScheme == .dark {
+                                    Image(tabBarItems[index].inactiveImg)
+                                        .renderingMode(.template)   // to render 'inactive' mode image in white, for dark mode
+                                        .foregroundStyle(.iconTint)
+                                } else {
+                                    Image(tabBarItems[index].inactiveImg)
+                                }
                             }
                             Text(tabBarItems[index].title)
-                                .foregroundStyle(index == selectedTab ? .textTint : Color(.darkGray))
+                                .foregroundStyle(index == selectedTab 
+                                                 ? .textTint
+                                                 : (colorScheme == .dark ? .textTint.opacity(0.8) : Color(.darkGray))
+                                )
                                 .font(.caption)
                                 .fontWeight(index == selectedTab ? .bold : .medium)
                         }

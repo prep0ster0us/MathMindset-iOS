@@ -7,7 +7,7 @@ struct SettingsView: View {
 
     var body: some View {
         VStack {
-            Image("SettingsPage")
+            Image("Settings")
                 .resizable()
                 .frame(width: 150, height: 150)
                 .padding(.bottom, 36)

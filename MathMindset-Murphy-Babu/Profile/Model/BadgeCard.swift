@@ -4,6 +4,8 @@ struct BadgeCard: View {
     let topic    : String
     let isActive : Bool
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ZStack {
             VStack {
@@ -14,7 +16,10 @@ struct BadgeCard: View {
                     .padding(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(.bgContrast.opacity(isActive ? 1 : 0.3), lineWidth: 2)
+                            .stroke(colorScheme == .dark
+                                    ? (isActive ? .bgContrast : .borderTint.opacity(0.7))
+                                    : .bgContrast.opacity(isActive ? 1 : 0.3)
+                                    , lineWidth: 2)
                     )
             }
             .shadow(radius: 16, x: 12, y: 12)

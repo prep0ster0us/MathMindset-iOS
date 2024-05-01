@@ -199,6 +199,8 @@
 		CE353F992BDEDF5900919E0A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE724AA32BD4341C005E75B8 /* StatsCard.swift */,
+				CE724AA52BD44784005E75B8 /* BadgeCard.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -333,8 +335,6 @@
 			isa = PBXGroup;
 			children = (
 				CE5A96942BAE8BC4009411D4 /* BottomBar.swift */,
-				CE724AA32BD4341C005E75B8 /* StatsCard.swift */,
-				CE724AA52BD44784005E75B8 /* BadgeCard.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";

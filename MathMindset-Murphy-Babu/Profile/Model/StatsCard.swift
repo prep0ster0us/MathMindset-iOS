@@ -5,6 +5,8 @@ struct StatsCard: View {
     let stat : String
     let description : String
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         HStack {
             Image(icon)
@@ -22,13 +24,13 @@ struct StatsCard: View {
                 Text(description)
                         .font(.system(size: 14, weight: .medium))
                     .fontWeight(.light)
-                    .foregroundStyle(.textTint).opacity(0.4)
+                    .foregroundStyle(.textTint).opacity(colorScheme == .dark ? 0.9 : 0.4)
             }.padding(.vertical, 12)
             Spacer()
         }
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(.bgContrast.opacity(0.3), lineWidth: 1.5)
+                .stroke(.borderTint, lineWidth: 1.5)
         )
     }
 }
