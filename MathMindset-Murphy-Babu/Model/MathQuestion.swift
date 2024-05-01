@@ -123,7 +123,8 @@ func printPoly(numbers: [Int]) -> String {
     } else if theString.starts(with: " +") {
         theString = "" + theString.suffix(theString.count - 3)
     }
-    
+    theString.replace("  ", with: " ") // catch-all
+    theString.replace("  ", with: " ") // catch-all
     return theString
 }
 
@@ -500,14 +501,15 @@ class Intersection: Problem {
         }
     }
     
-    // Prints the problem statement without the functions
+    // Prints the question mathematical part
     override func print() -> String {
-        return "Find the coordinates at which these equations intersect.\n"
+        return "y = " + printPoly(numbers: [self.c1, self.b1]) + "\n" + "y = " + printPoly(numbers: [self.c2, self.b2])
     }
     
-    override func printQuestion() -> String {
-        return self.print() + "y = " + printPoly(numbers: [self.c1, self.b1]) + "\n" + "y = " + printPoly(numbers: [self.c2, self.b2])
-    }
+     // Print only the text part of the question
+     override func printQuestion() -> String {
+         return "Find the coordinates at which these equations intersect."
+     }
 
     // Prints the string that represents the correct seleciton
     func printSol() -> String {
@@ -595,7 +597,7 @@ class Integral: Problem {
             coeffSol.append(
                 coeffNumerator[i + 1] * (i + 1))
         }
-        
+        coeffNumerator[0] = 0
         super.init(problemType: "Integral")
     }
     
@@ -604,11 +606,35 @@ class Integral: Problem {
     }
     
     func printSol() -> String {
-        return printPoly(numbers: coeffNumerator)
+        return printPoly(numbers: coeffNumerator) + " + C"
     }
     
     override func printQuestion() -> String {
         return "Find the integral of this polynomial with respect to x.\n" + self.print()
+    }
+    
+    override func printFakeSol(choice: Int) -> String {
+        var returnString: String = ""
+        
+        switch(choice) {
+        case 1:
+            // Correct answer
+            return printSol()
+        case 2:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] += [-1, 1].randomElement()!
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        case 3:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] += [-2, 2].randomElement()!
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        case 4:
+            var fakeCoeffNumerator = coeffNumerator
+            fakeCoeffNumerator[Int.random(in: 1..<fakeCoeffNumerator.count)] *= -1
+            return printPoly(numbers: fakeCoeffNumerator) + " + C"
+        default:
+            return returnString
+        }
     }
 }
 
@@ -619,16 +645,16 @@ struct MathQuestion: View {
 //        Text("hello world!")
         Text(newQuestion.printQuestion())
             .monospaced()
-        Text(newQuestion.printSol())
+//        Text(newQuestion.printSol())
+//            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 1))
             .monospaced()
-//        Text(newQuestion.printFakeSol(choice: 1))
-//            .monospaced()
-//        Text(newQuestion.printFakeSol(choice: 2))
-//            .monospaced()
-//        Text(newQuestion.printFakeSol(choice: 3))
-//            .monospaced()
-//        Text(newQuestion.printFakeSol(choice: 4))
-//            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 2))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 3))
+            .monospaced()
+        Text(newQuestion.printFakeSol(choice: 4))
+            .monospaced()
     }
 }
 
