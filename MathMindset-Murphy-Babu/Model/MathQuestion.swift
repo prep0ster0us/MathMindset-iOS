@@ -462,15 +462,19 @@ class Trig: Problem {
 class Intersection: Problem {
     // Two polynomials, 1 and 2, of the form:
     // bx + c
-//    let b1: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+    let b1: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
     let c1: Int = Int.random(in: -20..<21)
     
 
-//    let b2: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
-    let b1: Int = 7
-    let b2: Int = 7
+    let b2: Int = Int.random(in: 1..<14) * [-1, 1].randomElement()!
+//    let b1: Int = 7
+//    let b2: Int = 7
     let c2: Int = Int.random(in: -20..<21)
     
+    init() {
+        // To avoid confusing people with the same function
+        super.init(problemType: "Intersection")
+    }
     
     // Step 1:
     // Set y values equal to each other
@@ -577,26 +581,54 @@ class Intersection: Problem {
     }
 }
 
+class Integral: Problem {
+    var coeffNumerator: [Int] = []
+    var coeffSol: [Int] = []
+    var indexList = [-5,-4,-3,-2,-1,1,2,3,4,5]
+    
+    init() {
+        for _ in (0..<3) {
+            coeffNumerator.append(Int.random(in: -13..<13))
+        }
+        
+        for i in (0..<coeffNumerator.count - 1) {
+            coeffSol.append(
+                coeffNumerator[i + 1] * (i + 1))
+        }
+        
+        super.init(problemType: "Integral")
+    }
+    
+    override func print() -> String {
+        return printPoly(numbers: coeffSol)
+    }
+    
+    func printSol() -> String {
+        return printPoly(numbers: coeffNumerator)
+    }
+    
+    override func printQuestion() -> String {
+        return "Find the integral of this polynomial with respect to x.\n" + self.print()
+    }
+}
 
 struct MathQuestion: View {
-//    var newQuestion = Factoring()
-//    var newQuestion = Derivative()
-//    var newQuestion = Derivative()
-    var newQuestion = Intersection(problemType: "Intersection") // can be Factoring(), Derivative(), Trig(), or Intersection()
+    var newQuestion = Intersection() // can be Factoring(), Derivative(), Trig(), Intersection(), or Integral()
     
     var body: some View {
+//        Text("hello world!")
         Text(newQuestion.printQuestion())
             .monospaced()
-//        Text(newQuestion.printSol())
+        Text(newQuestion.printSol())
+            .monospaced()
+//        Text(newQuestion.printFakeSol(choice: 1))
 //            .monospaced()
-        Text(newQuestion.printFakeSol(choice: 1))
-            .monospaced()
-        Text(newQuestion.printFakeSol(choice: 2))
-            .monospaced()
-        Text(newQuestion.printFakeSol(choice: 3))
-            .monospaced()
-        Text(newQuestion.printFakeSol(choice: 4))
-            .monospaced()
+//        Text(newQuestion.printFakeSol(choice: 2))
+//            .monospaced()
+//        Text(newQuestion.printFakeSol(choice: 3))
+//            .monospaced()
+//        Text(newQuestion.printFakeSol(choice: 4))
+//            .monospaced()
     }
 }
 
