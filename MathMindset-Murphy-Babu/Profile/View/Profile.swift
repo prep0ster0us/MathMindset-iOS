@@ -197,7 +197,7 @@ struct Profile: View {
                     isShowingLogoutConfirmation.toggle()
                 }.buttonStyle(BorderedButtonStyle())
                 Spacer()
-                Button("Logout") {
+                Button(action: {
 //                    Task { delayLogout() }
                     isShowingLogoutConfirmation.toggle()
                     let firebaseAuth = Auth.auth()
@@ -209,7 +209,18 @@ struct Profile: View {
                     googleAuthManager.isSignedIn = false
                     firebaseManager.isSignedIn = false
                     isSignedOut.toggle()
-                }.buttonStyle(BorderedProminentButtonStyle())
+                }, label: {
+                    Text("Logout")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(.textTint)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .background(.bgTint)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.iconTint, lineWidth: 2.5)
+                        )
+                })
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 24)

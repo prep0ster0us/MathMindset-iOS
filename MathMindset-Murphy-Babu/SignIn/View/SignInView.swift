@@ -311,9 +311,10 @@ struct SignInView: View {
                     email = UserDefaults.standard.string(forKey: "email")!
                 }
             }
-        }.onDisappear {
-            loginStatus.toggle()
         }
+//        .onDisappear {
+//            loginStatus.toggle()
+//        }
     }
     
     // email format validation
