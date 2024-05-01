@@ -28,7 +28,15 @@ struct HomeView: View {
             if(isLoading) {
                 ShapeProgressView()
             } else {
-                content
+                ZStack {
+                    LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                                   , startPoint: .top, endPoint: .bottom)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.7)
+                    
+                    content
+                }
             }
         }.onAppear {
             fetchProblemSet("Factoring")
@@ -57,56 +65,80 @@ struct HomeView: View {
                 .padding()
                 .padding(.top, 40)
                 
-                VStack {
-                    Text("Problem of the Day")
-                    // TODO: Find our own smallcaps font
-                        .font(.title.smallCaps())
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color(.textTint))
-                        .underline()
-                        .padding(.bottom, 12)
-                    Image(potdActive ? "potdActive" : "potdInactive")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 80)
-                    // TODO: can still navigate to potd page; even when timer shows
-                    NavigationLink(destination: ProblemOfDay().environmentObject(app)
-                    ) {
-                        Button(action: {}, label: {
-                            Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
-                                .font(.title)
-                                .onReceive(timer) { _ in
-                                    if countDown > 0  && timerRunning {
-                                        countDown -= 1
-                                    } else {
-                                        // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
-                                        // timerRunning = false
-                                        timer.upstream.connect().cancel()     // relinquish thread process
-                                        potdActive = true
-                                    }
-                                }.onAppear {
-                                    countDown = potdRefreshTimestamp().timeIntervalSince(.now)
-                                }
-                                .font(.title2)
-                                .padding(12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
-                                        .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                                        .shadow(radius: 5)
-                                        .frame(width: 175, height: 50)
-                                )
-                                .foregroundColor(.black)
-                                .padding(.top, 12)
-                        }).disabled(potdActive)
+                ZStack {
+                    VStack {
+                        HStack (alignment: .top) {
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.black.opacity(0.5))
+                            Spacer()
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.black.opacity(0.5))
+                        }.padding(.horizontal, 70)
+                        Spacer().frame(height: 228)
+                        HStack (alignment: .top){
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.black.opacity(0.5))
+                            Spacer()
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.black.opacity(0.5))
+                        }.padding(.horizontal, 70)
                     }
-                }.background(
+                    VStack {
+                        Text("Problem of the Day")
+                        // TODO: Find our own smallcaps font
+                            .font(.title.smallCaps())
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color(.textTint))
+                            .underline()
+                            .padding(.bottom, 12)
+                        Image(potdActive ? "potdActive" : "potdInactive")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 80)
+                        // TODO: can still navigate to potd page; even when timer shows
+                        NavigationLink(destination: ProblemOfDay().environmentObject(app)
+                        ) {
+                            Button(action: {}, label: {
+                                Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
+                                    .font(.title)
+                                    .onReceive(timer) { _ in
+                                        if countDown > 0  && timerRunning {
+                                            countDown -= 1
+                                        } else {
+                                            // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
+                                            // timerRunning = false
+                                            timer.upstream.connect().cancel()     // relinquish thread process
+                                            potdActive = true
+                                        }
+                                    }.onAppear {
+                                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
+                                    }
+                                    .font(.title2)
+                                    .padding(12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 25)
+                                            .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
+                                            .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                                            .shadow(radius: 5)
+                                            .frame(width: 175, height: 50)
+                                    )
+                                    .foregroundColor(.black)
+                                    .padding(.top, 12)
+                            }).disabled(potdActive)
+                        }
+                    }
+                }
+                .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                        .shadow(radius: 5)
-                        .frame(width: 285, height: 265)
+                        .shadow(radius: 8)
+                        .frame(width: 285, height: 280)
                 )
-                .padding(.top, 24)
+                .padding(.top, 8)
                 .padding(.bottom, 20)
                 
                 ScrollView{
@@ -128,7 +160,7 @@ struct HomeView: View {
                             }
                         }.padding(.top, 10)
                     }
-                }.padding(.top, 20)
+                }.padding(.top, 12)
                 Spacer()
                 
             }.ignoresSafeArea(.all)

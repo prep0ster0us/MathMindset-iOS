@@ -31,6 +31,7 @@ struct TopicCard: View {
             Spacer().overlay(
                 Text(self.name)
                     .font(.system(size: 22, weight: .heavy))
+                    .foregroundStyle(.black)
             )
             Spacer().overlay(
                 Group{
@@ -65,7 +66,11 @@ struct TopicCard: View {
         }.frame(width: UIScreen.main.bounds.width - 50, height: 100)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(getGradientColor().opacity(0.5))
+                .fill(getGradientColor().opacity(0.6))
+                .shadow(radius: 6)
+        ).overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(.black, lineWidth: 3)
                 .shadow(radius: 6)
         )
     }
@@ -101,7 +106,7 @@ struct QuizButton: View {
     var body: some View {
         // Quiz
         Text("Take Quiz")
-            .font(.system(size: 18))
+            .font(.system(size: 18, weight: .medium))
             .padding(12)
             .background(
                 RoundedRectangle(cornerRadius: 25)
@@ -114,7 +119,7 @@ struct QuizButton: View {
                     .shadow(radius: 4)
                     .frame(width: 150)
             )
-            .foregroundColor(.textTint)
+            .foregroundColor(.black)
     }
 }
 
