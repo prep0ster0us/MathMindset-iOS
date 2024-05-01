@@ -121,6 +121,7 @@ struct SubmitButton: View {
     @EnvironmentObject private var app: AppVariables
     
     @Environment(\.dismiss) var dismiss
+    @AppStorage("isNotificationsEnabled") private var notificationsEnabled: Bool = true
     @State private var isCorrect = false
     @State private var showAlert = false
     @State private var showConfetti = 0
@@ -143,7 +144,7 @@ struct SubmitButton: View {
                     isCorrect = true
                     showConfetti = 1
                     Task {
-                        await createNotification()
+                        if notificationsEnabled { await createNotification() }
                         await updateProgress()
                     }
                 } else {

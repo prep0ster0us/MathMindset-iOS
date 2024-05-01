@@ -16,6 +16,8 @@ struct ProblemData: Codable, Hashable {
     }
 }
 
-var FactoringSet       : [ProblemData] = []
+var FactoringSet  : [ProblemData] = []
 var TrigSet       : [ProblemData] = []
 var DerivativeSet : [ProblemData] = []
+var IntersectionSet : [ProblemData] = []
+var IntegralSet   : [ProblemData] = []

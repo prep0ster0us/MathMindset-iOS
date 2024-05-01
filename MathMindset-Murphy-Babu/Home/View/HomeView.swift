@@ -19,6 +19,7 @@ struct HomeView: View {
     @State var userStreak   : Int = 0
     @State var userScore    : Int = 0
     @State var quizScores   : [String: Any?] = [:]
+//    var problemSet: [ProblemData]
     
     // show loading screenl, while data is being fetched from database
     @State private var isLoading = true
@@ -144,7 +145,14 @@ struct HomeView: View {
                 ScrollView{
                     VStack(alignment: .leading) {
                         ForEach(titles, id: \.self) { title in
-                            let problemSet = title == "Factoring" ? FactoringSet : (title == "Trig" ? TrigSet : DerivativeSet)
+                            var problemSet: [ProblemData]
+                            switch(title) {
+                                case "Factoring" : problemSet = FactoringSet
+                                case "Derivative" : problemSet = DerivativeSet
+                                case "Trig"        : problemSet = TrigSet
+                                case "Intersection" : problemSet = IntersectionSet
+                                case "Integral" : problemSet = IntegralSet
+                            }
                             NavigationLink(destination:
                                             ProblemsView(
                                                 topic: title,

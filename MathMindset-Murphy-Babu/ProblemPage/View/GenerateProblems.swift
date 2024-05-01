@@ -9,6 +9,8 @@ struct GenerateProblems: View {
     @State private var factoringNum = 1
     @State private var derivNum = 1
     @State private var trigNum = 1
+    @State private var intersectionNum = 1
+    @State private var integralNum = 1
     @State private var num: Int = 1
 
     var body: some View {
@@ -66,6 +68,32 @@ struct GenerateProblems: View {
                 .padding()
             
             Button(action: {
+                addProblem("Intersection")
+                intersectionNum += 1
+            }, label: {
+                Text("Add intersection questions")
+                    .foregroundStyle(Color(.white))
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 200)
+            }).padding()
+                .padding(.horizontal, 16)
+                .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
+                .padding()
+            
+            Button(action: {
+                addProblem("Integral")
+                integralNum += 1
+            }, label: {
+                Text("Add integral questions")
+                    .foregroundStyle(Color(.white))
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 200)
+            }).padding()
+                .padding(.horizontal, 16)
+                .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
+                .padding()
+            
+            Button(action: {
                 addPOTD()
             }, label: {
                 Text("Add Problem of the day questions")
@@ -93,6 +121,12 @@ struct GenerateProblems: View {
         case "Factoring":
             problem = Factoring()
             num = factoringNum
+        case "Intersection":
+            problem = Intersection()
+            num = intersectionNum
+        case "Integral":
+            problem = Integral()
+            num = integralNum
         default:
             print("Invalid problem topic")
             return
@@ -151,6 +185,12 @@ struct GenerateProblems: View {
         case "Factoring":
             problem = Factoring()
             num = factoringNum
+        case "Intersection":
+            problem = Intersection()
+            num = intersectionNum
+        case "Integral":
+            problem = Integral()
+            num = integralNum
         default:
             print("Invalid problem topic")
             return
