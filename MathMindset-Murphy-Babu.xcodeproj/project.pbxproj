@@ -705,6 +705,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = MathMindset;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "This is used to unlock the device.";
 				INFOPLIST_KEY_NSFileProviderDomainUsageDescription = "We use this to unlock the phone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -737,6 +738,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MathMindset-Murphy-Babu/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = MathMindset;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "This is used to unlock the device.";
 				INFOPLIST_KEY_NSFileProviderDomainUsageDescription = "We use this to unlock the phone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -59,9 +59,10 @@ struct Profile: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                 } placeholder: {
-                    Image(systemName: "person.crop.circle.fill")
+                    Image("pfpPlaceholder")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .offset(y: 8)
                 }
                 .frame(width: screenWidth-250, height: screenWidth-250)
                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
