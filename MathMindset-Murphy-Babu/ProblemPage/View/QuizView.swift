@@ -185,6 +185,10 @@ struct QuizView: View {
             problem = Trig()
         case "Factoring":
             problem = Factoring()
+        case "Intersection":
+            problem = Intersection()
+        case "Integral":
+            problem = Integral()
         default:
             // Default to avoid errors
             problem = Derivative()

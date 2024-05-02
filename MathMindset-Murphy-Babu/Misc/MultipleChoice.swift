@@ -35,6 +35,10 @@ struct MultipleChoice: View { // TODO: Rename this to ProblemPage
             self.thisProblem = Trig()
         case "Factoring":
             self.thisProblem = Factoring()
+        case "Intersection":
+            self.thisProblem = Intersection()
+        case "Integral":
+            self.thisProblem = Integral()
         default:
             self.thisProblem = Factoring()
         }
