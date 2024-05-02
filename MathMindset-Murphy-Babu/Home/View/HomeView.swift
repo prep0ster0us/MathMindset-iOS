@@ -3,9 +3,6 @@ import Firebase
 
 struct HomeView: View {
     @EnvironmentObject private var app: AppVariables
-    var titles: [String] = ["Factoring",
-                            "Derivative",
-                            "Trig"]
     
     // For Problem of the day Button
     @State private var potdActive : Bool = true
@@ -34,16 +31,17 @@ struct HomeView: View {
                                    , startPoint: .top, endPoint: .bottom)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.all)
-                    .opacity(0.7)
+                    .opacity(0.8)
                     
                     content
                 }
             }
         }.onAppear {
-            fetchProblemSet("Factoring")
-            fetchProblemSet("Trig")
-            fetchProblemSet("Derivative")
+//            fetchProblemSet("Factoring")
+//            fetchProblemSet("Trig")
+//            fetchProblemSet("Derivative")
             fetchUserProgress()
+//            fetchProblemSets()
         }
     }
     
@@ -66,160 +64,157 @@ struct HomeView: View {
                 .padding()
                 .padding(.top, 40)
                 
-                ZStack {
-                    VStack {
-                        HStack (alignment: .top) {
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundStyle(.black.opacity(0.5))
-                            Spacer()
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundStyle(.black.opacity(0.5))
-                        }.padding(.horizontal, 70)
-                        Spacer().frame(height: 228)
-                        HStack (alignment: .top){
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundStyle(.black.opacity(0.5))
-                            Spacer()
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundStyle(.black.opacity(0.5))
-                        }.padding(.horizontal, 70)
-                    }
-                    VStack {
-                        Text("Problem of the Day")
-                        // TODO: Find our own smallcaps font
-                            .font(.title.smallCaps())
-                            .fontWeight(.bold)
-                            .foregroundStyle(Color(.textTint))
-                            .underline()
-                            .padding(.bottom, 12)
-                        Image(potdActive ? "potdActive" : "potdInactive")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 80)
-                        // TODO: can still navigate to potd page; even when timer shows
-                        NavigationLink(destination: ProblemOfDay().environmentObject(app)
-                        ) {
-                            Button(action: {}, label: {
-                                Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
-                                    .font(.title)
-                                    .onReceive(timer) { _ in
-                                        if countDown > 0  && timerRunning {
-                                            countDown -= 1
-                                        } else {
-                                            // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
-                                            // timerRunning = false
-                                            timer.upstream.connect().cancel()     // relinquish thread process
-                                            potdActive = true
+                ScrollView {
+                    ZStack {
+                        VStack {
+                            HStack (alignment: .top) {
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundStyle(.black.opacity(0.5))
+                                Spacer()
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundStyle(.black.opacity(0.5))
+                            }.padding(.horizontal, 70)
+                            Spacer().frame(height: 228)
+                            HStack (alignment: .top){
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundStyle(.black.opacity(0.5))
+                                Spacer()
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundStyle(.black.opacity(0.5))
+                            }.padding(.horizontal, 70)
+                        }
+                        VStack {
+                            Text("Problem of the Day")
+                            // TODO: Find our own smallcaps font
+                                .font(.title.smallCaps())
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color(.textTint))
+                                .underline()
+                                .padding(.bottom, 12)
+                            Image(potdActive ? "potdActive" : "potdInactive")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 80)
+                            // TODO: can still navigate to potd page; even when timer shows
+                            NavigationLink(destination: ProblemOfDay().environmentObject(app)
+                            ) {
+                                Button(action: {}, label: {
+                                    Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
+                                        .font(.title)
+                                        .onReceive(timer) { _ in
+                                            if countDown > 0  && timerRunning {
+                                                countDown -= 1
+                                            } else {
+                                                // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
+                                                // timerRunning = false
+                                                timer.upstream.connect().cancel()     // relinquish thread process
+                                                potdActive = true
+                                            }
+                                        }.onAppear {
+                                            countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                                         }
-                                    }.onAppear {
-                                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
-                                    }
-                                    .font(.title2)
-                                    .padding(12)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
-                                            .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                                            .shadow(radius: 5)
-                                            .frame(width: 175, height: 50)
-                                    )
-                                    .foregroundColor(.black)
-                                    .padding(.top, 12)
-                            }).disabled(potdActive)
+                                        .font(.title2)
+                                        .padding(12)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .fill((potdActive) ? Color(red: 0, green: 0.8, blue: 1) : Color(red: 0.7, green: 0.7, blue: 0.7))
+                                                .strokeBorder(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
+                                                .shadow(radius: 5)
+                                                .frame(width: 175, height: 50)
+                                        )
+                                        .foregroundColor(.black)
+                                        .padding(.top, 12)
+                                }).disabled(potdActive)
+                            }
                         }
                     }
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(red: 0.85, green: 0.95, blue: 1))
+                            .shadow(radius: 8)
+                            .frame(width: 285, height: 280)
+                    )
+                    .padding(.top, 8)
+                    .padding(.bottom, 20)
+                    
+    //                ScrollView{
+                        VStack(alignment: .leading) {
+                            ForEach(Array(ProblemSets.keys), id: \.self) { topic in
+                                NavigationLink(destination:
+                                                ProblemsView(
+                                                    topic: topic,
+                                                    problemSet: ProblemSets[topic]!,
+                                                    problemNum: CGFloat(topicProgress[topic] as! Int)
+                                                )
+                                ) {
+                                    TopicCard(name: topic,
+                                              image: topic,
+                                              completed: topicProgress[topic] as! Int,
+                                              quizScore: quizScores[topic] as! Int)
+                                        .frame(width: $app.screenWidth.wrappedValue)
+                                        .onDisappear {
+                                            isLoading = true
+                                        }
+                                }
+                            }.padding(.top, 10)
+                        }
+    //                }
+                    .padding(.top, 12)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                        .shadow(radius: 8)
-                        .frame(width: 285, height: 280)
-                )
-                .padding(.top, 8)
-                .padding(.bottom, 20)
-                
-                ScrollView{
-                    VStack(alignment: .leading) {
-                        ForEach(titles, id: \.self) { title in
-                            var problemSet: [ProblemData]
-                            switch(title) {
-                                case "Factoring" : problemSet = FactoringSet
-                                case "Derivative" : problemSet = DerivativeSet
-                                case "Trig"        : problemSet = TrigSet
-                                case "Intersection" : problemSet = IntersectionSet
-                                case "Integral" : problemSet = IntegralSet
-                            }
-                            NavigationLink(destination:
-                                            ProblemsView(
-                                                topic: title,
-                                                problemSet: problemSet,
-                                                problemNum: CGFloat(topicProgress[title] as! Int)
-                                            )
-                            ) {
-                                TopicCard(name: title, image: title, completed: topicProgress[title] as! Int, quizScore: quizScores[title] as! Int)
-                                    .frame(width: $app.screenWidth.wrappedValue)
-                                    .onDisappear {
-                                        isLoading = true
-                                    }
-                            }
-                        }.padding(.top, 10)
-                    }
-                }.padding(.top, 12)
-                Spacer()
-                
+                .padding(.bottom, 100)
             }.ignoresSafeArea(.all)
         }.navigationBarBackButtonHidden(true)
     }
     
-    func fetchProblemSet(_ name: String) {
-        let docName = (name == "Factoring") ? "Poly" : name
-        //        print(docName)
-        let problemSet = (docName == "Poly") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
-        if !problemSet.isEmpty { return }
-        
-        db.collection("Problems").document(docName).getDocument { (document, error) in
-            if let document = document, document.exists {
-                //                isLoading = true
-                let data: [String: Any] = document.data() ?? [:]
-                
-                for (probNum, problem ) in data {
-                    let problemInfo = problem as! NSDictionary
-                    let question = problemInfo["question"]!
-                    let choices = problemInfo["choices"]!
-                    
-                    let problemData = ProblemData(id: probNum,
-                                                  question: question as? String ?? "",
-                                                  choices: choices as? [String] ?? [])
-                    switch(docName) {
-                    case "Poly":
-                        FactoringSet.append(problemData)
-                        break
-                    case "Trig":
-                        TrigSet.append(problemData)
-                        break
-                    case "Derivative":
-                        DerivativeSet.append(problemData)
-                        break
-                    default:
-                        break
-                    }
-                }
-                if(FactoringSet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
-                    // sort fetched question set (in order Problem1 - Problem10)
-                    FactoringSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-                    DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-                    TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-                }
-                
-            } else {
-                print("Document does not exist")
-            }
-        }
-    }
+//    func fetchProblemSet(_ name: String) {
+//        let docName = (name == "Factoring") ? "Poly" : name
+//        //        print(docName)
+//        let problemSet = (docName == "Poly") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
+//        if !problemSet.isEmpty { return }
+//        
+//        db.collection("Problems").document(docName).getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                //                isLoading = true
+//                let data: [String: Any] = document.data() ?? [:]
+//                
+//                for (probNum, problem ) in data {
+//                    let problemInfo = problem as! NSDictionary
+//                    let question = problemInfo["question"]!
+//                    let choices = problemInfo["choices"]!
+//                    
+//                    let problemData = ProblemData(id: probNum,
+//                                                  question: question as? String ?? "",
+//                                                  choices: choices as? [String] ?? [])
+//                    switch(docName) {
+//                    case "Poly":
+//                        FactoringSet.append(problemData)
+//                        break
+//                    case "Trig":
+//                        TrigSet.append(problemData)
+//                        break
+//                    case "Derivative":
+//                        DerivativeSet.append(problemData)
+//                        break
+//                    default:
+//                        break
+//                    }
+//                }
+//                if(FactoringSet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
+//                    // sort fetched question set (in order Problem1 - Problem10)
+//                    FactoringSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+//                    DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+//                    TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
+//                }
+//                
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//    }
     
     func fetchUserProgress() {
         db.collection("Users")
@@ -227,26 +222,60 @@ struct HomeView: View {
             .getDocument(as: UserData.self) { result in
                 switch result {
                 case .success(let document):
-                    //                    let decodedData = try JSONDecoder().decode(UserData.self, from: document)
                     topicProgress = document.progress as [String: Int]
-                    userScore = document.score
-                    userStreak = document.streak
-                    quizScores = document.quiz_scores
+                    userScore     = document.score
+                    userStreak    = document.streak
+                    quizScores    = document.quiz_scores
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
-                    //                    potdActive = false           // reset before checking
                     if document.potd_timestamp < potdRefreshTimestamp() {
-                        potdActive = false        // potd page should be made available
+                        potdActive = false        // today's problem has been solved; show timer
                     }
-                    
-                    // set flag to indicate all necessary data has been loaded in
-                    isLoading = false
+                    // fetch all problem sets (on first launch)
+                    if(ProblemSets.count < 1) {
+                        fetchProblemSets()
+                    } else {
+                        // set flag to indicate all necessary data has been loaded in
+                        isLoading = false
+                    }
                     
                 case .failure(let error):
                     print("Error fetching document: \(error)")
                 }
             }
+    }
+    
+    func fetchProblemSets() {
+        // sort topics by alphabetical order
+        let sortedTopics = topicProgress.sorted { ($0.value as! Int) < ($1.value as! Int) }
+        print(topicProgress.values)
+        // can't sort dict directly, so convert to sorted array and then put back into the dict
+        for (key, value) in sortedTopics {
+            topicProgress[key] = value
+        }
+        var count = 0
+        for topic in topicProgress.keys {
+            db.collection("Problems")
+                .document(topic)
+                .getDocument(as: ProblemSetData.self) { result in
+                    count+=1
+                    switch result {
+                    case .success(let document):
+                        ProblemSets[topic] = document
+                        
+                    case .failure(let error):
+                        print("Error fetching document: \(error)")
+                    }
+                    
+                    if count == topicProgress.count {
+                        // set flag to indicate all necessary data has been loaded in
+                        withAnimation(Animation.easeInOut) {
+                            isLoading = false
+                        }
+                    }
+                }
+        }
     }
     
     func potdRefreshTimestamp() -> Date {

@@ -462,14 +462,14 @@ struct ProblemProgressBar1: View {
     }
 }
 
-#Preview {
-    ProblemView(
-        topic: "Trig",
-        problemNum: 0,
-        question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
-        choices: ["Triangle", "Circle", "Square", "Rectangle"],
-        problemSet: FactoringSet
-    )
-//    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
-}
+//#Preview {
+//    ProblemView(
+//        topic: "Trig",
+//        problemNum: 0,
+//        question: "Which of these shapes have 4 sides?\nImagine I drew a circle",
+//        choices: ["Triangle", "Circle", "Square", "Rectangle"],
+//        problemSet: [ProblemSets["Factoring"]!.Problem1, ProblemSets["Factoring"]!.Problem2]
+//    )
+////    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
+//}
 

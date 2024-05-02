@@ -3,25 +3,26 @@ import Firebase
 
 struct ProblemsView: View {
     
-    let topic       : String
-    var problemSet  : [ProblemData]
+    let topic              : String
+    var problemSet         : ProblemSetData
     @State var problemNum  : CGFloat
     
     @State private var selections: [CGFloat] = [1,2,3,4].shuffled()
     
-    @State private var question    : String = ""
-    @State private var choices     : [String] = []
-    @State private var isPressed: CGFloat = -1
-    @State private var setQuestionData: Bool = false
+    @State private var problem         : ProblemData = ProblemData()
+    @State private var question        : String = ""
+    @State private var choices         : [String] = []
+    @State private var isPressed       : CGFloat = -1
+    @State private var setQuestionData : Bool = false
     
     // FOR SUBMIT BUTTON
     @Environment(\.dismiss) var dismiss
-    @State private var isCorrect = false
-    @State private var showAlert = false
+    @State private var isCorrect    = false
+    @State private var showAlert    = false
     @State private var showConfetti = 0
     // CHECK FOR ALL 10 PROBLEMS SOLVED
-    @State private var goToQuiz = false
-    @State private var backToHome = false
+    @State private var goToQuiz     = false
+    @State private var backToHome   = false
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -38,8 +39,7 @@ struct ProblemsView: View {
                 ShapeProgressView()     // show progress view till problem page data ready
                     .onAppear {
                         print("on problem page of \(question)")
-                        question = problemSet[Int(problemNum)].question
-                        choices = problemSet[Int(problemNum)].choices
+                        reloadProblem()
                         setQuestionData = true
                     }
             }
@@ -242,11 +242,28 @@ struct ProblemsView: View {
             withAnimation(Animation.smooth(duration: 1.2)) {
                 problemNum += 1
             }
-//            withAnimation(Animation.easeInOut) {
-                question = problemSet[Int(problemNum)].question
-                choices = problemSet[Int(problemNum)].choices
-//            }
+            reloadProblem()
         }
+    }
+    
+    func reloadProblem() {
+        problem = {
+            switch(problemNum) {
+            case 1  : return problemSet.Problem1
+            case 2  : return problemSet.Problem2
+            case 3  : return problemSet.Problem3
+            case 4  : return problemSet.Problem4
+            case 5  : return problemSet.Problem5
+            case 6  : return problemSet.Problem6
+            case 7  : return problemSet.Problem7
+            case 8  : return problemSet.Problem8
+            case 9  : return problemSet.Problem9
+            case 10 : return problemSet.Problem10
+            default : return problemSet.Problem1
+            }
+        }()
+        question = problem.question
+        choices = problem.choices
     }
 }
 
@@ -290,9 +307,8 @@ struct SubmitText: View {
 #Preview {
     ProblemsView(
         topic: "Trig",
-        problemSet: FactoringSet,
+        problemSet: ProblemSets["Factoring"]!,
         problemNum: 0
     )
-//    SubmitButton(1, isPOTD: true).environmentObject(AppVariables())
 }
 

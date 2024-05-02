@@ -10,6 +10,8 @@
 		CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */; };
 		CE35F94D2BCA0ABF00FAB324 /* ProblemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */; };
 		CE3864302BB13ED50001DB55 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE38642F2BB13ED50001DB55 /* UserData.swift */; };
+		CE396FD32BE2F7FC002D4301 /* ProblemSetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE396FD22BE2F7FC002D4301 /* ProblemSetData.swift */; };
+		CE396FD52BE306BD002D4301 /* TopicSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE396FD42BE306BD002D4301 /* TopicSection.swift */; };
 		CE5A96582BAE6EEA009411D4 /* CreateProblems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */; };
 		CE5A965C2BAE7E1A009411D4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE5A965B2BAE7E1A009411D4 /* FirebaseAuth */; };
 		CE5A965E2BAE7E1A009411D4 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CE5A965D2BAE7E1A009411D4 /* FirebaseAuthCombine-Community */; };
@@ -67,6 +69,8 @@
 		CE0BDE2F2BAB8E5E00D82078 /* GenerateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateProblems.swift; sourceTree = "<group>"; };
 		CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProblemViewModel.swift; path = "MathMindset-Murphy-Babu/ProblemPage/Model/ProblemViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		CE38642F2BB13ED50001DB55 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		CE396FD22BE2F7FC002D4301 /* ProblemSetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSetData.swift; sourceTree = "<group>"; };
+		CE396FD42BE306BD002D4301 /* TopicSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSection.swift; sourceTree = "<group>"; };
 		CE5A96572BAE6EEA009411D4 /* CreateProblems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProblems.swift; sourceTree = "<group>"; };
 		CE5A96812BAE87FD009411D4 /* ProblemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemView.swift; sourceTree = "<group>"; };
 		CE5A96842BAE896A009411D4 /* HelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperView.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				CEA1B5192BAF666F0068A0D3 /* ProblemData.swift */,
 				CE35F94C2BCA0ABF00FAB324 /* ProblemViewModel.swift */,
 				CE5A96972BAE8E9F009411D4 /* TopicCard.swift */,
+				CE396FD22BE2F7FC002D4301 /* ProblemSetData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -274,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				CE38642F2BB13ED50001DB55 /* UserData.swift */,
+				CE396FD42BE306BD002D4301 /* TopicSection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -527,6 +533,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE5A96822BAE87FD009411D4 /* ProblemView.swift in Sources */,
+				CE396FD52BE306BD002D4301 /* TopicSection.swift in Sources */,
 				CE5A968A2BAE896A009411D4 /* SignUpView.swift in Sources */,
 				CEA810CC2BCDFC1700929735 /* Notifications.swift in Sources */,
 				CEF705B12BE1DCE4006AB996 /* EditProfileView.swift in Sources */,
@@ -543,6 +550,7 @@
 				CE5A96892BAE896A009411D4 /* SignInView.swift in Sources */,
 				CE724AA62BD44784005E75B8 /* BadgeCard.swift in Sources */,
 				FA78F7052B71B455006BF7C3 /* MultipleChoice.swift in Sources */,
+				CE396FD32BE2F7FC002D4301 /* ProblemSetData.swift in Sources */,
 				CE0BDE302BAB8E5E00D82078 /* GenerateProblems.swift in Sources */,
 				CEA1B5182BAE9B370068A0D3 /* HomeView.swift in Sources */,
 				CE35F94D2BCA0ABF00FAB324 /* ProblemViewModel.swift in Sources */,

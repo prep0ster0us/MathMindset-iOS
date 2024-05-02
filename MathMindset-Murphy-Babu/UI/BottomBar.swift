@@ -21,17 +21,12 @@ struct BottomBar: View {
         self.Home = Home
         self.Leaderboards = Leaderboards
         self.Profile = Profile
-        
-        // TODO: Below does nothing?
-        //        UITabBar.appearance().barTintColor = UIColor(.yellow)
-//        UITabBar.appearance().backgroundColor = UIColor(Color(red: 0, green: 0.8, blue: 1))
-        UITabBar.appearance().unselectedItemTintColor = UIColor(Color(.darkGray))
     }
     @State private var tabSelection = 0
     
     var body: some View {
         NavigationStack {
-            TabView(selection: $tabSelection){
+            TabView(selection: $tabSelection) {
                 Home
                     .tabItem{
                          Image($app.selectedTab.wrappedValue == 0 ? "homeActive" : "homeInactive")
@@ -63,6 +58,11 @@ struct BottomBar: View {
                 .overlay(alignment: .bottom) {
                     FloatingBottomBar(selectedTab: $tabSelection)
                         .offset(y: 12)
+                }
+                .toolbarBackground(.hidden, for: .tabBar)
+                .onAppear {
+                    UITabBar.appearance().backgroundColor = .clear
+                    UITabBar.appearance().unselectedItemTintColor = .darkGray
                 }
         }.navigationBarBackButtonHidden(true)
     }
