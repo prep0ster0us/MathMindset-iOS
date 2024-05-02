@@ -82,9 +82,7 @@ struct ProblemView: View {
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .foregroundStyle(.ultraThinMaterial)
                 .ignoresSafeArea()                  // to cover the entire screen
-        ).onAppear {
-            print("on problem page of \(question)")
-        }
+        )
     }
 }
 
@@ -224,26 +222,14 @@ struct SubmitProblem: View {
                 print("got doc")
                 
                 // 2. get existing data
-//                guard let lastLogin = document.data()?["last_login"] as? Date,
-//                      let currStreak = document.data()?["streak"] as? Int else {
-//                    return nil
-//                }
-                // debug
-//                print(document.data()?["last_login"] as Any)
-//                print("fetched data = \(String(describing: (document.data()?["streak_update_timestamp"] as? Timestamp)?.dateValue()))")
                 let lastLogin = document.data()?["last_login"] as? Date ?? Date.now+100
                 let lastStreakUpdate = document.data()?["streak_update_timestamp"] as? Timestamp
                 let currStreak = document.data()?["streak"] as? Int ?? -1
-                // debug
-//                print("streak update timestamp = \(String(describing: lastStreakUpdate))")
-//                print("day start= \(dayStart())")
-//                print("current streak= \(currStreak)")
                 print("got data")
                 
                 // 3. update data (based on criteria)
                 
                 // Compare the values and update if the condition is met
-//                if lastLogin < Date.now && lastLogin > dateYesterday() {
                 if (lastStreakUpdate?.dateValue())! < dayStart() {      // if last streak update was before 12AM today (start of new day); update streak & timestamp
                     print("updating streak, timestamp and progress --> \(currStreak) , \(lastStreakUpdate?.dateValue() ?? Date())")
                     transaction.updateData([
@@ -313,6 +299,7 @@ struct ProblemOption: View {
     let active  : Color = Color(.systemTeal)
     let inactive: Color = Color(.systemGray3)
     var color2: Color = Color(.bgTint)
+    @Environment(\.colorScheme) var isDarkMode
     
     var body: some View {
         // OPTION-I - Rectangle with shadows
@@ -337,7 +324,7 @@ struct ProblemOption: View {
                                 .opacity(0.4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                             //                            .stroke(Color(.black), lineWidth: 3)
-                                .fill(color2)
+                                .fill(isDarkMode == .dark ? color2.opacity(0.5) : color2)
                                 .blur(radius: 4)
                                 .offset(x: -4, y: -4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)

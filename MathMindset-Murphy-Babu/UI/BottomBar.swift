@@ -114,8 +114,7 @@ struct FloatingBottomBar: View {
                     Spacer()
                 }
             }
-        }.padding(.top, 8)
-            .frame(width: UIScreen.main.bounds.width-24, height: 70)
+        }.frame(width: UIScreen.main.bounds.width-24, height: 68)
     }
 }
 

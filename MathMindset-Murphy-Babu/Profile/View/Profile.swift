@@ -2,7 +2,7 @@ import SwiftUI
 import Firebase
 
 struct Profile: View {
-
+    
     @State private var username = "Guest User"
     @State private var joinDate = ""
     @State private var userStats : [String: Any] = [:]
@@ -24,26 +24,15 @@ struct Profile: View {
     
     var body: some View {
         ZStack {
-            // TODO: consult with Alex if it looks better with background
-//            LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
-//                           , startPoint: .top, endPoint: .bottom)
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .edgesIgnoringSafeArea(.all)
-            
             if isLoading {
                 ShapeProgressView()
             } else {
                 content
             }
         }
-//        if Auth.auth().currentUser == nil {
-//            SignInView()
-//        } else {
-//            content
-//        }
-            .onAppear {
-                fetchUserProfile()
-            }
+        .onAppear {
+            fetchUserProfile()
+        }
     }
     
     var content: some View {
@@ -83,9 +72,8 @@ struct Profile: View {
                 .padding(.top, 16)
             }
             
-            
             // Profile Section
-           
+            
             Text(username)
                 .font(.system(size: 28, weight: .heavy))
                 .foregroundStyle(.textTint)
@@ -199,7 +187,7 @@ struct Profile: View {
                 }.buttonStyle(BorderedButtonStyle())
                 Spacer()
                 Button(action: {
-//                    Task { delayLogout() }
+                    //                    Task { delayLogout() }
                     isShowingLogoutConfirmation.toggle()
                     let firebaseAuth = Auth.auth()
                     do {
@@ -250,7 +238,7 @@ struct Profile: View {
                     "score"     : document.score,
                     "potdCount" : document.POTD_count
                 ]
-                badges = document.progress
+                badges = document.progress as [String: Any]
                 var problemCount = 0
                 for count in badges.values {
                     problemCount += count as! Int

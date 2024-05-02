@@ -14,6 +14,12 @@ struct BadgeCard: View {
                     .frame(width: 32, height: 32)
                     .saturation(isActive ? 1 : 0)
                     .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(colorScheme == .dark
+                                  ? .iconTint.opacity(isActive ? 1 : 0.8)
+                                  : .clear)
+                    )
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(colorScheme == .dark

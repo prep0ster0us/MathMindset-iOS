@@ -25,6 +25,7 @@ struct ProblemsView: View {
     @State private var backToHome   = false
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.colorScheme) var isDarkMode
     
     var body: some View {
         // all problems solved, go to quiz
@@ -38,7 +39,6 @@ struct ProblemsView: View {
             } else {
                 ShapeProgressView()     // show progress view till problem page data ready
                     .onAppear {
-                        print("on problem page of \(question)")
                         reloadProblem()
                         setQuestionData = true
                     }
@@ -50,8 +50,8 @@ struct ProblemsView: View {
         VStack {
             // Problem Number header
             Text("Problem \(Int(problemNum)+1)")
-                .font(.system(size: 32))
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                .font(.system(size: 32, weight: .heavy))
+                .foregroundStyle(.black)
                 .underline()
                 .padding(.top, 20)
                 .padding(.bottom, 24)
@@ -137,10 +137,14 @@ struct ProblemsView: View {
                     }
             })
         }.background(
-            LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                .foregroundStyle(.ultraThinMaterial)
+            LinearGradient(colors: [Color(.systemTeal),Color(.systemBlue)],
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
+                .frame(width: UIScreen.main.bounds.width,
+                       height: UIScreen.main.bounds.height)
+//                .foregroundStyle(.ultraThinMaterial)
                 .ignoresSafeArea()                  // to cover the entire screen
+                .opacity(isDarkMode == .dark ? 0.9 : 0.3)
         )
         // TODO: figure out navigation to page (instead of changing view content) - low priority
 //        .navigationDestination(isPresented: $goToQuiz) {

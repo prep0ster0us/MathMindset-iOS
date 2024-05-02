@@ -16,32 +16,27 @@ struct HomeView: View {
     @State var userStreak   : Int = 0
     @State var userScore    : Int = 0
     @State var quizScores   : [String: Any?] = [:]
-//    var problemSet: [ProblemData]
     
     // show loading screenl, while data is being fetched from database
     @State private var isLoading = true
     
     var body: some View {
         Group {
-            if(isLoading) {
-                ShapeProgressView()
-            } else {
-                ZStack {
-                    LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
-                                   , startPoint: .top, endPoint: .bottom)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .edgesIgnoringSafeArea(.all)
-                    .opacity(0.8)
-                    
+            ZStack {
+                LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
+                               , startPoint: .top, endPoint: .bottom)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+                .opacity(0.8)
+                
+                if(isLoading) {
+                    ShapeProgressView()
+                } else {
                     content
                 }
             }
         }.onAppear {
-//            fetchProblemSet("Factoring")
-//            fetchProblemSet("Trig")
-//            fetchProblemSet("Derivative")
             fetchUserProgress()
-//            fetchProblemSets()
         }
     }
     
@@ -53,16 +48,17 @@ struct HomeView: View {
                         .resizable()
                         .frame(width: 32, height: 32)
                     Text("\(userStreak)")
-                        .font(.system(size: 18, weight: .heavy))
+                        .font(.system(size: 20, weight: .heavy))
                     Spacer()
                     Text("\(userScore)")
-                        .font(.system(size: 18, weight: .heavy))
+                        .font(.system(size: 20, weight: .heavy))
                     Image(userScore>0 ? "primes" : "primesEmpty")
                         .resizable()
                         .frame(width: 32, height: 32)
                 }
-                .padding()
-                .padding(.top, 40)
+                .padding(.leading, 16)
+                .padding(.top, 60)
+                .background(.clear)
                 
                 ScrollView {
                     ZStack {
@@ -92,7 +88,7 @@ struct HomeView: View {
                             // TODO: Find our own smallcaps font
                                 .font(.title.smallCaps())
                                 .fontWeight(.bold)
-                                .foregroundStyle(Color(.textTint))
+                                .foregroundStyle(Color(.black))
                                 .underline()
                                 .padding(.bottom, 12)
                             Image(potdActive ? "potdActive" : "potdInactive")
@@ -135,13 +131,13 @@ struct HomeView: View {
                     .background(
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color(red: 0.85, green: 0.95, blue: 1))
-                            .shadow(radius: 8)
+                            .shadow(radius: 10, x: 8, y: 8)
                             .frame(width: 285, height: 280)
                     )
+                    .offset(y: 8)
                     .padding(.top, 8)
                     .padding(.bottom, 20)
                     
-    //                ScrollView{
                         VStack(alignment: .leading) {
                             ForEach(Array(ProblemSets.keys), id: \.self) { topic in
                                 NavigationLink(destination:
@@ -162,59 +158,13 @@ struct HomeView: View {
                                 }
                             }.padding(.top, 10)
                         }
-    //                }
                     .padding(.top, 12)
+                    .padding(.bottom, 12)
                 }
                 .padding(.bottom, 100)
             }.ignoresSafeArea(.all)
         }.navigationBarBackButtonHidden(true)
     }
-    
-//    func fetchProblemSet(_ name: String) {
-//        let docName = (name == "Factoring") ? "Poly" : name
-//        //        print(docName)
-//        let problemSet = (docName == "Poly") ? FactoringSet : ((docName == "Trig") ? TrigSet : DerivativeSet)
-//        if !problemSet.isEmpty { return }
-//        
-//        db.collection("Problems").document(docName).getDocument { (document, error) in
-//            if let document = document, document.exists {
-//                //                isLoading = true
-//                let data: [String: Any] = document.data() ?? [:]
-//                
-//                for (probNum, problem ) in data {
-//                    let problemInfo = problem as! NSDictionary
-//                    let question = problemInfo["question"]!
-//                    let choices = problemInfo["choices"]!
-//                    
-//                    let problemData = ProblemData(id: probNum,
-//                                                  question: question as? String ?? "",
-//                                                  choices: choices as? [String] ?? [])
-//                    switch(docName) {
-//                    case "Poly":
-//                        FactoringSet.append(problemData)
-//                        break
-//                    case "Trig":
-//                        TrigSet.append(problemData)
-//                        break
-//                    case "Derivative":
-//                        DerivativeSet.append(problemData)
-//                        break
-//                    default:
-//                        break
-//                    }
-//                }
-//                if(FactoringSet.count == 10 && DerivativeSet.count == 10 && TrigSet.count == 10) {
-//                    // sort fetched question set (in order Problem1 - Problem10)
-//                    FactoringSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-//                    DerivativeSet.sort{ Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-//                    TrigSet.sort { Int($0.id.replacingOccurrences(of: "Problem", with: ""))! < Int($1.id.replacingOccurrences(of: "Problem", with: ""))! }
-//                }
-//                
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
-//    }
     
     func fetchUserProgress() {
         db.collection("Users")
@@ -232,13 +182,8 @@ struct HomeView: View {
                     if document.potd_timestamp < potdRefreshTimestamp() {
                         potdActive = false        // today's problem has been solved; show timer
                     }
-                    // fetch all problem sets (on first launch)
-                    if(ProblemSets.count < 1) {
-                        fetchProblemSets()
-                    } else {
-                        // set flag to indicate all necessary data has been loaded in
-                        isLoading = false
-                    }
+                    // fetch all problem sets
+                    fetchProblemSets()
                     
                 case .failure(let error):
                     print("Error fetching document: \(error)")
@@ -247,13 +192,13 @@ struct HomeView: View {
     }
     
     func fetchProblemSets() {
-        // sort topics by alphabetical order
-        let sortedTopics = topicProgress.sorted { ($0.value as! Int) < ($1.value as! Int) }
-        print(topicProgress.values)
-        // can't sort dict directly, so convert to sorted array and then put back into the dict
-        for (key, value) in sortedTopics {
-            topicProgress[key] = value
-        }
+        // sticking to same order as in firebase
+//        // sort topics by alphabetical order
+//        let sortedTopics = topicProgress.sorted { ($0.value as! Int) < ($1.value as! Int) }
+//        // can't sort dict directly, so convert to sorted array and then put back into the dict
+//        for (key, value) in sortedTopics {
+//            topicProgress[key] = value
+//        }
         var count = 0
         for topic in topicProgress.keys {
             db.collection("Problems")
@@ -273,6 +218,7 @@ struct HomeView: View {
                         withAnimation(Animation.easeInOut) {
                             isLoading = false
                         }
+                        print(topicProgress)
                     }
                 }
         }
