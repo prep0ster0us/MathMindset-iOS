@@ -104,6 +104,18 @@ struct GenerateProblems: View {
                 .padding(.horizontal, 16)
                 .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
                 .padding()
+            
+            Button(action: {
+                addNewTopicProgressToUser()
+            }, label: {
+                Text("Add New Topics")
+                    .foregroundStyle(Color(.white))
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 200)
+            }).padding()
+                .padding(.horizontal, 16)
+                .background(RoundedRectangle(cornerRadius: 24).stroke(.black, lineWidth: 4).fill(Color(.systemTeal).opacity(0.8)))
+                .padding()
         }
         
     }
@@ -165,6 +177,34 @@ struct GenerateProblems: View {
                     print("Error adding question to \(problemTopic): \(err.localizedDescription)")
                 } else {
                     print("Question added to \(problemTopic)")
+                }
+            }
+        }
+    }
+    
+    private func addNewTopicProgressToUser() {
+        let ref = db.collection("Users")
+        ref.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error adding new topic progress: \(error.localizedDescription)")
+            } else {
+                let documentIDs = querySnapshot?.documents.map { $0.documentID } ?? []
+                for document in documentIDs {
+                    db.collection("Users")
+                        .document(document)
+                        .updateData([
+                            // add in new topic names here, to update in users collection
+                            "progress.Intersection": 0,
+                            "progress.Integral"    : 0,
+                            "quiz_scores.Intersection": -1,
+                            "quiz_scores.Integral"    : -1,
+                        ]) { err in
+                            if let err = err {
+                                print("Error updating document: \(err)")
+                            } else {
+                                print("Document successfully updated")
+                            }
+                        }
                 }
             }
         }
