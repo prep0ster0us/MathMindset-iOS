@@ -96,7 +96,7 @@ struct HomeView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 80)
                             // TODO: can still navigate to potd page; even when timer shows
-                            NavigationLink(destination: ProblemOfDay().environmentObject(app)
+                            NavigationLink(destination: ProblemOfDay($potdActive).environmentObject(app)
                             ) {
                                 Button(action: {}, label: {
                                     Text(potdActive ? "Solve" : formattedTime())     // difference available in seconds, format tthe value in HH:MM:SS
@@ -106,7 +106,7 @@ struct HomeView: View {
                                                 countDown -= 1
                                             } else {
                                                 // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
-                                                // timerRunning = false
+                                                timerRunning = false
                                                 timer.upstream.connect().cancel()     // relinquish thread process
                                                 potdActive = true
                                             }
@@ -180,6 +180,8 @@ struct HomeView: View {
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
                     if document.potd_timestamp < potdRefreshTimestamp() {
+                        print(document.potd_timestamp)
+                        print(potdRefreshTimestamp())
                         potdActive = false        // today's problem has been solved; show timer
                     }
                     // fetch all problem sets
@@ -218,7 +220,6 @@ struct HomeView: View {
                         withAnimation(Animation.easeInOut) {
                             isLoading = false
                         }
-                        print(topicProgress)
                     }
                 }
         }
