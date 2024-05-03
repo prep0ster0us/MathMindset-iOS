@@ -587,12 +587,12 @@ class Integral: Problem {
     var coeffNumerator: [Int] = []
     var coeffSol: [Int] = []
     var indexList = [-5,-4,-3,-2,-1,1,2,3,4,5]
-    
+    var coeffSelection: [Int] = [-13, -12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9,10,11,12,13]
     init() {
         for _ in (0..<3) {
-            coeffNumerator.append(Int.random(in: -13..<13))
+            coeffNumerator.append(coeffSelection.randomElement()!)
         }
-        
+
         for i in (0..<coeffNumerator.count - 1) {
             coeffSol.append(
                 coeffNumerator[i + 1] * (i + 1))
@@ -610,7 +610,7 @@ class Integral: Problem {
     }
     
     override func printQuestion() -> String {
-        return "Find the integral of this polynomial with respect to x.\n" + self.print()
+        return "Find the integral of this polynomial with respect to x.\n"
     }
     
     override func printFakeSol(choice: Int) -> String {
