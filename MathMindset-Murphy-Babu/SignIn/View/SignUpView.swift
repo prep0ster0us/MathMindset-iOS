@@ -24,6 +24,7 @@ struct SignUpView: View {
     // TODO: delegate these state variables to have the values from the TextFields
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var isDarkMode
     
     // Photo Picker package
     // followed tutorial for how to use
@@ -41,8 +42,14 @@ struct SignUpView: View {
     @State private var dateSelected = "Enter date of birth"
     @State private var isDatePickerVisible = false
     
+    @FocusState var pwdFocused: Bool
+    @FocusState var confirmPwdFocused: Bool
     @State private var pwdVisible = false
     @State private var confirmPwdVisible = false
+    @State private var pwdMismatch = false
+    @State private var pwdCriteriaNotFulfilled = false
+    @State private var emptyFields = false
+    @State private var registerError = false
     @State private var useruuid = ""
     
     @State private var loginText = "LOGIN"
@@ -63,16 +70,6 @@ struct SignUpView: View {
     @State private var btnColor = Color("#1FA744")
     
     var body: some View {
-        //        if isLoggedIn {
-        //            // go somewhere
-        //        } else {
-        //            // show login page
-        //            content
-        //        }
-        content
-    }
-    
-    var content: some View {
         NavigationStack {
             ZStack {
                 LinearGradient(gradient: .init(colors: [Color(.systemTeal), Color(.systemCyan), Color(.systemBlue)])
@@ -140,8 +137,9 @@ struct SignUpView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 150, height: 150)
-                                .foregroundStyle(.iconTint)
+                                .foregroundStyle(isDarkMode == .dark ? .iconTint : .iconTint.opacity(0.7))
                                 .clipShape(Circle())
+                                .overlay(Circle().stroke(.iconTint, lineWidth: 2))
                                 .shadow(radius: 20, x: 8, y: 8)
                             
                         }
@@ -149,7 +147,7 @@ struct SignUpView: View {
                             .resizable()
                             .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(isDarkMode == .dark ? .iconTint : .iconTint.opacity(0.7))
                             .offset(y: -25)
                             .padding(.leading, 120)
                     }.onChange(of: photoPickerItem) { _, _ in
@@ -214,6 +212,7 @@ struct SignUpView: View {
                                 .autocapitalization(.none)
                                 .padding()
                                 .padding(.leading, -12)
+                                .focused($pwdFocused)
                             //                        .background(RoundedRectangle(cornerRadius:8)
                             //                        .stroke(Color("loginTextField"),lineWidth:2))
                             //                        .font(Font.custom("roboto", size: 16))      // TODO: addd custom font files for "Nexa"
@@ -224,6 +223,7 @@ struct SignUpView: View {
                                 .foregroundColor(Color(.textTint))
                                 .padding()
                                 .padding(.leading, -12)
+                                .focused($pwdFocused)
                             
                         }
                         // Toggle visibility of password field
@@ -239,8 +239,23 @@ struct SignUpView: View {
                         .background(RoundedRectangle(cornerRadius:6)
                             .stroke(Color("loginTextField"),lineWidth:2))
                         .padding(.horizontal, 24)   // margin (external padding)
-                        .padding(.bottom, 24)
-                    
+                        
+                    // Password criteria
+                    if pwdFocused {
+                        VStack (alignment: .leading, spacing: 2) {
+                            Text("+ Contains atleast 6 characters")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundStyle(verifyPwdCondition(type: "length") ? .green : .red)
+                            Text("+ Contains atleast 1 number [0-9]")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundStyle(verifyPwdCondition(type: "number") ? .green : .red)
+                            Text("+ Contains atleast 1 special character [! @ # $ % ^ & *]")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundStyle(verifyPwdCondition(type: "special") ? .green : .red)
+                        }
+                            .padding(.top, 2)
+                            .padding(.leading, -28)
+                    }
                     // Confirm Password
                     HStack {
                         // Icon
@@ -253,6 +268,7 @@ struct SignUpView: View {
                                 .autocapitalization(.none)
                                 .padding()
                                 .padding(.leading, -12)
+                                .focused($confirmPwdFocused)
                             //                        .background(RoundedRectangle(cornerRadius:8)
                             //                        .stroke(Color("loginTextField"),lineWidth:2))
                             //                        .font(Font.custom("roboto", size: 16))      // TODO: addd custom font files for "Nexa"
@@ -263,6 +279,7 @@ struct SignUpView: View {
                                 .foregroundColor(Color(.textTint))
                                 .padding()
                                 .padding(.leading, -12)
+                                .focused($confirmPwdFocused)
                             
                         }
                         // Toggle visibility of password field
@@ -278,7 +295,16 @@ struct SignUpView: View {
                         .background(RoundedRectangle(cornerRadius:6)
                             .stroke(Color("loginTextField"),lineWidth:2))
                         .padding(.horizontal, 24)   // margin (external padding)
-                        .padding(.bottom, 24)
+                        .padding(.top, pwdFocused ? 16 : 24)
+                    if confirmPwdFocused {
+                        HStack {
+                            Text(confirmPass == pass ? "Passwords match" : "Passwords do not match")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundStyle(confirmPass == pass ? .green : .red)
+                            Spacer()
+                        }.padding(.top, 2)
+                            .padding(.leading, 32)
+                    }
                     
                     // Date of Birth
                     HStack {
@@ -320,6 +346,7 @@ struct SignUpView: View {
                             .stroke(Color("loginTextField"),lineWidth:2))
                         .padding(.horizontal, 24)   // margin (external padding)
                         .padding(.bottom, 24)
+                        .padding(.top, confirmPwdFocused ? 16 : 24)
                 }.padding(.vertical, 36)
                     .padding(.bottom, 12)
                     .background(RoundedRectangle(cornerRadius: 12).fill(.bgTint).opacity(0.85))
@@ -328,14 +355,29 @@ struct SignUpView: View {
                 
                 // Register Button
                 Button(action: {
-                    dbManager.registerUser(
-                        email: email,
-                        pass: pass,
-                        username: username,
-                        dateOfBirth: dateOfBirth,
-                        showAlert: $showAlert,
-                        userid: $useruuid
-                    )
+                    if email.isEmpty || username.isEmpty || pass.isEmpty || confirmPass.isEmpty {
+                        registerError.toggle()
+                        emptyFields.toggle()
+                        print("empty fields")
+                    } else if !verifyPwdCondition(type: "length") || !verifyPwdCondition(type: "number") || !verifyPwdCondition(type: "special") {
+                        registerError.toggle()
+                        pwdCriteriaNotFulfilled.toggle()
+                        print("criteria not match")
+                    } else if confirmPass != pass {
+                        registerError.toggle()
+                        pwdMismatch.toggle()
+                        print("mismatch")
+                    } else {
+                        dbManager.registerUser(
+                            email: email,
+                            pass: pass,
+                            username: username,
+                            dateOfBirth: dateOfBirth,
+                            showAlert: $showAlert,
+                            userid: $useruuid
+                        )
+                        print("sign in")
+                    }
                 }, label: {
                     Text("REGISTER")
                         .padding(.vertical)
@@ -355,6 +397,36 @@ struct SignUpView: View {
                             dismiss()
                             saveProfileImage()
                         })
+                    }
+                    .alert(isPresented: $registerError) {
+                        if pwdCriteriaNotFulfilled {
+                            return Alert(title: Text("Weak Password!"),
+                                  message: Text("\nPassword conditions not met.\nPlease ensure all criteria are fulfilled."),
+                                  dismissButton: .default(Text("Enter again")) {
+                                pwdCriteriaNotFulfilled.toggle()
+                                withAnimation(Animation.easeOut){
+                                    confirmPass = ""
+                                    pass = ""
+                                }
+                            })
+                        } else if pwdMismatch {
+                            return Alert(title: Text("Password Mismatch!"),
+                                         message: Text("Passwords entered do not match."),
+                                         dismissButton: .default(Text("Enter again")) {
+                                pwdMismatch.toggle()
+                                withAnimation(Animation.easeOut) {
+                                    confirmPass = ""
+                                    pass = ""
+                                }
+                            })
+                        }
+                        // default
+                        return Alert(title: Text("Missing Information!"),
+                                     message: Text("Please fill in all the information before proceeding."),
+                                     dismissButton: .default(Text("OK")) {
+                            emptyFields.toggle()
+                        } )
+                    
                     }
                 
                 // Redirect to log in
@@ -377,6 +449,22 @@ struct SignUpView: View {
                     }
                 }
             }
+        }
+    }
+    
+    func verifyPwdCondition(type: String) -> Bool {
+        switch(type) {
+        case "length" : return pass.count >= 6
+        case "number" :
+//            let numbersRange = pass.rangeOfCharacter(from:.decimalDigits)
+//            return (numbersRange != nil)
+            return pass.range(of: "[0-9]",options: .regularExpression) != nil
+//            return pass.contains { $0.isASCII && $0.isNumber }
+        case "special" :
+//            let specialCharacters: CharacterSet = CharacterSet(charactersIn: "!@#$%^&*")
+//            return pass.rangeOfCharacter(from: specialCharacters.inverted) != nil
+            return pass.contains { String("!@#$%^&*").contains($0) }
+        default: return true
         }
     }
 
