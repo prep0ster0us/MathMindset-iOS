@@ -181,10 +181,13 @@ struct HomeView: View {
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
+                    
                     if document.potd_timestamp > potdLastRefresh() && document.potd_timestamp < potdRefreshTimestamp() {
                         print(document.potd_timestamp)
                         print(potdRefreshTimestamp())
                         potdActive = false        // today's problem has been solved; show timer
+                    } else {
+                        potdActive = true
                     }
                     // fetch all problem sets
                     fetchProblemSets()
