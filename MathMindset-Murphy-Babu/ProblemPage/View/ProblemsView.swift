@@ -72,7 +72,7 @@ struct ProblemsView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .shadow(radius: 20)
-                .padding(.top, 24)
+                .padding(.top, (problemStatement.count > 2 ? 8 : 24))
                 .padding(.horizontal, 16)
                 .animation(.easeIn, value: 0.8)
                 .multilineTextAlignment(.center)
@@ -82,10 +82,24 @@ struct ProblemsView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .shadow(radius: 20)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 20, trailing: 16))
+                .padding(EdgeInsets(top: (problemStatement.count > 2 ? 4 : 8),
+                                    leading: 16,
+                                    bottom: (problemStatement.count > 2 ? 8 : 20),
+                                    trailing: 16))
                 .animation(.easeIn, value: 0.8)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+            
+            if(problemStatement.count > 2) {
+                Text(problemStatement[2])
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .shadow(radius: 20)
+                    .padding(EdgeInsets(top: -4, leading: 16, bottom: 12, trailing: 16))
+                    .animation(.easeIn, value: 0.8)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             // Layout for choices
             VStack(spacing: 28) {
@@ -184,21 +198,12 @@ struct ProblemsView: View {
                 // 3. update data (based on criteria)
                 
                 // Compare the values and update if the condition is met
-                if (lastStreakUpdate?.dateValue())! < dayStart() {      // if last streak update was before 12AM today (start of new day); update streak & timestamp
-                    print("updating streak, timestamp and progress --> \(currStreak) , \(lastStreakUpdate?.dateValue() ?? Date())")
-                    transaction.updateData([
-                        "streak": currStreak + 1,
-                        "streak_update_timestamp" : Date(),
-                        "progress.\(topic)": problemNum+1,
-                        "score" : currScore+5
-                    ], forDocument: ref)
-                } else {
-                    print("only streak updated")
-                    transaction.updateData([
-                        "progress.\(topic)": problemNum+1,
-                        "score" : currScore+5
-                    ], forDocument: ref)
-                }
+                print("only streak updated")
+                transaction.updateData([
+                    "progress.\(topic)": problemNum+1,
+                    "score" : currScore+5
+                ], forDocument: ref)
+                
                 print("updated data")
                 return nil
             })
