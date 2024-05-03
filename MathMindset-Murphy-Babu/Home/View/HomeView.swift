@@ -179,7 +179,7 @@ struct HomeView: View {
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
-                    if document.potd_timestamp < potdRefreshTimestamp() {
+                    if document.potd_timestamp > potdLastRefresh() && document.potd_timestamp < potdRefreshTimestamp() {
                         print(document.potd_timestamp)
                         print(potdRefreshTimestamp())
                         potdActive = false        // today's problem has been solved; show timer
@@ -223,6 +223,18 @@ struct HomeView: View {
                     }
                 }
         }
+    }
+    
+    func potdLastRefresh() -> Date {
+        let calendar = Calendar.current
+        let refreshDay = calendar.component(.hour, from: .now) < 9 ? -1 : 0
+        let components = DateComponents(year: calendar.component(.year, from: .now),
+                                        month: calendar.component(.month, from: .now),
+                                        day: calendar.component(.day, from: .now)+refreshDay,  // current day
+                                        hour: 9,    // 9AM
+                                        minute: 0,
+                                        second: 0)
+        return calendar.date(from: components)!
     }
     
     func potdRefreshTimestamp() -> Date {
