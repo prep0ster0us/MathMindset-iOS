@@ -36,7 +36,9 @@ struct HomeView: View {
                 }
             }
         }.onAppear {
-            fetchUserProgress()
+            Task {
+                await fetchUserProgress()
+            }
         }
     }
     
@@ -149,12 +151,12 @@ struct HomeView: View {
                                 ) {
                                     TopicCard(name: topic,
                                               image: topic,
-                                              completed: topicProgress[topic] as! Int,
+                                              completed: $topicProgress,
                                               quizScore: quizScores[topic] as! Int)
                                         .frame(width: $app.screenWidth.wrappedValue)
-                                        .onDisappear {
-                                            isLoading = true
-                                        }
+//                                        .onDisappear {
+//                                            isLoading = true
+//                                        }
                                 }
                             }.padding(.top, 10)
                         }
@@ -166,7 +168,7 @@ struct HomeView: View {
         }.navigationBarBackButtonHidden(true)
     }
     
-    func fetchUserProgress() {
+    func fetchUserProgress() async {
         db.collection("Users")
             .document(Auth.auth().currentUser!.uid)
             .getDocument(as: UserData.self) { result in

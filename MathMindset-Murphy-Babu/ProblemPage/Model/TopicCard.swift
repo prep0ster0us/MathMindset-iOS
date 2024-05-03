@@ -12,16 +12,16 @@ struct TopicCard: View {
     
     let name: String
     let image: String
-    @State var completed: Int
-    @State var starCount: Double
+    @Binding var completed: [String: Any?]
+//    @State var starCount: Double
     @State var quizScore : Int
     
-    init(name: String, image: String, completed: Int, quizScore: Int) {
+    init(name: String, image: String, completed: Binding<[String: Any?]>, quizScore: Int) {
         self.name = name
         self.image = image
-        self.completed = completed
+        self._completed = completed
         //        self.starCount = Double(completed) / 2.0
-        self.starCount = Double(completed)
+//        self.starCount = Double(completed)
         self.quizScore = quizScore
     }
     
@@ -35,7 +35,7 @@ struct TopicCard: View {
             )
             Spacer().overlay(
                 Group{
-                    if self.completed == 10 {
+                    if self.completed[name] as! Int == 10 {
                         // in a VStack, since need both views in the if-condition to return same views
                         VStack {
                             QuizButton(true)
@@ -50,12 +50,12 @@ struct TopicCard: View {
                         VStack {
                             HStack {
                                 ForEach(0..<5) { i in
-                                    StarImage(count: i, completed: self.completed)
+                                    StarImage(count: i, topic: name, completed: $completed)
                                 }
                             }
                             HStack {
                                 ForEach(5..<10) { i in
-                                    StarImage(count: i, completed: self.completed)
+                                    StarImage(count: i, topic: name, completed: $completed)
                                 }
                             }
                         }
@@ -83,10 +83,11 @@ struct TopicCard: View {
 
 struct StarImage: View {
     @State var count : Int
-    @State var completed: Int
+    @State var topic: String
+    @Binding var completed: [String: Any?]
     var body : some View {
         VStack {
-            Image(systemName: completed>count ? "star.fill" : "star")
+            Image(systemName: (completed[topic] as! Int) > count ? "star.fill" : "star")
                 .foregroundStyle(Color(.yellow))
                 .overlay(
                     Image(systemName: "star")
@@ -122,19 +123,19 @@ struct QuizButton: View {
             .foregroundColor(.black)
     }
 }
-
-
-#Preview {
-    VStack(spacing: 15) {
-        TopicCard(name: "Factoring",
-                  image: "Factoring",
-                  completed: 10, quizScore: 4)
-//        Spacer().frame(height: 50)
+//
+//
+//#Preview {
+//    VStack(spacing: 15) {
 //        TopicCard(name: "Factoring",
 //                  image: "Factoring",
-//                  completed: 10)
-//        TopicCard(name: "Trig",
-//                  image: "Trig",
-//                  completed: 7)
-    }
-}
+//                  completed: 10, quizScore: 4)
+////        Spacer().frame(height: 50)
+////        TopicCard(name: "Factoring",
+////                  image: "Factoring",
+////                  completed: 10)
+////        TopicCard(name: "Trig",
+////                  image: "Trig",
+////                  completed: 7)
+//    }
+//}
