@@ -90,8 +90,8 @@ class FirebaseManager: ObservableObject {
                 "dateOfBirth"           : dateOfBirth,
                 "account_creation_date" : Date(),
                 "last_login"            : Date(),
-                "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
-                "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1],
+                "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0, "Intersection": 0, "Integral": 0],
+                "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1, "Intersection": -1, "Integral": -1],
                 "profileImage"          : "", // save firestore storage downloadURL here
                 "biometricEnabled"      : "",
                 "score"                 : 0,
@@ -220,8 +220,8 @@ class FirebaseManager: ObservableObject {
                         "dateOfBirth"           : gDOB,
                         "account_creation_date" : Date(),
                         "last_login"            : Date(),
-                        "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0],
-                        "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1],
+                        "progress"              : ["Factoring": 0, "Trig": 0, "Derivative": 0, "Intersection": 0, "Integral": 0],
+                        "quiz_scores"           : ["Factoring": -1, "Trig": -1, "Derivative": -1, "Intersection": -1, "Integral": -1],
                         // TODO: update to be not hard coded; change with a for loop
                         "profileImage"          : gProfileImage, // save firestore storage downloadURL here
                         "biometricEnabled"      : "",
