@@ -152,7 +152,7 @@ struct HomeView: View {
                                     TopicCard(name: topic,
                                               image: topic,
                                               completed: $topicProgress,
-                                              quizScore: quizScores[topic] as! Int)
+                                              quizScores: $quizScores)
                                         .frame(width: $app.screenWidth.wrappedValue)
 //                                        .onDisappear {
 //                                            isLoading = true
