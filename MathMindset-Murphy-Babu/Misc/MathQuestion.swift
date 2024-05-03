@@ -364,7 +364,7 @@ class Trig: Problem {
      "0",
      "-1/2",
      "-sqrt(2)/2",
-     "sqrt(3)/2",
+     "-sqrt(3)/2",
      "-1"]
     
     let tan: [String] =
