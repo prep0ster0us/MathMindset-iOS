@@ -185,6 +185,8 @@ struct HomeView: View {
                         print(document.potd_timestamp)
                         print(potdRefreshTimestamp())
                         potdActive = false        // today's problem has been solved; show timer
+                    } else {
+                        potdActive = true
                     }
                     // fetch all problem sets
                     fetchProblemSets()

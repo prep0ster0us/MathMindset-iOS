@@ -9,7 +9,7 @@ struct QuizView: View {
     //     var choices     : [String]!
     //    @State private var score       : Int // tracks number of correct answers
     
-    @EnvironmentObject private var app: AppVariables
+//    @EnvironmentObject private var app: AppVariables
     // Topic should never change throughout the quiz
     // Descriptors
     private var topic: String
@@ -22,6 +22,7 @@ struct QuizView: View {
     @State var problem: Problem!
     @State var question: String!
     @State var choices: [String]!
+    @State var selectedButton: Int = -1
     //    @State var isPressed: Int = -1
     
     // After solving all questions, show score and dismiss back to home view
@@ -85,10 +86,10 @@ struct QuizView: View {
             
             // Horizontal Layout for choices
             VStack(spacing: 28) {
-                QuizProblemOption(choice: choices[selections[0] - 1], choiceNum: selections[0])
-                QuizProblemOption(choice: choices[selections[1] - 1], choiceNum: selections[1])
-                QuizProblemOption(choice: choices[selections[2] - 1], choiceNum: selections[2])
-                QuizProblemOption(choice: choices[selections[3] - 1], choiceNum: selections[3])
+                QuizProblemOption(selectedButton: $selectedButton, choice: choices[selections[0] - 1], choiceNum: selections[0])
+                QuizProblemOption(selectedButton: $selectedButton, choice: choices[selections[1] - 1], choiceNum: selections[1])
+                QuizProblemOption(selectedButton: $selectedButton, choice: choices[selections[2] - 1], choiceNum: selections[2])
+                QuizProblemOption(selectedButton: $selectedButton, choice: choices[selections[3] - 1], choiceNum: selections[3])
             }
             .padding(.horizontal, 40)
             
@@ -100,17 +101,17 @@ struct QuizView: View {
             // in another struct
             //            SubmitQuizProblem(isPressed, problemNum)
             Button(action: {
-                if ($app.selectedButton.wrappedValue > 0) {
-                    print("Wrapped value: \($app.selectedButton.wrappedValue)")
+                if (selectedButton > 0) {
+                    print("Wrapped value: \(selectedButton)")
                     print("Selections: \(selections[0]), \(selections[1]), \(selections[2]), \(selections[3])")
                     print("Correct index just in case: \(correctIndex)")
-                    if ($app.selectedButton.wrappedValue == correctIndex) {
+                    if (selectedButton == correctIndex) {
                         print("Correct answer")
                         score += 1
                     } else {
                         print("Wrong answer")
                     }
-                    app.selectedButton = -1
+                    selectedButton = -1
                     if (self.problemNum >= 10) { // not zero indexed
                         // TODO:
                         // Return to home page
@@ -258,7 +259,8 @@ struct QuizView: View {
 struct QuizProblemOption: View {
     //    @Binding var isPressed: Int
     
-    @EnvironmentObject private var app: AppVariables
+//    @EnvironmentObject private var app: AppVariables
+    @Binding var selectedButton : Int
     var choice: String
     var choiceNum: Int
     
@@ -278,7 +280,7 @@ struct QuizProblemOption: View {
         // OPTION-I - Rectangle with shadows
         VStack {
             Button(action: {
-                app.selectedButton = choiceNum
+                selectedButton = choiceNum
             }, label: {
                 //                Text(choices[Int(choiceNum)-1])
                 Text(choice)
@@ -287,14 +289,14 @@ struct QuizProblemOption: View {
                     .foregroundStyle(Color(.textTint))
                     .frame(width: width, height: height)
                     .overlay {
-                        if ($app.selectedButton.wrappedValue == choiceNum) {
+                        if (selectedButton == choiceNum) {
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(Color(.bgContrast), lineWidth: 10)
                         }
                     }
                     .background(
                         ZStack {
-                            Color($app.selectedButton.wrappedValue == choiceNum ? active : inactive)
+                            Color(selectedButton == choiceNum ? active : inactive)
                                 .opacity(0.4)
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                             //                            .stroke(Color(.black), lineWidth: 3)
@@ -305,7 +307,7 @@ struct QuizProblemOption: View {
                             //                            .stroke(Color(.black), lineWidth: 3)
                                 .fill(
                                     LinearGradient(colors: [
-                                        ($app.selectedButton.wrappedValue == choiceNum ? active : inactive)
+                                        (selectedButton == choiceNum ? active : inactive)
                                             .opacity(0.1), color2], startPoint: .topLeading, endPoint: .bottomTrailing))
                                 .padding(2)
                                 .blur(radius: 2)
