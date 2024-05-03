@@ -298,7 +298,7 @@ struct SignUpView: View {
                         .padding(.top, pwdFocused ? 16 : 24)
                     if confirmPwdFocused {
                         HStack {
-                            Text(confirmPass == pass ? "Passwords match" : "Passwords do not match")
+                            Text(confirmPass == pass ? (!pass.isEmpty ? "Passwords match" : "") : "Passwords do not match")
                                 .font(.system(size: 10, weight: .medium))
                                 .foregroundStyle(confirmPass == pass ? .green : .red)
                             Spacer()
@@ -368,12 +368,14 @@ struct SignUpView: View {
                         pwdMismatch.toggle()
                         print("mismatch")
                     } else {
+//                        registerError.toggle()
+                        // TODO: use proper variable for "showAlert" on successful signup
                         dbManager.registerUser(
                             email: email,
                             pass: pass,
                             username: username,
                             dateOfBirth: dateOfBirth,
-                            showAlert: $showAlert,
+                            showAlert: $registerError,
                             userid: $useruuid
                         )
                         print("sign in")
@@ -390,14 +392,6 @@ struct SignUpView: View {
                     .offset(y: -40)
                     .padding(.bottom, -40)
                     .shadow(radius: 25)
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Registered!"),
-                              message: Text("Sign up complete. Please log in using your credentials."),
-                              dismissButton: .default(Text("Ok")) {
-                            dismiss()
-                            saveProfileImage()
-                        })
-                    }
                     .alert(isPresented: $registerError) {
                         if pwdCriteriaNotFulfilled {
                             return Alert(title: Text("Weak Password!"),
@@ -419,14 +413,20 @@ struct SignUpView: View {
                                     pass = ""
                                 }
                             })
+                        } else if emptyFields {
+                            return Alert(title: Text("Missing Information!"),
+                                         message: Text("Please fill in all the information before proceeding."),
+                                         dismissButton: .default(Text("OK")) {
+                                emptyFields.toggle()
+                            } )
                         }
-                        // default
-                        return Alert(title: Text("Missing Information!"),
-                                     message: Text("Please fill in all the information before proceeding."),
-                                     dismissButton: .default(Text("OK")) {
-                            emptyFields.toggle()
-                        } )
-                    
+                        // default -> successful signup
+                        return Alert(title: Text("Registered!"),
+                              message: Text("Sign up complete. Please log in using your credentials."),
+                              dismissButton: .default(Text("Ok")) {
+                            dismiss()
+                            saveProfileImage()
+                        })
                     }
                 
                 // Redirect to log in
