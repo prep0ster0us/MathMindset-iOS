@@ -432,10 +432,10 @@ class Trig: Problem {
         case 2:
             // picks a random value that is not equal to the solution
             if (trigType == "Tan") {
-                returnString = tan[(valueIndex - 1)%tan.count]
+                returnString = tan[(valueIndex + 2)%tan.count]
             } else {
                 // Sin or Cos
-                returnString = (trigType == "Sin") ? sines[(valueIndex - 1)%sines.count] : cosines[(valueIndex - 1)%cosines.count]
+                returnString = (trigType == "Sin") ? sines[(valueIndex + 2)%sines.count] : cosines[(valueIndex + 2)%cosines.count]
             }
         case 3:
             // picks a random value not picked in case 2
