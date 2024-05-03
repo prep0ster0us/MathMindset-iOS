@@ -58,7 +58,7 @@ struct HomeView: View {
                         .resizable()
                         .frame(width: 32, height: 32)
                 }
-                .padding(.leading, 16)
+                .padding(.horizontal, 16)
                 .padding(.top, 60)
                 .background(.clear)
                 
