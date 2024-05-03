@@ -3,13 +3,18 @@ import Firebase
 
 struct ProblemOfDay: View {
 
-    
+    @Binding var potdActive: Bool
+    init(_ potdActive: Binding<Bool>) {
+        self._potdActive = potdActive
+    }
+
     @EnvironmentObject private var app: AppVariables
     @State private var isPressed: CGFloat = -1
     @State private var isLoading: Bool = true
     
     @State private var question : String = ""
     @State private var choices  : [String] = []
+    @State private var selections: [CGFloat] = [1, 2, 3, 4].shuffled()
     
     let db = Firestore.firestore()
     
@@ -58,16 +63,16 @@ struct ProblemOfDay: View {
             
             // Layout for choices
             VStack(spacing: 28) {
-                ProblemOption(choices, $isPressed, 1)
-                ProblemOption(choices, $isPressed, 2)
-                ProblemOption(choices, $isPressed, 3)
-                ProblemOption(choices, $isPressed, 4)
+                ProblemOption(choices, $isPressed, selections[0])
+                ProblemOption(choices, $isPressed, selections[1])
+                ProblemOption(choices, $isPressed, selections[2])
+                ProblemOption(choices, $isPressed, selections[3])
             }.padding(.horizontal, 40)
             
             Spacer()
             
             // Submit answer
-            SubmitButton(isPressed, isPOTD: true).environmentObject(app)
+            SubmitButton(isPressed, isPOTD: true, $potdActive).environmentObject(app)
                 .padding()
         }.background(
             LinearGradient(colors: [Color(.systemTeal).opacity(0.4), Color(.systemBlue).opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -94,6 +99,7 @@ struct ProblemOfDay: View {
                                 print(data)
                                 question = data["question"] as! String
                                 choices = data["choices"] as! [String]
+                                selections = selections.shuffled()
                                 isLoading = false
                             } else {
                                 print("Document does not exist")
@@ -110,12 +116,15 @@ struct SubmitButton: View {
     
     var isPressed: CGFloat
     var isPOTD   : Bool
+    @Binding var potdActive: Bool
     init(
         _ isPressed: CGFloat,
-        isPOTD  : Bool
+        isPOTD  : Bool,
+        _ potdActive: Binding<Bool>
     ) {
         self.isPressed = isPressed
         self.isPOTD = isPOTD
+        self._potdActive = potdActive
     }
     
     @EnvironmentObject private var app: AppVariables
@@ -187,6 +196,7 @@ struct SubmitButton: View {
                                 self.app.primes += 5
                                 self.app.probOfDaySolved = true
                                 print(self.app.streak)
+                                self.potdActive.toggle()
                                 dismiss()
                             } else {
                                 // TODO: go to next question
@@ -243,7 +253,8 @@ struct SubmitButton: View {
                 // metric for keeping track of ProblemsOfTheDay solved by a user (account lifetime)
                 let potdCount = document.data()?["POTD_count"] as? Int ?? -1
                 transaction.updateData([
-                    "POTD_count" : potdCount+1
+                    "POTD_count" : potdCount+1,
+                    "potd_timestamp" : Date()
                     ], forDocument: ref
                 )
                 print("updated data")
@@ -269,7 +280,7 @@ struct SubmitButton: View {
 }
 
 #Preview {
-    ProblemOfDay()
+    ProblemOfDay(.constant(true))
         .environmentObject(AppVariables())
 //    ProblemOfDay(
 //        question: "This is a sample question\nThis is sample equation",
