@@ -14,15 +14,18 @@ struct TopicCard: View {
     let image: String
     @Binding var completed: [String: Any?]
 //    @State var starCount: Double
-    @State var quizScore : Int
+    @Binding var quizScores : [String: Any?]
     
-    init(name: String, image: String, completed: Binding<[String: Any?]>, quizScore: Int) {
+    init(name: String, image: String, 
+         completed: Binding<[String: Any?]>,
+         quizScores: Binding<[String: Any?]>
+    ) {
         self.name = name
         self.image = image
         self._completed = completed
         //        self.starCount = Double(completed) / 2.0
 //        self.starCount = Double(completed)
-        self.quizScore = quizScore
+        self._quizScores = quizScores
     }
     
     var body: some View {
@@ -40,8 +43,8 @@ struct TopicCard: View {
                         VStack {
                             QuizButton(true)
                                 .padding(.leading, 16)
-                            if quizScore != -1 {
-                                Text("Best Score: \(quizScore)/10")
+                            if quizScores[name] as! Int != -1 {
+                                Text("Best Score: \(quizScores[name] as! Int)/10")
                                     .font(.system(size: 14, weight: .bold))
                                     .padding(.leading, 16)
                             }
