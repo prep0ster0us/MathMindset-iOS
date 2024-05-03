@@ -213,7 +213,7 @@ struct GenerateProblems: View {
     private func addPOTD() {
         // create problem
         var problem: Problem
-        let problemTopic = ["Derivative", "Trig", "Factoring"].randomElement()
+        let problemTopic = ["Derivative", "Trig", "Factoring", "Intersection","Integral"].randomElement()
         
         switch(problemTopic) {
         case "Derivative":

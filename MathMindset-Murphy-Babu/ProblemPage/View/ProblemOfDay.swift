@@ -48,7 +48,8 @@ struct ProblemOfDay: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .shadow(radius: 20)
-                
+                .padding(.top, (problemStatement.count > 2 ? 8 : 24))
+                .padding(.horizontal, 16)
                 .animation(.easeIn, value: 0.8)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
@@ -57,9 +58,24 @@ struct ProblemOfDay: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .shadow(radius: 20)
-                .padding(24)
+                .padding(EdgeInsets(top: (problemStatement.count > 2 ? 4 : 8),
+                                    leading: 16,
+                                    bottom: (problemStatement.count > 2 ? 8 : 20),
+                                    trailing: 16))
                 .animation(.easeIn, value: 0.8)
-                .padding(.bottom, 16)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            if(problemStatement.count > 2) {
+                Text(problemStatement[2])
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .shadow(radius: 20)
+                    .padding(EdgeInsets(top: -4, leading: 16, bottom: 12, trailing: 16))
+                    .animation(.easeIn, value: 0.8)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             
             // Layout for choices
             VStack(spacing: 28) {
