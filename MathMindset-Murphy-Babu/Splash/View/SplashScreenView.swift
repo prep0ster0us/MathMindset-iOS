@@ -13,10 +13,10 @@ struct SplashScreenView: View {
     var body: some View {
         
         if isActive {
-            SignInView()
+//            SignInView()
             // TODO: **** redirect to onboarding slides (going direct to sign in for faster debugging)
             // (commented out since it once runs for first launch)
-            // OnboardingView()
+             OnboardingView()
         } else {
             content
         }
