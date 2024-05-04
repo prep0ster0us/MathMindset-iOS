@@ -167,7 +167,7 @@ struct SubmitButton: View {
             Button(action: {
                 if isPressed == 1 {
                     isCorrect = true
-                    showConfetti = 1
+                    showConfetti += 1
                     Task {
                         if notificationsEnabled { await createNotification() }
                         await updateProgress()
@@ -281,14 +281,15 @@ struct SubmitButton: View {
             print("Transaction failed! \(error)")
         }
     }
+    
     func dayStart() -> Date {
         let calendar = Calendar.current
         return Calendar(identifier: .gregorian).date(from: DateComponents(
             year   : calendar.component(.year, from: Date.now),
             month  : calendar.component(.month, from: Date.now),
             day    : calendar.component(.day, from: Date.now),
-            hour   : 0,
-            minute : 0,
+            hour   : notifHour,
+            minute : notifMinute,
             second : 0)
         )!
     }

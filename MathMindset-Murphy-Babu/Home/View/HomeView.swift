@@ -9,7 +9,7 @@ struct HomeView: View {
     // timer afer solving Problem of the Day
     @State private var countDown = TimeInterval()
     @State private var timerRunning = true
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     // fetch user-stats
     @State var topicProgress: [String: Any?] = [:]
@@ -107,14 +107,22 @@ struct HomeView: View {
                                             if countDown > 0  && timerRunning {
                                                 countDown -= 1
                                             } else {
+                                                print("Shouldn't have made it here?")
                                                 // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
                                                 timerRunning = false
                                                 timer.upstream.connect().cancel()     // relinquish thread process
                                                 potdActive = true
                                             }
-                                        }.onAppear {
-                                            countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                                         }
+//                                        }.onAppear {
+//                                            if (potdRefreshTimestamp().timeIntervalSince(.now) > 0) {
+//                                                // made it here too!
+//                                                timerRunning = true
+//                                                potdActive = false
+//                                                countDown = potdRefreshTimestamp().timeIntervalSince(.now)
+////                                                timer.upstream.connect() // TODO: Needed?
+//                                            }
+//                                        }
                                         .font(.title2)
                                         .padding(12)
                                         .background(
@@ -181,11 +189,30 @@ struct HomeView: View {
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
-                    
-                    if document.potd_timestamp > potdLastRefresh() && document.potd_timestamp < potdRefreshTimestamp() {
-                        print(document.potd_timestamp)
-                        print(potdRefreshTimestamp())
-                        potdActive = false        // today's problem has been solved; show timer
+                    print("Last timestamp: " + potdLastRefresh().description)
+                    print("User timestamp: " + document.potd_timestamp.description)
+                    print("Comparison: " + String(document.potd_timestamp > potdLastRefresh()))
+                    print("New timestamp: " + potdRefreshTimestamp().description)
+                    print("Comparison to new: " + String(document.potd_timestamp < potdRefreshTimestamp()))
+                    if (document.potd_timestamp > potdLastRefresh() && document.potd_timestamp < Date()) {
+                        // User is returning from having solved the POTD less than 24hrs ago
+                        // and has not reset yet
+                        timerRunning = true
+                        potdActive = false
+                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
+                        print("countdown 1: " + countDown.debugDescription)
+                        var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                    } else if (document.potd_timestamp <= potdLastRefresh()) {
+                        // This block of code is only needed if you manually change things in firebase
+                        potdActive = true
+                        timerRunning = false
+                    } else if (potdRefreshTimestamp().timeIntervalSince(.now) > 0) {
+                        // User has just finished the problem
+                        timerRunning = true
+                        potdActive = false
+                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
+                        print("countdown2:" + countDown.debugDescription)
+                        var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
                     } else {
                         potdActive = true
                     }
@@ -231,26 +258,72 @@ struct HomeView: View {
     }
     
     func potdLastRefresh() -> Date {
-        let calendar = Calendar.current
-        let refreshDay = calendar.component(.hour, from: .now) < 9 ? -1 : 0
-        let components = DateComponents(year: calendar.component(.year, from: .now),
+        var calendar = Calendar.current
+//        calendar.timeZone = TimeZone.current
+//        print("Hour component: " + String(calendar.component(.hour, from: .now)))
+        // We want to subtract 1 whenever the time of day hasn't passed the notifHour (or notifTime)
+        // Line below uses current time zone
+        // Crudely add 4 to account for UTC
+        let currHour = calendar.component(.hour, from: .now) // THIS USES LOCAL TIMEZONE i.e. "6pm EST" -> 18
+        var refreshDay = currHour < (notifHour) ? -1 : 0
+        // Have to check minute if we're past that too, specifically for those who
+        // immediately solve the POTD
+        let currMinute = calendar.component(.minute, from: .now)
+        if (refreshDay == 0 && currHour == (notifHour)) {
+            refreshDay = currMinute < notifMinute ? -1 : 0
+        }
+        // Also check seconds for those who solve the POTD really fast
+        let currSeconds = calendar.component(.second, from: .now)
+        if (refreshDay == 0 && currMinute == notifMinute) {
+            // 2-second buffer for UI to catch up.
+            // Meaning if the user solves the POTD in under 2 seconds then the
+            // timer could bug out
+            refreshDay = currSeconds < 2 ? -1 : 0
+        }
+        var components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
                                         day: calendar.component(.day, from: .now)+refreshDay,  // current day
-                                        hour: 9,    // 9AM
-                                        minute: 0,
+                                        // Do not subtract for UTC, rolls over to next day if difference
+                                        // is larger than 20
+                                        hour: notifHour,
+                                        minute: notifMinute,
                                         second: 0)
+//        print("Date old: " + calendar.date(from: components)!.description)
         return calendar.date(from: components)!
     }
     
     func potdRefreshTimestamp() -> Date {
-        let calendar = Calendar.current
-        let refreshDay = calendar.component(.hour, from: .now) < 9 ? 0 : 1
+        var calendar = Calendar.current
+//        calendar.timeZone = TimeZone.current
+//        print("Hour component: " + String(calendar.component(.hour, from: .now)))
+        // want 0 when it's the following day
+        // Line below uses current time zone
+        // Crudely add 4 to account for UTC
+        let currHour = calendar.component(.hour, from: .now) // THIS USES LOCAL TIMEZONE i.e. "6pm EST" -> 18
+        var refreshDay = currHour < (notifHour) ? 0 : 1
+        // Have to check minute if we're past that too, specifically for those who
+        // immediately solve the POTD
+        let currMinute = calendar.component(.minute, from: .now)
+        if (refreshDay == 0 && currHour == (notifHour)) {
+            refreshDay = currMinute < notifMinute ? 0 : 1
+        }
+        // Also check seconds for those who solve the POTD really fast
+        let currSeconds = calendar.component(.second, from: .now)
+        if (refreshDay == 0 && currMinute == notifMinute) {
+            // 2-second buffer for UI to catch up.
+            // Meaning if the user solves the POTD in under 2 seconds then the
+            // timer could bug out
+            refreshDay = currSeconds < 2 ? 0 : 1
+        }
+        
         let components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
                                         day: calendar.component(.day, from: .now)+refreshDay,  // current day
-                                        hour: 9,    // 9AM
-                                        minute: 0,
+                                        // Do not subtract for UTC, rolls over to next day if larger than 20
+                                        hour: notifHour, // 24 hour format
+                                        minute: notifMinute,
                                         second: 0)
+//        print("Date new: " + calendar.date(from: components)!.description)
         return calendar.date(from: components)!
     }
     
