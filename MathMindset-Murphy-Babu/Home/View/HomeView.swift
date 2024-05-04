@@ -110,7 +110,9 @@ struct HomeView: View {
                                                 print("Shouldn't have made it here?")
                                                 // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
                                                 timerRunning = false
-                                                timer.upstream.connect().cancel()     // relinquish thread process
+                                                // below would save power but we can't figure out how
+                                                // to turn it back on
+//                                                timer.upstream.connect().cancel()
                                                 potdActive = true
                                             }
                                         }
@@ -201,7 +203,7 @@ struct HomeView: View {
                         potdActive = false
                         countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         print("countdown 1: " + countDown.debugDescription)
-                        var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+//                        timer.upstream.autoconnect()
                     } else if (document.potd_timestamp <= potdLastRefresh()) {
                         // This block of code is only needed if you manually change things in firebase
                         potdActive = true
@@ -212,7 +214,7 @@ struct HomeView: View {
                         potdActive = false
                         countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         print("countdown2:" + countDown.debugDescription)
-                        var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+//                        timer.upstream.autoconnect()
                     } else {
                         potdActive = true
                     }
@@ -280,7 +282,7 @@ struct HomeView: View {
             // timer could bug out
             refreshDay = currSeconds < 2 ? -1 : 0
         }
-        var components = DateComponents(year: calendar.component(.year, from: .now),
+        let components = DateComponents(year: calendar.component(.year, from: .now),
                                         month: calendar.component(.month, from: .now),
                                         day: calendar.component(.day, from: .now)+refreshDay,  // current day
                                         // Do not subtract for UTC, rolls over to next day if difference
@@ -293,7 +295,7 @@ struct HomeView: View {
     }
     
     func potdRefreshTimestamp() -> Date {
-        var calendar = Calendar.current
+        let calendar = Calendar.current
 //        calendar.timeZone = TimeZone.current
 //        print("Hour component: " + String(calendar.component(.hour, from: .now)))
         // want 0 when it's the following day
