@@ -169,7 +169,9 @@ struct SubmitButton: View {
                     isCorrect = true
                     showConfetti += 1
                     Task {
-                        if notificationsEnabled { await createNotification() }
+                        if notificationsEnabled { 
+                            await createNotification()
+                        }
                         await updateProgress()
                     }
                 } else {

@@ -107,7 +107,6 @@ struct HomeView: View {
                                             if countDown > 0  && timerRunning {
                                                 countDown -= 1
                                             } else {
-                                                print("Shouldn't have made it here?")
                                                 // by updating a state variable when the timer runs out, we can update the button to be active (so the problem of the day is made available)
                                                 timerRunning = false
                                                 // below would save power but we can't figure out how
@@ -196,12 +195,14 @@ struct HomeView: View {
                     print("Comparison: " + String(document.potd_timestamp > potdLastRefresh()))
                     print("New timestamp: " + potdRefreshTimestamp().description)
                     print("Comparison to new: " + String(document.potd_timestamp < potdRefreshTimestamp()))
-                    if (document.potd_timestamp > potdLastRefresh() && document.potd_timestamp < Date()) {
+                    print("Date btw: " + Date().description)
+                    // 5 second buffer
+                    if (document.potd_timestamp > potdLastRefresh() && document.potd_timestamp + 5 < Date()) {
                         // User is returning from having solved the POTD less than 24hrs ago
                         // and has not reset yet
+                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         timerRunning = true
                         potdActive = false
-                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         print("countdown 1: " + countDown.debugDescription)
 //                        timer.upstream.autoconnect()
                     } else if (document.potd_timestamp <= potdLastRefresh()) {
@@ -210,9 +211,9 @@ struct HomeView: View {
                         timerRunning = false
                     } else if (potdRefreshTimestamp().timeIntervalSince(.now) > 0) {
                         // User has just finished the problem
+                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         timerRunning = true
                         potdActive = false
-                        countDown = potdRefreshTimestamp().timeIntervalSince(.now)
                         print("countdown2:" + countDown.debugDescription)
 //                        timer.upstream.autoconnect()
                     } else {
@@ -302,20 +303,21 @@ struct HomeView: View {
         // Line below uses current time zone
         // Crudely add 4 to account for UTC
         let currHour = calendar.component(.hour, from: .now) // THIS USES LOCAL TIMEZONE i.e. "6pm EST" -> 18
-        var refreshDay = currHour < (notifHour) ? 0 : 1
+//        print("\tLocal hour: " + String(currHour)) // this is to make sure it's est
+        var refreshDay: Int = (currHour <= notifHour) ? 0 : 1
         // Have to check minute if we're past that too, specifically for those who
         // immediately solve the POTD
         let currMinute = calendar.component(.minute, from: .now)
-        if (refreshDay == 0 && currHour == (notifHour)) {
-            refreshDay = currMinute < notifMinute ? 0 : 1
+        if (refreshDay == 0 && currHour == notifHour) {
+            refreshDay = (currMinute <= notifMinute) ? 0 : 1
         }
         // Also check seconds for those who solve the POTD really fast
         let currSeconds = calendar.component(.second, from: .now)
-        if (refreshDay == 0 && currMinute == notifMinute) {
+        if (refreshDay == 0 && currMinute == notifMinute && currHour == notifHour) {
             // 2-second buffer for UI to catch up.
             // Meaning if the user solves the POTD in under 2 seconds then the
             // timer could bug out
-            refreshDay = currSeconds < 2 ? 0 : 1
+            refreshDay = (currSeconds <= 2) ? 0 : 1
         }
         
         let components = DateComponents(year: calendar.component(.year, from: .now),
