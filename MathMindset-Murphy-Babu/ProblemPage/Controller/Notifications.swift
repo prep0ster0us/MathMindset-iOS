@@ -36,12 +36,9 @@ func createNotification() async {
     content.sound = UNNotificationSound.default
     content.categoryIdentifier = "POTD" // Used to distinguish from others
     
-    // Currently set to 13:00 in the user's timezone
-    // (1:00pm)
     var dateComponents = DateComponents()
-//    dateComponents.timeZone = TimeZone.autoupdatingCurrent
-    
-    // Add 4 hours for UTC time
+//    dateComponents.timeZone = TimeZone.autoupdatingCurrent // just use UTC instead
+
     dateComponents.hour = notifHour // this is in a 24 hour format i.e. 21 hours = 9pm
     dateComponents.minute = notifMinute
 //    print(dateComponents.description) // debug trigger time

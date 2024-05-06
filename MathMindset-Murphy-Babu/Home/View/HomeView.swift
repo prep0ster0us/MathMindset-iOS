@@ -1,6 +1,9 @@
 import SwiftUI
 import Firebase
 
+// Timer integration adapted from:
+// https://www.hackingwithswift.com/books/ios-swiftui/triggering-events-repeatedly-using-a-timer
+
 struct HomeView: View {
     @EnvironmentObject private var app: AppVariables
     
@@ -261,7 +264,7 @@ struct HomeView: View {
     }
     
     func potdLastRefresh() -> Date {
-        var calendar = Calendar.current
+        let calendar = Calendar.current
 //        calendar.timeZone = TimeZone.current
 //        print("Hour component: " + String(calendar.component(.hour, from: .now)))
         // We want to subtract 1 whenever the time of day hasn't passed the notifHour (or notifTime)
