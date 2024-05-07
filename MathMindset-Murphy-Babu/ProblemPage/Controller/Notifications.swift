@@ -16,8 +16,8 @@ import UserNotifications
 
 // Notification constants
 // Uses local time
-let notifHour: Int = 20
-let notifMinute: Int = 14
+let notifHour: Int = 9
+let notifMinute: Int = 0
 
 // Note: Does not show if the app is in the
 // foreground when the notification triggers

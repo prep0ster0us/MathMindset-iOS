@@ -193,12 +193,12 @@ struct HomeView: View {
                     
                     // check if problem of the day has been solved already
                     // last POTD solve is less than the POTD refresh timestamp (presently using 9AM everyday)
-                    print("Last timestamp: " + potdLastRefresh().description)
-                    print("User timestamp: " + document.potd_timestamp.description)
-                    print("Comparison: " + String(document.potd_timestamp > potdLastRefresh()))
-                    print("New timestamp: " + potdRefreshTimestamp().description)
-                    print("Comparison to new: " + String(document.potd_timestamp < potdRefreshTimestamp()))
-                    print("Date btw: " + Date().description)
+//                    print("Last timestamp: " + potdLastRefresh().description)
+//                    print("User timestamp: " + document.potd_timestamp.description)
+//                    print("Comparison: " + String(document.potd_timestamp > potdLastRefresh()))
+//                    print("New timestamp: " + potdRefreshTimestamp().description)
+//                    print("Comparison to new: " + String(document.potd_timestamp < potdRefreshTimestamp()))
+//                    print("Date btw: " + Date().description)
                     // 5 second buffer
                     if (document.potd_timestamp > potdLastRefresh() && document.potd_timestamp + 5 < Date()) {
                         // User is returning from having solved the POTD less than 24hrs ago
