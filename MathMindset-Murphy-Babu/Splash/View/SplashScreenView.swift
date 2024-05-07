@@ -47,7 +47,7 @@ struct SplashScreenView: View {
                     }
                 }
         }.onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {     // TODO: change back to 2.5 (changed for faster debugging)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {     // TODO: change back to 2.5 (changed for faster debugging)
                 withAnimation(Animation.easeOut(duration: 0.8)) {
                     self.isActive = true
                 }
