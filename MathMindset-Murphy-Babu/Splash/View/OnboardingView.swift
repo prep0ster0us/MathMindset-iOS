@@ -64,11 +64,12 @@ struct OnboardingView: View {
             ZStack (alignment: .top) {
                 GIFLoader(gifName: "solveGIF")
                     .aspectRatio(contentMode: .fit)
+                    .frame(width: 250, height: 250)
                     .padding(.top, 24)
                     .offset(x: 12, y: 32)
                 Text(slideTitle)
                     .font(.system(size: 36, weight: .heavy))
-            }
+            }.padding(.bottom, 48)
             Image("onboardingSolve")
                 .resizable()
                 .frame(width: AppVariables().screenWidth-80, height: 350)
@@ -115,21 +116,41 @@ struct OnboardingView: View {
         )
     }
     
+    @State var animEnd: CGFloat = 0.0
+    let animDuration: CGFloat = 1.8
+    let delay: CGFloat = 0.3
     var onboarding3: some View {
         VStack {
             HStack {
                 Spacer()
                 NavigationLink (destination: SignInView().navigationBarBackButtonHidden(true)) {
-                    Text("Get Started")
-                        .fontWeight(.heavy)
-                        .foregroundStyle(.black)
-                        .padding(.trailing, 8)
+                    VStack (spacing: 0) {
+                        Text("Get Started")
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.white)
+                            .overlay(RoundedRectangle(cornerRadius: 16)
+                                .trim(from: 0.0, to: animEnd)
+                                .stroke(.iconTint, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+                                .frame(width: 120, height: 36)
+//                                .opacity(animEnd)
+                                .animation(
+                                    Animation.easeInOut(duration: animDuration)
+                                        .repeatForever(autoreverses: true).delay(delay)
+                                    , value: animEnd
+                                )
+                                .onAppear {
+                                    self.animEnd = 1.0
+                                }
+                            )
+                            .padding(.trailing, 10)
+                    }
                 }.simultaneousGesture(TapGesture().onEnded {
                     UserDefaults.standard.set(true, forKey: "firstRun")
                 })
             }.padding()
                 .frame(height: 40)
                 .padding(.bottom, 12)
+                .offset(y: 16)
             // main content
             ZStack (alignment: .top) {
                 GIFLoader(gifName: "leaderboardGIF")
@@ -140,6 +161,7 @@ struct OnboardingView: View {
                     .offset(y: 32)
                 Text(slideTitle)
                     .font(.system(size: 36, weight: .heavy))
+                    .offset(y: 16)
             }
             Image("onboardingLeaderboard")
                 .resizable()

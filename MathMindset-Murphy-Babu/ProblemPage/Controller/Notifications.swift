@@ -26,8 +26,8 @@ func createNotification() async {
     }
     
     let content = UNMutableNotificationContent()
-    content.title = "Problem of the Day"
-    content.body = "Every day at 9am"
+    content.title = "A new problem awaits!"
+    content.body = "The problem of the day is here. Solve now!"
     content.sound = UNNotificationSound.default
     content.categoryIdentifier = "POTD" // Used to distinguish from others
     

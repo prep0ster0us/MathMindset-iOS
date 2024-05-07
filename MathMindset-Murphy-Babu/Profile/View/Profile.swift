@@ -129,7 +129,7 @@ struct Profile: View {
                         .fontWeight(.heavy)
                         .padding(.leading, 16)
                     Spacer()
-                }.padding(.bottom, 8)
+                }.padding(.bottom, 12)
                 HStack (spacing: 12) {
                     ForEach(Array(badges.keys), id: \.self) { badge in
                         BadgeCard(topic: badge,

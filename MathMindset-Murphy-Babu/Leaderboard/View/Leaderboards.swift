@@ -133,14 +133,12 @@ struct Leaderboards: View {
                 } else {
                     self.users = querySnapshot?.documents.compactMap { document -> TopUser? in
                         let data = document.data()
-//                        print(data)
                         guard let username     = data["username"] as? String,
                               let profileImage = data["profileImage"] as? String,
                               let streak       = data["streak"] as? Int,
                               let score        = data["score"] as? Int else {
                             return nil
                         }
-                        print("\(username) ==> \(profileImage)")
                         return TopUser(
                             username     : username,
                             profileImage : profileImage,
