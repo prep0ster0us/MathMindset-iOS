@@ -14,6 +14,11 @@
 import Foundation
 import UserNotifications
 
+// Notification constants
+// Uses local time
+let notifHour: Int = 9
+let notifMinute: Int = 0
+
 // Note: Does not show if the app is in the
 // foreground when the notification triggers
 func createNotification() async {
@@ -31,12 +36,11 @@ func createNotification() async {
     content.sound = UNNotificationSound.default
     content.categoryIdentifier = "POTD" // Used to distinguish from others
     
-    // Currently set to 13:00 in the user's timezone
-    // (1:00pm)
     var dateComponents = DateComponents()
-    dateComponents.timeZone = TimeZone.autoupdatingCurrent
-    dateComponents.hour = 9 // this is in a 24 hour format i.e. 21 hours = 9pm
-    dateComponents.minute = 0
+//    dateComponents.timeZone = TimeZone.autoupdatingCurrent // just use UTC instead
+
+    dateComponents.hour = notifHour // this is in a 24 hour format i.e. 21 hours = 9pm
+    dateComponents.minute = notifMinute
 //    print(dateComponents.description) // debug trigger time
     
     // Create the trigger as a repeating event.
